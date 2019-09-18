@@ -1,3 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="header_text_height">40dp</dimen>
+    <dimen name="header_text_size">20dp</dimen>
+    <dimen name="paddingLR">20dp</dimen>
 </resources>

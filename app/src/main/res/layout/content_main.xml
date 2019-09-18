@@ -6,7 +6,110 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/sign_in_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/login_header"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btn_isSignedIn"
+                        style="@style/ButtonStyle"
+                        android:text="@string/is_signed_in"/>
+                    <Button
+                        android:id="@+id/btn_login"
+                        style="@style/ButtonStyle"
+                        android:text="@string/login" />
+                    <Button
+                        android:id="@+id/btn_login_temp_pass"
+                        style="@style/ButtonStyle"
+                        android:text="@string/login_temp_pass" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/logout_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/logout"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btn_logout"
+                        style="@style/ButtonStyle"
+                        android:text="@string/logout"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/get_mvpd_list_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/get_mvpd_list"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btn_getmvpdlist"
+                        style="@style/ButtonStyle"
+                        android:text="@string/get_mvpd_list"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/authorize_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/authorize"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btn_authorize"
+                        style="@style/ButtonStyle"
+                        android:text="@string/authorize"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
