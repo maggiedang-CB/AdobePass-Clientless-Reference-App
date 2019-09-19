@@ -38,20 +38,6 @@
                 android:hint="Enter mvpd String Value Here"
                 android:text=""/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/header_text_size"
-                android:text="requestorId:"/>
-
-            <EditText
-                android:id="@+id/login_requestorId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Enter Requestor Id Value Here"
-                android:text=""/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

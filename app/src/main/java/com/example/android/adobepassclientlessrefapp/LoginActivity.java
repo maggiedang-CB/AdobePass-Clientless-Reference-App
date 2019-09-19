@@ -15,8 +15,6 @@ public class LoginActivity extends AbstractActivity {
 
     @BindView(R.id.login_mvpd)
     EditText etMvpd;
-    @BindView(R.id.login_requestorId)
-    EditText etRId;
     @BindView(R.id.btn_login_ok)
     Button okButton;
     @BindView(R.id.btn_login_back)

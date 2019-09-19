@@ -18,6 +18,123 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/adobe_auth_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dip">
+
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/adobe_auth_header" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
+
+                    <Button
+                        android:id="@+id/btn_adobe_auth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Setup Adobe Auth" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/requestorId_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dip">
+
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/rId_header"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Setup rId: "/>
+
+                    <EditText
+                        android:id="@+id/requestorId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="Enter Requestor Id"
+                        android:text=""/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/get_mvpd_list_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/mvpd_list_header"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
+
+                    <!--set visibility back to visible if we want user to enter rId-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rId: "
+                        android:visibility="gone"/>
+                    <!--set visibility back to visible if we want user to enter rId-->
+                    <EditText
+                        android:id="@+id/getMvpdList_rId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="Enter Requestor Id"
+                        android:text=""
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/btn_getmvpdlist"
+                        style="@style/ButtonStyle"
+                        android:text="@string/get_mvpd_list"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Show MVPD Providers Page"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/sign_in_view_group"
                 android:layout_width="match_parent"
@@ -33,7 +150,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/paddingLR"
-                    android:paddingRight="@dimen/paddingLR">
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
                     <Button
                         android:id="@+id/btn_isSignedIn"
                         style="@style/ButtonStyle"
@@ -49,100 +167,89 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/logout_view_group"
+                android:id="@+id/media_info_view_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="5dip">
+
                 <TextView
                     style="@style/Separator"
                     android:layout_width="match_parent"
-                    android:text="@string/logout"/>
+                    android:text="@string/media_info_header" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/paddingLR"
-                    android:paddingRight="@dimen/paddingLR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="rId: "/>
-
-                    <EditText
-                        android:id="@+id/logout_rId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:hint="Enter Requestor Id"
-                        android:text=""/>
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
 
                     <Button
-                        android:id="@+id/btn_logout"
-                        style="@style/ButtonStyle"
-                        android:text="@string/logout"/>
-                </LinearLayout>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/get_mvpd_list_view_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:orientation="vertical">
-                <TextView
-                    style="@style/Separator"
-                    android:layout_width="match_parent"
-                    android:text="@string/get_mvpd_list"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/paddingLR"
-                    android:paddingRight="@dimen/paddingLR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/btn_media_info"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="rId: "/>
-
-                    <EditText
-                        android:id="@+id/getMvpdList_rId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:hint="Enter Requestor Id"
-                        android:text=""/>
-
-                    <Button
-                        android:id="@+id/btn_getmvpdlist"
-                        style="@style/ButtonStyle"
-                        android:text="@string/get_mvpd_list"/>
+                        android:text="Setup Media Info" />
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/authorize_view_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:orientation="vertical">
+
                 <TextView
                     style="@style/Separator"
                     android:layout_width="match_parent"
-                    android:text="@string/authorize"/>
+                    android:text="@string/authorize_header"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/paddingLR"
-                    android:paddingRight="@dimen/paddingLR">
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
                     <Button
                         android:id="@+id/btn_authorize"
                         style="@style/ButtonStyle"
                         android:text="@string/authorize"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/logout_view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:orientation="vertical"
+                android:layout_marginBottom="5dip">
+                <TextView
+                    style="@style/Separator"
+                    android:layout_width="match_parent"
+                    android:text="@string/logout_header"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
+
+                    <Button
+                        android:id="@+id/btn_logout"
+                        android:text="@string/logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
                 </LinearLayout>
 
             </LinearLayout>

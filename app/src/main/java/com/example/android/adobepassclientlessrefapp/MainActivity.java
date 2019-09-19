@@ -19,6 +19,12 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.btn_adobe_auth)
+    Button btnAdobeAuth;
+
+    @BindView(R.id.requestorId)
+    EditText etRId;
+
     @BindView(R.id.btn_isSignedIn)
     Button btnIsSignedIn;
     @BindView(R.id.btn_login)
@@ -28,13 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_logout)
     Button btnLogout;
-    @BindView(R.id.logout_rId)
-    EditText etLogoutRId;
 
     @BindView(R.id.btn_getmvpdlist)
     Button btnGetMvpdList;
-    @BindView(R.id.getMvpdList_rId)
-    EditText etGetMvpdListRId;
 
     @BindView(R.id.btn_authorize)
     Button btnAuthorize;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Set button listeners
+        btnAdobeAuth.setOnClickListener(adobeAuthListener);
         btnIsSignedIn.setOnClickListener(isSignedInListener);
         btnLogin.setOnClickListener(loginListener);
         btnLoginTempPass.setOnClickListener(loginTempPassListener);
@@ -61,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Button OnClick Listeners
+
+    private View.OnClickListener adobeAuthListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, AdobeAuthActivity.class);
+            startActivity(intent);
+        }
+    };
 
     private View.OnClickListener isSignedInListener = new View.OnClickListener() {
         @Override
@@ -97,11 +108,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             // Use the user entered rId value from edit text to logout
-            String rId = etLogoutRId.getText().toString();
 
-            if (isValidRId(rId)) {
-                // do stuff here to logout
-            }
 
 //            Intent intent = new Intent(MainActivity.this, LogoutActivity.class);
 //            intent.putExtra("requestorId", rId);
@@ -112,15 +119,8 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener getMvpdListListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // Use the user entered rId value from edit text to logout
-            String rId = etGetMvpdListRId.getText().toString();
-
-            if (isValidRId(rId)) {
-                // do stuff here to logout
-            }
 
 //            Intent intent = new Intent(MainActivity.this, MvpdListActivity.class);
-//            intent.putExtra("requestorId", rId);
 //            startActivity(intent);
         }
     };

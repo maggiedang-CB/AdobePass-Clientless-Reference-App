@@ -5,10 +5,59 @@
     <string name="logout">logout</string>
     <string name="login">login</string>
     <string name="login_temp_pass">loginTempPass</string>
-    <string name="login_header">Sign In / Login</string>
     <string name="get_mvpd_list">getMvpdList</string>
     <string name="authorize">Authorize</string>
     <string name="ok">OK</string>
     <string name="back">BACK</string>
     <string name="about_clientless">About Clientless</string>
+    <string name="rId">Requestor Id</string>
+    <string name="adobe_auth_setup">SetUp Adobe Auth</string>
+
+    <string name="adobe_auth_header">1) Adobe Auth</string>
+    <string name="rId_header">2) Requestor Id</string>
+    <string name="mvpd_list_header">3) MVPD List</string>
+    <string name="login_header">4) Login</string>
+    <string name="media_info_header">5) Media Info</string>
+    <string name="authorize_header">6) Authorize</string>
+    <string name="logout_header">7) Logout</string>
+
+
+    <string name="authForm1_baseUrl">baseUrl: </string>
+    <string name="authForm2_reggieCodePath">reggieCodePath: </string>
+    <string name="authForm3_checkAuthenticationPath">checkAuthenticationPath: </string>
+    <string name="authForm4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds: </string>
+    <string name="authForm5_tempPassProvider">tempPassProvider: </string>
+    <string name="authForm6_getUserMetadataPath">getUserMetadataPath: </string>
+    <string name="authForm7_authnTokenPath">authnTokenPath: </string>
+    <string name="authForm8_tempPassUrl">tempPassUrl: </string>
+    <string name="authForm9_authzTokenPath">authzTokenPath: </string>
+    <string name="authForm10_authorizePath">authorizePath: </string>
+    <string name="authForm11_logoutPath">logoutPath: </string>
+    <string name="authForm12_mvpdListPath">mvpdListPath: </string>
+    <string name="authForm13_redirectUrl">redirectUrl: </string>
+    <string name="authForm14_tokenizationUrl">tokenizationUrl: </string>
+    <string name="authForm15_logosUrl">logosUrl: </string>
+    <string name="authForm16_externalBrowserDomains">externalBrowserDomains: </string>
+    <string name="authForm17_nbcTokenUrl">nbcTokenUrl: </string>
+
+    <!--adobe auth parcel data-->
+    <!--@Expose @Getter String baseUrl;-->
+    <!--@Expose @Getter String reggieCodePath;-->
+    <!--@Expose @Getter String checkAuthenticationPath;-->
+    <!--@Expose @Getter int authnTokenTimeoutSeconds;-->
+    <!--@Expose @Getter String tempPassProvider;-->
+    <!--@Expose @Getter String getUserMetadataPath;-->
+    <!--@Expose @Getter String authnTokenPath;-->
+    <!--@Expose @Getter String tempPassUrl;-->
+    <!--@Expose @Getter String authzTokenPath;-->
+    <!--@Expose @Getter String authorizePath;-->
+    <!--@Expose @Getter String logoutPath;-->
+    <!--@Expose @Getter String mvpdListPath;-->
+    <!--@Expose @Getter String redirectUrl;-->
+    <!--@Expose @Getter String tokenizationUrl;-->
+    <!--@Expose @Getter String logosUrl;-->
+    <!--@Expose @Getter List<String> externalBrowserDomains;-->
+    <!--@Expose @Getter String nbcTokenUrl;-->
+    <!--@Expose @Getter-->
+    <!--TempPassSelectionConfig tempPassSelection;-->
 </resources>

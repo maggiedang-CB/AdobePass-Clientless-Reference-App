@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/adobe_auth_form_header"
+        android:layout_width="match_parent"
+        android:text="@string/adobe_auth_setup"
+        android:textAllCaps="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/adobe_auth_form_header">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm1_baseUrl"/>
+
+                        <EditText
+                            android:id="@+id/baseurl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm2_reggieCodePath"/>
+
+                        <EditText
+                            android:id="@+id/reggieCodePath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm3_checkAuthenticationPath"/>
+
+                        <EditText
+                            android:id="@+id/checkAuthenticationPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm4_authnTokenTimeoutSeconds"/>
+
+                        <EditText
+                            android:id="@+id/authnTokenTimeoutSeconds"
+                            style="@style/FormEditText"
+                            android:hint="int"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm5_tempPassProvider"/>
+
+                        <EditText
+                            android:id="@+id/tempPassProvider"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm6_getUserMetadataPath"/>
+
+                        <EditText
+                            android:id="@+id/getUserMetadataPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm7_authnTokenPath"/>
+
+                        <EditText
+                            android:id="@+id/authnTokenPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm8_tempPassUrl"/>
+
+                        <EditText
+                            android:id="@+id/temppassurl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm9_authzTokenPath"/>
+
+                        <EditText
+                            android:id="@+id/authzTokenPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm10_authorizePath"/>
+
+                        <EditText
+                            android:id="@+id/authorizePath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm11_logoutPath"/>
+
+                        <EditText
+                            android:id="@+id/logoutPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm12_mvpdListPath"/>
+
+                        <EditText
+                            android:id="@+id/mvpdListPath"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm13_redirectUrl"/>
+
+                        <EditText
+                            android:id="@+id/redirecturl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm14_tokenizationUrl"/>
+
+                        <EditText
+                            android:id="@+id/tokenizationurl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm15_logosUrl"/>
+
+                        <EditText
+                            android:id="@+id/logosurl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm16_externalBrowserDomains"/>
+
+                        <EditText
+                            android:id="@+id/externalBrowserDomains"
+                            style="@style/FormEditText"
+                            android:hint="List of Strings"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/FormEntries">
+                        <TextView
+                            style="@style/FormValues"
+                            android:text="@string/authForm17_nbcTokenUrl"/>
+
+                        <EditText
+                            android:id="@+id/nbcTokenurl"
+                            style="@style/FormEditText"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/btn_adobe_auth_ok"
+                            style="@style/ButtonStyle"
+                            android:text="OK"/>
+
+                        <Button
+                            android:id="@+id/btn_adobe_auth_back"
+                            style="@style/ButtonStyle"
+                            android:text="BACK"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>
