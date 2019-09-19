@@ -31,7 +31,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR">
                     <Button
                         android:id="@+id/btn_isSignedIn"
                         style="@style/ButtonStyle"
@@ -59,7 +61,24 @@
                     android:text="@string/logout"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rId: "/>
+
+                    <EditText
+                        android:id="@+id/logout_rId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="Enter Requestor Id"
+                        android:text=""/>
+
                     <Button
                         android:id="@+id/btn_logout"
                         style="@style/ButtonStyle"
@@ -79,11 +98,29 @@
                     android:text="@string/get_mvpd_list"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rId: "/>
+
+                    <EditText
+                        android:id="@+id/getMvpdList_rId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="Enter Requestor Id"
+                        android:text=""/>
+
                     <Button
                         android:id="@+id/btn_getmvpdlist"
                         style="@style/ButtonStyle"
                         android:text="@string/get_mvpd_list"/>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -99,7 +136,9 @@
                     android:text="@string/authorize"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR">
                     <Button
                         android:id="@+id/btn_authorize"
                         style="@style/ButtonStyle"

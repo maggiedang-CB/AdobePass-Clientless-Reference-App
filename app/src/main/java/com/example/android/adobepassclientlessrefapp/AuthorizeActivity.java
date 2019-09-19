@@ -10,21 +10,19 @@ import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IsSignedInActivity extends AbstractActivity {
+public class AuthorizeActivity extends AbstractActivity {
 
-    @BindView(R.id.btn_isSignedIn_ok)
+    @BindView(R.id.btn_authorize_ok)
     Button okButton;
-
-    @BindView(R.id.btn_isSignedIn_back)
+    @BindView(R.id.btn_authorize_back)
     Button backButton;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // change layout
-        setContentView(R.layout.issignedin_layout);
+        setContentView(R.layout.authorize_layout);
         ButterKnife.bind(this);
 
-        // Button listeners
+        // Setup button listeners
         backButton.setOnClickListener(backButtonListener());
     }
 
@@ -36,7 +34,7 @@ public class IsSignedInActivity extends AbstractActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IsSignedInActivity.this, MainActivity.class);
+                Intent intent = new Intent(AuthorizeActivity.this, MainActivity.class);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }

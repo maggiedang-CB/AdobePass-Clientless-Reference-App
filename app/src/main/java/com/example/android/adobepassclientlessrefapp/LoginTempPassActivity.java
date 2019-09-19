@@ -4,27 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IsSignedInActivity extends AbstractActivity {
+public class LoginTempPassActivity extends AbstractActivity {
 
-    @BindView(R.id.btn_isSignedIn_ok)
+    @BindView(R.id.logintemppass_requestorId)
+    EditText etRId;
+    @BindView(R.id.logintemppass_tempPassId)
+    EditText etTempPassId;
+    @BindView(R.id.btn_logintemppass_ok)
     Button okButton;
-
-    @BindView(R.id.btn_isSignedIn_back)
+    @BindView(R.id.btn_logintemppass_back)
     Button backButton;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // change layout
-        setContentView(R.layout.issignedin_layout);
+        setContentView(R.layout.logintemppass_layout);
         ButterKnife.bind(this);
 
-        // Button listeners
+        // set listeners
         backButton.setOnClickListener(backButtonListener());
     }
 
@@ -36,10 +39,12 @@ public class IsSignedInActivity extends AbstractActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IsSignedInActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginTempPassActivity.this, MainActivity.class);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
         };
     }
+
+
 }

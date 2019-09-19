@@ -6,9 +6,9 @@
 
     <TextView
         style="@style/Separator"
-        android:id="@+id/isSignedIn_header"
+        android:id="@+id/loginTempPass_header"
         android:layout_width="match_parent"
-        android:text="@string/is_signed_in"
+        android:text="@string/login_temp_pass"
         android:textAllCaps="false"/>
 
     <LinearLayout
@@ -17,8 +17,7 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/paddingLR"
         android:paddingRight="@dimen/paddingLR"
-        android:layout_below="@id/isSignedIn_header">
-
+        android:layout_below="@id/loginTempPass_header">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,33 +27,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/header_text_size"
-                android:text="rId (Currently Unused Value):"/>
+                android:text="requestorId:"/>
 
             <EditText
-                android:id="@+id/isSignedIn_rId"
+                android:id="@+id/logintemppass_requestorId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Enter rId Value Here"
+                android:hint="Enter Requestor Id Here"
+                android:text=""/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/header_text_size"
+                android:text="tempPassId:"/>
+
+            <EditText
+                android:id="@+id/logintemppass_tempPassId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Enter Temp Pass Id Here"
                 android:text=""/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_logintemppass_ok"
+                    style="@style/ButtonStyle"
+                    android:text="OK"/>
 
                 <Button
-                    android:id="@+id/btn_isSignedIn_ok"
+                    android:id="@+id/btn_logintemppass_back"
                     style="@style/ButtonStyle"
-                    android:text="@string/ok"/>
-
-                <Button
-                    android:id="@+id/btn_isSignedIn_back"
-                    style="@style/ButtonStyle"
-                    android:text="@string/back"/>
+                    android:text="BACK"/>
             </LinearLayout>
-        </LinearLayout>
 
+        </LinearLayout>
     </LinearLayout>
+
 
 </RelativeLayout>
