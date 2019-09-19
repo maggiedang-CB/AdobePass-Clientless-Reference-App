@@ -49,6 +49,11 @@
             android:label="@string/login_temp_pass"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".ui.AboutClientlessActivity"
+            android:label="@string/login_temp_pass"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

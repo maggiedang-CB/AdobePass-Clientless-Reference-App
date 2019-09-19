@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.adobepassclientlessrefapp.ui.AboutClientlessActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_adobe_clientless) {
+            startActivity(new Intent(MainActivity.this, AboutClientlessActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
