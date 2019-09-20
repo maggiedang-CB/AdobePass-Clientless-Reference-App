@@ -10,6 +10,7 @@
     <string name="ok">OK</string>
     <string name="back">BACK</string>
     <string name="about_clientless">About Clientless</string>
+    <string name="show_logcat">Show Logcat</string>
     <string name="rId">Requestor Id</string>
     <string name="adobe_auth_setup">SetUp Adobe Auth</string>
 

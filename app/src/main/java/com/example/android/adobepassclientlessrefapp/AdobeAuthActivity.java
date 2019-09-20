@@ -106,7 +106,6 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     }
 
-
     /**
      * If there was saved data for adobe auth, fill out the form fields
      */

@@ -1,6 +1,7 @@
 package com.example.android.adobepassclientlessrefapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.requestorId)
     EditText etRId;
+    @BindView(R.id.btn_rId)
+    Button btnSaveRId;
 
     @BindView(R.id.btn_isSignedIn)
     Button btnIsSignedIn;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_authorize)
     Button btnAuthorize;
+
+    SharedPreferences sharedPreferences;
+    private String rId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +69,22 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(logoutListener);
         btnGetMvpdList.setOnClickListener(getMvpdListListener);
         btnAuthorize.setOnClickListener(authorizeListener);
+        btnSaveRId.setOnClickListener(saveRIdListener);
+
+        showSavedData();
     }
 
+    /**
+     * Show saved data from shared preferences such as: requestorId.
+     */
+    private void showSavedData() {
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+
+        if (sharedPreferences.contains("rId")) {
+            rId = sharedPreferences.getString("rId", "");
+            etRId.setText(rId);
+        }
+    }
 
     // Button OnClick Listeners
 
@@ -73,6 +93,22 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, AdobeAuthActivity.class);
             startActivity(intent);
+        }
+    };
+
+    private View.OnClickListener saveRIdListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String rid = etRId.getText().toString();
+            // Check if rId is valid. If it is, save to shared preferences
+            if(isValidRId(rid)) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("rId", rid);
+                editor.apply();
+
+                // Toast
+                Toast.makeText(MainActivity.this, "Requestor Id Saved", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -144,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean isValidRId(String rId) {
         if (rId == null || rId.isEmpty()) {
-            Toast toast = Toast.makeText(this, "Please Enter a Requestor Id.", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Invalid Requestor Id", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }

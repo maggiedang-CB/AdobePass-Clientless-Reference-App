@@ -83,6 +83,11 @@
                         android:hint="Enter Requestor Id"
                         android:text=""/>
 
+                    <Button
+                        android:id="@+id/btn_rId"
+                        style="@style/ButtonStyle"
+                        android:text="Save rId"/>
+
                 </LinearLayout>
 
             </LinearLayout>
