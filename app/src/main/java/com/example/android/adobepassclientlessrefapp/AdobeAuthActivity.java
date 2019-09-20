@@ -1,12 +1,14 @@
 package com.example.android.adobepassclientlessrefapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.adobeauth.GenerateSampleData;
@@ -23,15 +25,21 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     private String TAG = "AdobeAuthActivity";
 
+    // shared preference key to get adobeauth json
+    public static String ADOBEAUTH = "adobeauth";
+
     @BindView(R.id.btn_adobe_auth_back)
     Button backButton;
     @BindView(R.id.btn_adobe_auth_ok)
-    Button okButton;
+    Button saveButton;
     @BindView(R.id.btn_adobe_auth_generate)
     Button generateButton;
-    // TODO: Get browse button to work >>> Should lead to url opened in the web?
+    // TODO: Get browse button to work
+    // ^^ OR make it into a "Paste Json Data" button where user can put their own json data, then convert into the form
     @BindView(R.id.btn_adobe_auth_browse)
     Button browseButton;
+    @BindView(R.id.btn_adobe_auth_clear)
+    Button clearButton;
 
     @BindView(R.id.baseurl)
     EditText baseUrl;
@@ -68,12 +76,12 @@ public class AdobeAuthActivity extends AbstractActivity {
     @BindView(R.id.nbcTokenurl)
     EditText nbcTokenUrl;
 
-    //TODO: figure out tempPassSelection when working with temp pass
+    //TODO: figure out tempPassSelection value when working with temp pass
 
-    // List of key values
     private ArrayList<String> listOfValues;
-    // list of edit text form
     private ArrayList<EditText> listOfEditText;
+
+    private SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,12 +93,38 @@ public class AdobeAuthActivity extends AbstractActivity {
 
         // List of key values
         this.listOfValues = getFormNamesArray();
-        // list of edit text form
+        // list of edit text fields
         this.listOfEditText = getFormArray();
 
         // setup listeners
         backButton.setOnClickListener(backButtonListener());
         generateButton.setOnClickListener(generateListener);
+        saveButton.setOnClickListener(saveListener);
+        clearButton.setOnClickListener(clearListener);
+
+        showLastSavedFormData();
+
+    }
+
+
+    /**
+     * If there was saved data for adobe auth, fill out the form fields
+     */
+    private void showLastSavedFormData() {
+        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+        try {
+            if (sharedPreferences.contains(ADOBEAUTH)) {
+                JSONObject json = new JSONObject(sharedPreferences.getString(ADOBEAUTH, ""));
+
+                // debug
+                Log.d(TAG, "Saved Data Json: " + json.toString());
+
+                // show in edit text forms
+                generateDataInEditText(json);
+            }
+        } catch (JSONException e) {
+            Log.d(TAG, "Error obtaining shared preference adobe auth json");
+        }
     }
 
     /**
@@ -116,16 +150,73 @@ public class AdobeAuthActivity extends AbstractActivity {
             // Uses stored sample data needed for adobe auth
             JSONObject sampleJson = GenerateSampleData.makeJsonSample();
             // Add sample data to edit text views
-            generateSampleDataInEditText(sampleJson);
+            generateDataInEditText(sampleJson);
 
         }
     };
 
+    private View.OnClickListener saveListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Check if all fields are filled, if not show dialog
+
+            // save value of each field
+            String saveForm = convertFormToJson().toString();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(ADOBEAUTH, saveForm);
+            editor.apply();
+
+            // go back to main activity
+            Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+            startActivity(intent);
+
+            // show toast that data has been saved
+            Toast.makeText(AdobeAuthActivity.this, "Adobe Auth Settings Saved", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener clearListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // clear all the edit text views
+            for (EditText editText : listOfEditText) {
+                editText.setText("");
+            }
+        }
+    };
+
+
     /**
-     * Fills out edit text form with the sample data generated from GenerateSampleData.java
+     * Convert the adobe auth form fields into a JSON object.
+     * @return
+     */
+    private JSONObject convertFormToJson() {
+        // Convert to JSONObject
+        JSONObject json = new JSONObject();
+
+        try {
+            int index = 0;
+            for (EditText editText : listOfEditText) {
+                json.put(listOfValues.get(index), editText.getText().toString());
+                index++;
+            }
+            // debug
+            Log.d(TAG, "convertFormToJson: " + json.toString());
+
+            return json;
+        } catch (JSONException e) {}
+
+        // TODO: remember to pass in the temp pass selection values as well
+
+        return json;
+    }
+
+
+    /**
+     * Fills out edit text form with data contained in the adobe auth json object
      * @param json
      */
-    private void generateSampleDataInEditText(JSONObject json) {
+    private void generateDataInEditText(JSONObject json) {
 
         try {
             int index = 0;
@@ -172,7 +263,7 @@ public class AdobeAuthActivity extends AbstractActivity {
     }
 
     /**
-     * Returns a list of strings containing the name of each form value.
+     * Returns a list of strings containing the name of each field from the adobe auth form.
      * i.e) "tempPassUrl"
      * @return
      */

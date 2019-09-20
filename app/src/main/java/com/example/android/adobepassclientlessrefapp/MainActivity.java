@@ -19,6 +19,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    // shared preference key
+    public static String SHARED_PREFERENCES = "myPrefs";
+
     @BindView(R.id.btn_adobe_auth)
     Button btnAdobeAuth;
 

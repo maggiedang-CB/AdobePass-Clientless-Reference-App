@@ -12,26 +12,38 @@
         android:text="@string/adobe_auth_setup"
         android:textAllCaps="false"/>
 
-    <LinearLayout
+    <HorizontalScrollView
         android:id="@+id/top_buttons_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/paddingLR"
         android:paddingRight="@dimen/paddingLR"
-        android:layout_below="@id/adobe_auth_form_header">
+        android:layout_below="@id/adobe_auth_form_header"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
 
-        <Button
-            android:id="@+id/btn_adobe_auth_generate"
-            style="@style/ButtonStyle"
-            android:text="Generate Sample Data"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_adobe_auth_browse"
-            style="@style/ButtonStyle"
-            android:text="Browse Live Data"/>
+            <Button
+                android:id="@+id/btn_adobe_auth_generate"
+                style="@style/ButtonStyle"
+                android:text="Generate Sample Data"/>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_adobe_auth_browse"
+                style="@style/ButtonStyle"
+                android:text="Browse Live Data"/>
+
+            <Button
+                android:id="@+id/btn_adobe_auth_clear"
+                style="@style/ButtonStyle"
+                android:text="Clear Form Data"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -253,7 +265,7 @@
                         <Button
                             android:id="@+id/btn_adobe_auth_ok"
                             style="@style/ButtonStyle"
-                            android:text="OK"/>
+                            android:text="SAVE"/>
 
                         <Button
                             android:id="@+id/btn_adobe_auth_back"

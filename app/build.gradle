@@ -39,7 +39,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // LEAP SDK
-    //implementation 'com.nbcsports.leapsdk:authentication:1.1.44'
+    implementation 'com.nbcsports.leapsdk:authentication:1.1.44'
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
