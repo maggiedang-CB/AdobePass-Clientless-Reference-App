@@ -13,12 +13,34 @@
         android:textAllCaps="false"/>
 
     <LinearLayout
+        android:id="@+id/top_buttons_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/adobe_auth_form_header">
+
+        <Button
+            android:id="@+id/btn_adobe_auth_generate"
+            style="@style/ButtonStyle"
+            android:text="Generate Sample Data"/>
+
+        <Button
+            android:id="@+id/btn_adobe_auth_browse"
+            style="@style/ButtonStyle"
+            android:text="Browse Live Data"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="@dimen/paddingLR"
         android:paddingRight="@dimen/paddingLR"
-        android:layout_below="@id/adobe_auth_form_header">
+        android:layout_below="@id/top_buttons_group">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +53,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_gravity="right">
 
                     <LinearLayout
                         style="@style/FormEntries">
