@@ -159,8 +159,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-//            Intent intent = new Intent(MainActivity.this, MvpdListActivity.class);
-//            startActivity(intent);
+            // Check if adobe auth has been set up
+
+            // Check if Requestor Id has been set
+
+            Intent intent = new Intent(MainActivity.this, MvpdListActivity.class);
+            startActivity(intent);
         }
     };
 

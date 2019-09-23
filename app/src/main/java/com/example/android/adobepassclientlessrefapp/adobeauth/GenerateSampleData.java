@@ -6,6 +6,10 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Uses sample data to generate and auto fill adobe auth form
  */
@@ -72,12 +76,26 @@ public class GenerateSampleData {
     public static JSONObject makeJsonSample() {
         try {
             JSONObject json = new JSONObject(sampleJsonString);
+
             Log.d(TAG, json.toString());
             return json;
         } catch (JSONException e) {
             Log.d(TAG, "ERROR when converting sample json string data to Json object");
         }
         return null;
+    }
+
+    public static List<String> stringToList(String listAsString) {
+        // Split out square brackets
+        String listAsStringCommaSeparated = listAsString.substring(1, listAsString.length() - 2);
+
+        Log.d(TAG, "listAsStringCommaSeparated = " + listAsStringCommaSeparated);
+
+        List<String> list = new ArrayList<>(Arrays.asList(listAsStringCommaSeparated.split("\\s*,\\s*")));
+
+        Log.d(TAG, "strinToList = " + list);
+
+        return list;
     }
 
 }

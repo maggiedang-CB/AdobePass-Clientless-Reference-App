@@ -38,29 +38,31 @@
         </activity>
         <activity
             android:name=".LogoutActivity"
-            android:label="@string/login_temp_pass"
+            android:label="@string/logout_header"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".MvpdListActivity"
-            android:label="@string/login_temp_pass"
+            android:label="@string/get_mvpd_list"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".AuthorizeActivity"
-            android:label="@string/login_temp_pass"
+            android:label="@string/authorize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ui.AboutClientlessActivity"
-            android:label="@string/login_temp_pass"
+            android:label="@string/about_clientless"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".AdobeAuthActivity"
-            android:label="@string/login_temp_pass"
+            android:label="@string/adobe_auth_setup"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -27,6 +27,11 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     // shared preference key to get adobeauth json
     public static String ADOBEAUTH = "adobeauth";
+    // Sample device info (Samsung S7 Edge)
+    public static String DEVICE_INFO = "eyJtb2RlbCI6IlNNLUc5MzVXOCIsInZlbmRvciI6InNhbXN1" +
+            "bmciLCJtYW51ZmFjdHVyZXIiOiJzYW1zdW5nIiwib3NOYW1lIjoiQW5kcm9pZCIsIm9zVmVuZG9yIj" +
+            "oiR29vZ2xlIiwib3NWZXJzaW9uIjoiNy4wIiwiYnJvd3NlclZlbmRvciI6Ikdvb2dsZSIsImJyb3dzZXJO" +
+            "YW1lIjoiQ2hyb21lIiwidmVyc2lvbiI6Imhlcm8ybHRlYm1jIn0=";
 
     @BindView(R.id.btn_adobe_auth_back)
     Button backButton;
@@ -202,10 +207,15 @@ public class AdobeAuthActivity extends AbstractActivity {
             // debug
             Log.d(TAG, "convertFormToJson: " + json.toString());
 
+            // TODO: remember to pass in the temp pass selection values as well
+            // Sample values here for now
+            String tempPassSelection = GenerateSampleData.makeJsonSample().getString("tempPassSelection");
+            json.put("tempPassSelection", tempPassSelection);
+
             return json;
         } catch (JSONException e) {}
 
-        // TODO: remember to pass in the temp pass selection values as well
+
 
         return json;
     }
