@@ -27,11 +27,6 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     // shared preference key to get adobeauth json
     public static String ADOBEAUTH = "adobeauth";
-    // Sample device info (Samsung S7 Edge)
-    public static String DEVICE_INFO = "eyJtb2RlbCI6IlNNLUc5MzVXOCIsInZlbmRvciI6InNhbXN1" +
-            "bmciLCJtYW51ZmFjdHVyZXIiOiJzYW1zdW5nIiwib3NOYW1lIjoiQW5kcm9pZCIsIm9zVmVuZG9yIj" +
-            "oiR29vZ2xlIiwib3NWZXJzaW9uIjoiNy4wIiwiYnJvd3NlclZlbmRvciI6Ikdvb2dsZSIsImJyb3dzZXJO" +
-            "YW1lIjoiQ2hyb21lIiwidmVyc2lvbiI6Imhlcm8ybHRlYm1jIn0=";
 
     @BindView(R.id.btn_adobe_auth_back)
     Button backButton;
@@ -162,7 +157,9 @@ public class AdobeAuthActivity extends AbstractActivity {
     private View.OnClickListener saveListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // Check if all fields are filled, if not show dialog
+            // TODO: Check if all fields are filled, if not show dialog or toast
+
+            // TODO: Check if each field has a valid input (i.e a number if int is wanted)
 
             // save value of each field
             String saveForm = convertFormToJson().toString();

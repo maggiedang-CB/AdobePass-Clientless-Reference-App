@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            // Check if adobe auth has been set up
+            //TODO: Check if adobe auth has been set up
 
-            // Check if Requestor Id has been set
+            //TODO: Check if Requestor Id has been saved
 
             Intent intent = new Intent(MainActivity.this, MvpdListActivity.class);
             startActivity(intent);
@@ -183,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
      * @return true if rId is not null or empty
      */
     private boolean isValidRId(String rId) {
+
+        //TODO: Instead of typing a value, make user radio dial select out of a list of current rIds (If possible)
+
         if (rId == null || rId.isEmpty()) {
             Toast toast = Toast.makeText(this, "Invalid Requestor Id", Toast.LENGTH_SHORT);
             toast.show();

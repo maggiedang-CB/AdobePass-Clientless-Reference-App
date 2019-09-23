@@ -3,13 +3,13 @@ package com.example.android.adobepassclientlessrefapp;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.example.android.adobepassclientlessrefapp.adobeauth.ProviderDialogFragment;
+import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
 import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToList;
 import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToObject;
+import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -47,7 +47,7 @@ public class MvpdListActivity extends FragmentActivity {
         this.adobeConfig = getAdobeConfigFromJson();
         Log.d(TAG, "adobeauth to string = " + adobeConfig.toString());
 
-        this.adobeClientlessService = new AdobeClientlessService(this, adobeConfig, AdobeAuthActivity.DEVICE_INFO);
+        this.adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
 
         printMvpdList();
 
@@ -82,22 +82,15 @@ public class MvpdListActivity extends FragmentActivity {
                 .subscribe(mvpdList -> {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
 
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.mvpd_list, getFragment(new ArrayList<>(mvpdList)))
-//                            .commitAllowingStateLoss();
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
 
                 });
     }
 
     private void showProviderDialogFrag(ArrayList mvpds) {
-//        final Fragment frag = new Fragment();
-//        final Bundle args = new Bundle();
-//        args.putParcelableArrayList(ARG_MVPDS, mvpds);
-//        frag.setArguments(args);
-//        return frag;
         ProviderDialogFragment fragment = ProviderDialogFragment.getInstance(mvpds);
         fragment.show(getSupportFragmentManager(), null);
 
     }
+
 }
