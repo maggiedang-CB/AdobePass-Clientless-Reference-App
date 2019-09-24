@@ -49,26 +49,41 @@
                 android:textAlignment="center"
                 android:paddingTop="@dimen/descriptions_size"/>
 
-            <TextView
-                android:id="@+id/mvpd_value_name"
+            <Button
+                android:id="@+id/btn_login_select_mvpd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/header_text_size"
-                android:text="mvpdId:"
-                android:paddingTop="@dimen/descriptions_size"/>
+                android:layout_marginTop="@dimen/descriptions_size"
+                android:text="Select Mvpd Id Here"/>
 
-            <EditText
-                android:id="@+id/login_mvpd"
-                android:layout_width="match_parent"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="Enter mvpd Id Value Here"
-                android:text=""/>
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/mvpd_value_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="mvpdId Selected: "/>
+
+                <TextView
+                    android:id="@+id/login_mvpd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/mvpd_id_not_selected"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
 
                 <View
                     android:layout_width="0dp"

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 //import androidx.fragment.app.DialogFragment;
 
+import com.example.android.adobepassclientlessrefapp.LoginActivity;
 import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI.Mvpd;
 import com.squareup.picasso.Picasso;
 
@@ -120,8 +121,9 @@ public class ProviderDialogFragment extends DialogFragment {
 			public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
 				//TODO: Disable mvpd list clicks if we are just showing it from getMvpdList
 
-//				((SelectProviderActivity) getActivity()).setSelectedMvpd((Mvpd) parent.getItemAtPosition(position));
-//				dismiss();
+				// Pass the mvpd selected to login activity
+				((LoginActivity) getActivity()).setMvpdIdSelected((Mvpd) parent.getItemAtPosition(position));
+				dismiss();
 			}
 		});
 

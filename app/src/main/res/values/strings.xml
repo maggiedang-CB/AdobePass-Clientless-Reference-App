@@ -13,6 +13,7 @@
     <string name="show_logcat">Show Logcat</string>
     <string name="rId">Requestor Id</string>
     <string name="adobe_auth_setup">SetUp Adobe Auth</string>
+    <string name="mvpd_id_not_selected">Not Selected</string>
 
     <string name="adobe_auth_header">1) Adobe Auth</string>
     <string name="rId_header">2) Requestor Id</string>

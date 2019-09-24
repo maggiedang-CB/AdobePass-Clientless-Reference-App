@@ -4,26 +4,36 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebResourceResponse;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.ui.AuthenticationWebView;
 import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
 import com.nbcsports.leapsdk.authentication.adobepass.AdobeClientlessService;
+import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI;
 import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
+import com.nbcsports.leapsdk.authentication.common.AdobeAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginActivity extends AbstractActivity {
+public class LoginActivity extends FragmentActivity {
 
     final String TAG = "LoginActivity";
 
@@ -34,8 +44,11 @@ public class LoginActivity extends AbstractActivity {
     @BindView(R.id.mvpd_value_name)
     TextView tvMvpdValueName;
 
+
+    @BindView(R.id.btn_login_select_mvpd)
+    Button btnSelectMvpd;
     @BindView(R.id.login_mvpd)
-    EditText etMvpd;
+    TextView tvMvpdId;
     @BindView(R.id.btn_login_ok)
     Button okButton;
     @BindView(R.id.btn_login_back)
@@ -55,6 +68,7 @@ public class LoginActivity extends AbstractActivity {
         // set listeners
         backButton.setOnClickListener(backButtonListener());
         okButton.setOnClickListener(okButtonListener());
+        btnSelectMvpd.setOnClickListener(selectMvpdListener());
 
         this.adobeConfig = getAdobeConfigFromJson();
         this.adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
@@ -80,10 +94,11 @@ public class LoginActivity extends AbstractActivity {
             @Override
             public void onClick(View v) {
                 // Get value of mvpd id
-                String mvpdId = etMvpd.getText().toString();
-                // Check if an mvpd Id has been entered and is valid. Show toast if not.
-                if (mvpdId.equals("")) {
+                String mvpdId = tvMvpdId.getText().toString();
 
+                // TODO: Check if an mvpd Id has been entered and is valid. Show toast if not.
+                if (mvpdId.equals(R.string.mvpd_id_not_selected)) {
+                    return;
                 }
 
                 // Open login web page
@@ -92,6 +107,29 @@ public class LoginActivity extends AbstractActivity {
         };
     }
 
+    private View.OnClickListener selectMvpdListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String rId = getSharedPreferences().getString("rId", "");
+                // Show mvpd dialog
+                printMvpdList(rId);
+            }
+        };
+    }
+
+    /**
+     * From the provider dialog fragment, set the value of the mvpd id on the UI for visual purposes.
+     * @param mvpd The selected MVPD / Provider
+     */
+    public void setMvpdIdSelected(MvpdListAPI.Mvpd mvpd) {
+        tvMvpdId.setText(mvpd.getId());
+    }
+
+    /**
+     * Method extracted from Nbc Sports App, will launch the web view of the corresponding mvpd (provider).
+     * @param mvpdId
+     */
     @SuppressLint("CheckResult")
     private void openWebView(String mvpdId) {
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
@@ -118,6 +156,7 @@ public class LoginActivity extends AbstractActivity {
             @Override
             public void onComplete() {
                 Log.d(TAG, "Login Success");
+                // TODO: Do stuff here on success
 //                if (asset != null) {
 //                    adobePassService.authorize(asset, null);
 //                } else {
@@ -130,8 +169,9 @@ public class LoginActivity extends AbstractActivity {
                 // Hide Buttons and other UI
                 tvLoginDescription.setVisibility(View.GONE);
                 tvSeparator.setVisibility(View.GONE);
+                btnSelectMvpd.setVisibility(View.GONE);
                 tvMvpdValueName.setVisibility(View.GONE);
-                etMvpd.setVisibility(View.GONE);
+                tvMvpdId.setVisibility(View.GONE);
                 okButton.setVisibility(View.GONE);
                 backButton.setVisibility(View.GONE);
             }
@@ -149,10 +189,34 @@ public class LoginActivity extends AbstractActivity {
         webView.loadUrl(adobeAuthRedirectUrl);
     }
 
+    @SuppressLint("CheckResult")
+    private void printMvpdList(String rId) {
+
+        Observable<AdobeAuth> mvpdListObservable = adobeClientless.getMpvdList(rId);
+
+        mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
+                adobeAuth -> Observable.just(adobeAuth.getMvpds()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mvpdList -> {
+                    Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
+
+                    showProviderDialogFrag(new ArrayList<>(mvpdList));
+
+                });
+    }
+
+    private void showProviderDialogFrag(ArrayList mvpds) {
+        ProviderDialogFragment fragment = ProviderDialogFragment.getInstance(mvpds);
+        fragment.show(getSupportFragmentManager(), null);
+    }
 
     private AdobeConfig getAdobeConfigFromJson() {
-        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-        return MainActivity.getAdobeConfigFromJson(sharedPreferences);
+        return MainActivity.getAdobeConfigFromJson(getSharedPreferences());
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
     }
 
 }

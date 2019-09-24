@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
@@ -22,12 +23,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+//TODO: Delect class if not used
 public class MvpdListActivity extends FragmentActivity {
 
     //Bundle extras;
     public static String TAG = "MvpdListActivity";
 
-    SharedPreferences sharedPreferences;
     AdobeConfig adobeConfig;
     AdobeClientlessService adobeClientlessService;
 
@@ -37,24 +38,37 @@ public class MvpdListActivity extends FragmentActivity {
         //this.extras = getIntent().getExtras();
         //setContentView(R.layout.mvpd_list_layout);
 
-        this.adobeConfig = getAdobeConfigFromJson();
+        this.adobeConfig = MainActivity.getAdobeConfigFromJson(getSharedPreferences());
         Log.d(TAG, "adobeauth to string = " + adobeConfig.toString());
 
         this.adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
 
-        printMvpdList();
+        printMvpdList(getRId(), getSupportFragmentManager(), adobeClientlessService);
 
     }
 
-    private AdobeConfig getAdobeConfigFromJson() {
-        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-        return MainActivity.getAdobeConfigFromJson(sharedPreferences);
+    /**
+     * Returns requestor Id saved from shared prefs
+     * @return
+     */
+    private String getRId() {
+        return getSharedPreferences().getString("rId", "");
     }
 
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+    }
+
+    /**
+     * Static method used in other activities to displace the mvpd provider dialog list.
+     * @param rId
+     * @param fragmentManager
+     * @param adobeClientlessService
+     */
     @SuppressLint("CheckResult")
-    private void printMvpdList() {
+    public static void printMvpdList(String rId, FragmentManager fragmentManager, AdobeClientlessService adobeClientlessService) {
 
-        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString("rId", ""));
+        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(rId);
 
         mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))
@@ -63,15 +77,14 @@ public class MvpdListActivity extends FragmentActivity {
                 .subscribe(mvpdList -> {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
 
-                    showProviderDialogFrag(new ArrayList<>(mvpdList));
+                    showProviderDialogFrag(new ArrayList<>(mvpdList), fragmentManager);
 
                 });
     }
 
-    private void showProviderDialogFrag(ArrayList mvpds) {
+    public static void showProviderDialogFrag(ArrayList mvpds, FragmentManager fragmentManager) {
         ProviderDialogFragment fragment = ProviderDialogFragment.getInstance(mvpds);
-        fragment.show(getSupportFragmentManager(), null);
-
+        fragment.show(fragmentManager, null);
     }
 
 }

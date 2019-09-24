@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener loginListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //TODO: check if both adobeauth and requestor Id has been set up before proceeding
+
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             // init default empty values
             intent.putExtra("mvpd", "");
@@ -225,6 +227,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Adobe Config
+
+    /**
+     * After the adobe auth is set up and the json is saved in shared prefs, we can use it to create
+     * an adobe config object by converting it from a json string to adobeconfig object.
+     * @param sharedPreferences
+     * @return
+     */
     public static AdobeConfig getAdobeConfigFromJson(SharedPreferences sharedPreferences) {
         String jsonString = sharedPreferences.getString("adobeauth", "");
 
@@ -267,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
                     //progressSpinner.setVisibility(View.GONE);
                 });
+
     }
 
     private void showProviderDialogFrag(ArrayList mvpds) {
