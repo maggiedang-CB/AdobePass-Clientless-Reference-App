@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ import java.util.List;
 
 
 import com.example.android.adobepassclientlessrefapp.R;
+
+import butterknife.BindView;
 
 /**
  * Taken from the NBC sports app
@@ -46,6 +49,7 @@ public class ProviderDialogFragment extends DialogFragment {
 	private List<Mvpd> mvpds;
 	private LayoutInflater inflater;
 
+
 	public static ProviderDialogFragment getInstance(final ArrayList<Mvpd> mvpds) {
 		final ProviderDialogFragment frag = new ProviderDialogFragment();
 		final Bundle args = new Bundle();
@@ -64,6 +68,7 @@ public class ProviderDialogFragment extends DialogFragment {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mvpds = (List<Mvpd>) getArguments().getSerializable(ProviderDialogFragment.ARG_MVPDS);
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,6 +79,16 @@ public class ProviderDialogFragment extends DialogFragment {
 
 		final View v = inflater.inflate(R.layout.fragment_provider_picker, container, false);
 		mListView = (ListView) v.findViewById(android.R.id.list);
+
+		// Set button listener for the cancel button
+		Button btnMvpdListCancel = v.findViewById(R.id.btn_mvpd_frag_cancel);
+		btnMvpdListCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+
 		return v;
 	}
 

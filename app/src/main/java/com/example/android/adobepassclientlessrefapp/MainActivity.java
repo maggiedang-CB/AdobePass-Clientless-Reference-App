@@ -1,27 +1,51 @@
 package com.example.android.adobepassclientlessrefapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToList;
+import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToObject;
+import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
 import com.example.android.adobepassclientlessrefapp.ui.AboutClientlessActivity;
+import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.nbcsports.leapsdk.authentication.adobepass.AdobeClientlessService;
+import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI;
+import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
+import com.nbcsports.leapsdk.authentication.adobepass.config.TempPassSelectionConfig;
+import com.nbcsports.leapsdk.authentication.common.AdobeAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
     // shared preference key
     public static String SHARED_PREFERENCES = "myPrefs";
+    public static String TAG = "MainActivity";
 
     @BindView(R.id.btn_adobe_auth)
     Button btnAdobeAuth;
@@ -43,12 +67,16 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_getmvpdlist)
     Button btnGetMvpdList;
+    @BindView(R.id.progressSpinner)
+    ProgressBar progressSpinner;
 
     @BindView(R.id.btn_authorize)
     Button btnAuthorize;
 
     SharedPreferences sharedPreferences;
     private String rId;
+    private AdobeConfig adobeConfig;
+    private AdobeClientlessService adobeClientlessService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,8 +191,10 @@ public class MainActivity extends AppCompatActivity {
 
             //TODO: Check if Requestor Id has been saved
 
-            Intent intent = new Intent(MainActivity.this, MvpdListActivity.class);
-            startActivity(intent);
+            //TODO: Show a spinner for loading progress
+            //progressSpinner.setVisibility(View.VISIBLE);
+
+            printMvpdList();
         }
     };
 
@@ -193,6 +223,81 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    // Adobe Config
+    public static AdobeConfig getAdobeConfigFromJson(SharedPreferences sharedPreferences) {
+        String jsonString = sharedPreferences.getString("adobeauth", "");
+
+        Log.d(TAG, "jsonString = " + jsonString);
+
+        if (jsonString == null || jsonString.equals("")) {
+            Log.e(TAG, "Error when getting adobe config from json");
+            return null;
+        }
+
+        // adobe config object
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<List<String>>(){}.getType(), new TypeAdapterStringToList())
+                .registerTypeAdapter(new TypeToken<TempPassSelectionConfig>(){}.getType(), new TypeAdapterStringToObject())
+                .create();
+
+        AdobeConfig adobeConfig = gson.fromJson(jsonString, new TypeToken<AdobeConfig>(){}.getType());
+
+        return adobeConfig;
+    }
+
+    @SuppressLint("CheckResult")
+    private void printMvpdList() {
+        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+
+        adobeConfig = getAdobeConfigFromJson(sharedPreferences);
+
+        Log.d(TAG, "adobeauth to string = " + adobeConfig.toString());
+
+        adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
+
+        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString("rId", ""));
+
+        mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
+                adobeAuth -> Observable.just(adobeAuth.getMvpds()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mvpdList -> {
+                    Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
+                    showProviderDialogFrag(new ArrayList<>(mvpdList));
+                    //progressSpinner.setVisibility(View.GONE);
+                });
+    }
+
+    private void showProviderDialogFrag(ArrayList mvpds) {
+        ProviderDialogFragment fragment = ProviderDialogFragment.getInstance(mvpds);
+        fragment.setCancelable(false);
+        fragment.show(getSupportFragmentManager(), null);
+
+        // TODO: Figure out how to back press on hardware to dismiss frag dialog (instead of exiting main activity)
+//        if (fragment.getView() != null) {
+//            fragment.getView().setFocusableInTouchMode(true);
+//            fragment.getView().requestFocus();
+//            fragment.getView().setOnKeyListener(new View.OnKeyListener() {
+//                @Override
+//                public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                    if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+//                        Log.d(TAG, ">>>back pressed!!!");
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+//        }
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .addToBackStack(null)
+//                .add(fragment, null)
+//                .commit();
+        //fragment.show(fragmentManager, null);
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

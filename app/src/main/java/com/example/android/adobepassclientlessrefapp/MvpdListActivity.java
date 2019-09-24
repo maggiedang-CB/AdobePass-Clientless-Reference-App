@@ -32,7 +32,6 @@ public class MvpdListActivity extends FragmentActivity {
 
     //Bundle extras;
     public static String TAG = "MvpdListActivity";
-    private static final String ARG_MVPDS = "ARG_MVPDS";
 
     SharedPreferences sharedPreferences;
     AdobeConfig adobeConfig;
@@ -55,19 +54,7 @@ public class MvpdListActivity extends FragmentActivity {
 
     private AdobeConfig getAdobeConfigFromJson() {
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-        String jsonString = sharedPreferences.getString("adobeauth", "");
-
-        Log.d(TAG, "jsonString = " + jsonString);
-
-        // adobe config object
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(new TypeToken<List<String>>(){}.getType(), new TypeAdapterStringToList())
-                .registerTypeAdapter(new TypeToken<TempPassSelectionConfig>(){}.getType(), new TypeAdapterStringToObject())
-                .create();
-
-        AdobeConfig adobeConfig = gson.fromJson(jsonString, new TypeToken<AdobeConfig>(){}.getType());
-
-        return adobeConfig;
+        return MainActivity.getAdobeConfigFromJson(sharedPreferences);
     }
 
     @SuppressLint("CheckResult")
