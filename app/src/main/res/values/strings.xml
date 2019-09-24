@@ -80,4 +80,7 @@
     <!--@Expose @Getter String nbcTokenUrl;-->
     <!--@Expose @Getter-->
     <!--TempPassSelectionConfig tempPassSelection;-->
+
+    <string name="login_description"> Description of login here </string>
+
 </resources>

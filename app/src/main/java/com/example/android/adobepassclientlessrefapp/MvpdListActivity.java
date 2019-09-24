@@ -7,16 +7,10 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
-import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToList;
-import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToObject;
 import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.nbcsports.leapsdk.authentication.adobepass.AdobeClientlessService;
 import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI;
 import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
-import com.nbcsports.leapsdk.authentication.adobepass.config.TempPassSelectionConfig;
 import com.nbcsports.leapsdk.authentication.common.AdobeAuth;
 
 import java.util.ArrayList;

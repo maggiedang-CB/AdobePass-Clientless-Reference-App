@@ -118,6 +118,8 @@ public class ProviderDialogFragment extends DialogFragment {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+				//TODO: Disable mvpd list clicks if we are just showing it from getMvpdList
+
 //				((SelectProviderActivity) getActivity()).setSelectedMvpd((Mvpd) parent.getItemAtPosition(position));
 //				dismiss();
 			}

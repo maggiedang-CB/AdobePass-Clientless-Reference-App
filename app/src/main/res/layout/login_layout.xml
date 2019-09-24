@@ -12,6 +12,13 @@
         android:text="@string/login"
         android:textAllCaps="false"/>
 
+    <com.example.android.adobepassclientlessrefapp.ui.AuthenticationWebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,23 +32,49 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/login_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/descriptions_size"
+                android:text="@string/login_description"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <TextView
+                android:id="@+id/login_separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <TextView
+                android:id="@+id/mvpd_value_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/header_text_size"
-                android:text="mvpd:"/>
+                android:text="mvpdId:"
+                android:paddingTop="@dimen/descriptions_size"/>
 
             <EditText
                 android:id="@+id/login_mvpd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Enter mvpd String Value Here"
+                android:hint="Enter mvpd Id Value Here"
                 android:text=""/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
                 <Button
                     android:id="@+id/btn_login_ok"
                     style="@style/ButtonStyle"
