@@ -26,7 +26,7 @@ public class AdobeAuthActivity extends AbstractActivity {
     private String TAG = "AdobeAuthActivity";
 
     // shared preference key to get adobeauth json
-    public static String ADOBEAUTH = "adobeauth";
+    public static String ADOBEAUTH = MainActivity.sharedPrefKeys.ADOBE_AUTH.toString();
 
     @BindView(R.id.btn_adobe_auth_back)
     Button backButton;

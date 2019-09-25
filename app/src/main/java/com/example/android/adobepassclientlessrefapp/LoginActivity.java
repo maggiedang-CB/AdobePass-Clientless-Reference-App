@@ -12,6 +12,7 @@ import android.webkit.WebResourceResponse;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
@@ -96,13 +97,13 @@ public class LoginActivity extends FragmentActivity {
                 // Get value of mvpd id
                 String mvpdId = tvMvpdId.getText().toString();
 
-                // TODO: Check if an mvpd Id has been entered and is valid. Show toast if not.
-                if (mvpdId.equals(R.string.mvpd_id_not_selected)) {
-                    return;
+                if (mvpdId.equals(getString(R.string.mvpd_id_not_selected))) {
+                    Toast.makeText(LoginActivity.this, "Please Select MVPD", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Open login web page
+                    openWebView(mvpdId);
                 }
 
-                // Open login web page
-                openWebView(mvpdId);
             }
         };
     }
@@ -111,7 +112,7 @@ public class LoginActivity extends FragmentActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String rId = getSharedPreferences().getString("rId", "");
+                String rId = getSharedPreferences().getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), "");
                 // Show mvpd dialog
                 printMvpdList(rId);
             }
@@ -133,7 +134,7 @@ public class LoginActivity extends FragmentActivity {
     @SuppressLint("CheckResult")
     private void openWebView(String mvpdId) {
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-        adobeClientless.login(mvpdId, sharedPreferences.getString("rId", ""))
+        adobeClientless.login(mvpdId, sharedPreferences.getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), ""))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

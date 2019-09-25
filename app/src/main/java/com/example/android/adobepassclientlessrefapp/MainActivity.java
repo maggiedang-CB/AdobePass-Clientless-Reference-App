@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
     private void showSavedData() {
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
 
-        if (sharedPreferences.contains("rId")) {
-            rId = sharedPreferences.getString("rId", "");
+        if (sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
+            rId = sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
             etRId.setText(rId);
         }
     }
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             // Check if rId is valid. If it is, save to shared preferences
             if(isValidRId(rid)) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("rId", rid);
+                editor.putString(sharedPrefKeys.REQUESTOR_ID.toString(), rid);
                 editor.apply();
 
                 // Toast
@@ -144,8 +144,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, IsSignedInActivity.class);
-            // init rId
-            intent.putExtra("requestorId", "");
             startActivity(intent);
         }
     };
@@ -153,13 +151,19 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener loginListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //TODO: check if both adobeauth and requestor Id has been set up before proceeding
+            sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            // init default empty values
-            intent.putExtra("mvpd", "");
-            intent.putExtra("requestorId", "");
-            startActivity(intent);
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_AUTH.toString())) {
+                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
+                Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                // init default empty values
+                intent.putExtra("mvpd", "");
+                intent.putExtra("requestorId", "");
+                startActivity(intent);
+            }
         }
     };
 
@@ -188,15 +192,18 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener getMvpdListListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            //TODO: Check if adobe auth has been set up
-
-            //TODO: Check if Requestor Id has been saved
+            sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             //TODO: Show a spinner for loading progress
             //progressSpinner.setVisibility(View.VISIBLE);
+            // TODO: capture crash that happens when no wifi
 
-            printMvpdList();
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_AUTH.toString())) {
+                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else {
+                printMvpdList();
+            }
+
         }
     };
 
@@ -211,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Checks if the rId is not null and empty. If it is, show toast message.
+     * Example of rId: nbcsports
      * @param rId
      * @return true if rId is not null or empty
      */
@@ -235,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static AdobeConfig getAdobeConfigFromJson(SharedPreferences sharedPreferences) {
-        String jsonString = sharedPreferences.getString("adobeauth", "");
+        String jsonString = sharedPreferences.getString(sharedPrefKeys.ADOBE_AUTH.toString(), "");
 
         Log.d(TAG, "jsonString = " + jsonString);
 
@@ -265,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
         adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
 
-        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString("rId", ""));
+        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), ""));
 
         mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))
@@ -306,6 +314,10 @@ public class MainActivity extends AppCompatActivity {
 //                .commit();
         //fragment.show(fragmentManager, null);
 
+    }
+
+    public enum sharedPrefKeys {
+        REQUESTOR_ID, ADOBE_AUTH
     }
 
 
