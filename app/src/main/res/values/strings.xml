@@ -83,5 +83,6 @@
     <!--TempPassSelectionConfig tempPassSelection;-->
 
     <string name="login_description"> Description of login here </string>
+    <string name="auth_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Auth Setup?"</string>
 
 </resources>

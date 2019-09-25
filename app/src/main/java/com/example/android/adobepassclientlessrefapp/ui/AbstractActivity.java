@@ -35,13 +35,40 @@ public class AbstractActivity extends Activity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i(LOG_TAG + "#alert", "OK");
+                // Back to current activity
             }
         });
 
         AlertDialog alert = builder.create();
 
         alert.show();
-        alert.getWindow().setLayout(600, 800);
+        alert.getWindow().setLayout(900, 700);
     }
+
+    /**
+     * Set up an alert dialog where the passed in click listener is used for the "YES" button and
+     * "NO" returns user back to the current activity.
+     * @param title
+     * @param message
+     * @param onClickListener
+     */
+    protected void alertDialog2Buttons(String title, String message, DialogInterface.OnClickListener onClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("YES", onClickListener);
+        builder.setNeutralButton("NO" , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Back to current activity
+            }
+        });
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
+        alert.getWindow().setLayout(900, 700);
+    }
+
 }

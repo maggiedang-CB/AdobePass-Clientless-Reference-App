@@ -1,5 +1,6 @@
 package com.example.android.adobepassclientlessrefapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -110,7 +111,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      * If there was saved data for adobe auth, fill out the form fields
      */
     private void showLastSavedFormData() {
-        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences();
         try {
             if (sharedPreferences.contains(ADOBEAUTH)) {
                 JSONObject json = new JSONObject(sharedPreferences.getString(ADOBEAUTH, ""));
@@ -134,10 +135,22 @@ public class AdobeAuthActivity extends AbstractActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: prompt user if they really want to go back if theres data un saved in form
-                Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
-                setResult(RESULT_CANCELED, intent);
-                finish();
+                // prompt user if they really want to go back if theres data un saved in form
+                if (isUnsavedData()) {
+                    alertDialog2Buttons("Unsaved Data", getString(R.string.auth_setup_unsaved_data),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                                    setResult(RESULT_CANCELED, intent);
+                                    finish();
+                                }
+                            });
+                } else {
+                    Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
+                }
             }
         };
     }
@@ -157,22 +170,27 @@ public class AdobeAuthActivity extends AbstractActivity {
     private View.OnClickListener saveListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: Check if all fields are filled, if not show dialog or toast
-
             // TODO: Check if each field has a valid input (i.e a number if int is wanted)
 
-            // save value of each field
-            String saveForm = convertFormToJson().toString();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(ADOBEAUTH, saveForm);
-            editor.apply();
+            if (!isAllFieldsFilled()) {
+                // Not all fields have an input
+                Toast.makeText(AdobeAuthActivity.this, "Error Saving: Field(s) Empty", Toast.LENGTH_SHORT).show();
+            } else {
+                // save value of each field
+                String saveForm = convertFormToJson().toString();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(ADOBEAUTH, saveForm);
+                editor.apply();
 
-            // go back to main activity
-            Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
-            startActivity(intent);
+                // go back to main activity
+                Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                setResult(RESULT_CANCELED, intent);
+                finish();
 
-            // show toast that data has been saved
-            Toast.makeText(AdobeAuthActivity.this, "Adobe Auth Settings Saved", Toast.LENGTH_SHORT).show();
+                // show toast that data has been saved
+                Toast.makeText(AdobeAuthActivity.this, "Adobe Auth Settings Saved", Toast.LENGTH_SHORT).show();
+            }
+
         }
     };
 
@@ -241,6 +259,39 @@ public class AdobeAuthActivity extends AbstractActivity {
     }
 
     /**
+     * Checks if every edit text field on the form is filled and not empty.
+     * @return
+     */
+    private boolean isAllFieldsFilled() {
+        for (EditText et : listOfEditText) {
+            if (et.getText() == null || et.getText().toString().equals("")) {
+                // A field is empty
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if there is unsaved data on the form when the user wants to press BACK.
+     * @return
+     */
+    private boolean isUnsavedData() {
+        sharedPreferences = getSharedPreferences();
+        String adobeAuthKey = MainActivity.sharedPrefKeys.ADOBE_AUTH.toString();
+        String currentForm = convertFormToJson().toString();
+        if (!sharedPreferences.contains(adobeAuthKey) && isAllFieldsFilled()) {
+            // No instance of adobe auth data has been saved before
+            return true;
+        } else if (sharedPreferences.contains(adobeAuthKey)
+                && !sharedPreferences.getString(adobeAuthKey, "").equals(currentForm) && isAllFieldsFilled()){
+            // Current fields have been modified
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns an array list of all the edit text views in the adobe auth setup form
      * @return
      */
@@ -298,5 +349,9 @@ public class AdobeAuthActivity extends AbstractActivity {
         return formNames;
     }
 
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+
+    }
 
 }
