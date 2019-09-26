@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +56,7 @@ public class MediaInfoActivity extends AbstractActivity {
     EditText etCdn;
 
     private ArrayList<EditText> listOfEditText;
-    private ArrayList<String> listOfValues;
+    private HashMap<String, EditText> formHashMap;
     SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class MediaInfoActivity extends AbstractActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         this.listOfEditText = getFormArray();
-        this.listOfValues = getFormNamesArray();
+        this.formHashMap = getFormHashMap();
 
         // setup buttons
         backButton.setOnClickListener(backButtonListener);
@@ -82,7 +84,7 @@ public class MediaInfoActivity extends AbstractActivity {
      */
     private void showLastSavedFormData() {
         sharedPreferences = getSharedPreferences();
-        SetUpUtils.showLastSavedFormData(sharedPreferences, MEDIA_INFO, listOfEditText, listOfValues);
+        SetUpUtils.showLastSavedFormData(sharedPreferences, MEDIA_INFO, formHashMap);
     }
 
     private View.OnClickListener generateListener = new View.OnClickListener() {
@@ -154,7 +156,7 @@ public class MediaInfoActivity extends AbstractActivity {
 
 
     /**
-     * Convert the adobe auth form fields into a JSON object.
+     * Convert the media info form fields into a JSON object.
      * @return
      */
     private JSONObject convertFormToJson() {
@@ -162,10 +164,11 @@ public class MediaInfoActivity extends AbstractActivity {
         JSONObject json = new JSONObject();
 
         try {
-            int index = 0;
-            for (EditText editText : listOfEditText) {
-                json.put(listOfValues.get(index), editText.getText().toString());
-                index++;
+            for (Map.Entry field : formHashMap.entrySet()) {
+                String jsonKey = field.getKey().toString();
+                EditText jsonValue = (EditText) field.getValue();
+
+                json.put(jsonKey, jsonValue.getText().toString());
             }
             // debug
             Log.d(TAG, "convertFormToJson: " + json.toString());
@@ -208,17 +211,17 @@ public class MediaInfoActivity extends AbstractActivity {
         return arrayForm;
     }
 
-    private ArrayList<String> getFormNamesArray() {
-        ArrayList<String> formNames = new ArrayList<>();
-        // Note: Do not change order of values added. They correspond to the order appeared on the form
-        formNames.add(getString(R.string.mediaInfo1_pId));
-        formNames.add(getString(R.string.mediaInfo2_streamUrl));
-        formNames.add(getString(R.string.mediaInfo3_requestorId));
-        formNames.add(getString(R.string.mediaInfo4_channel));
-        formNames.add(getString(R.string.mediaInfo5_assetId));
-        formNames.add(getString(R.string.mediaInfo6_cdn));
+    private HashMap<String, EditText> getFormHashMap() {
+        HashMap<String, EditText> formHash = new HashMap<>();
 
-        return formNames;
+        formHash.put(getString(R.string.mediaInfo1_pId), etPId);
+        formHash.put(getString(R.string.mediaInfo2_streamUrl), etStreamUrl);
+        formHash.put(getString(R.string.mediaInfo3_requestorId), etRId);
+        formHash.put(getString(R.string.mediaInfo4_channel), etChannel);
+        formHash.put(getString(R.string.mediaInfo5_assetId), etAssetId);
+        formHash.put(getString(R.string.mediaInfo6_cdn), etCdn);
+
+        return formHash;
     }
 
     /**
@@ -226,7 +229,7 @@ public class MediaInfoActivity extends AbstractActivity {
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {
-        SetUpUtils.generateDataInEditText(json, listOfEditText, listOfValues);
+        SetUpUtils.generateDataInEditText(json, formHashMap);
     }
 
     private SharedPreferences getSharedPreferences() {

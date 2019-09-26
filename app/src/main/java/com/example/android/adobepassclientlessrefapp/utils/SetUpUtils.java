@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Common methods used for saving, editing, checking and setting up edit text forms
@@ -41,6 +43,22 @@ public class SetUpUtils {
         }
     }
 
+    public static void showLastSavedFormData(SharedPreferences sharedPreferences, String prefKey, HashMap<String, EditText> formData) {
+        try {
+            if (sharedPreferences.contains(prefKey)) {
+                JSONObject json = new JSONObject(sharedPreferences.getString(prefKey, ""));
+
+                // debug
+                Log.d(TAG, "Saved Data Json: " + json.toString());
+
+                // show in edit text forms
+                generateDataInEditText(json, formData);
+            }
+        } catch (JSONException e) {
+            Log.d(TAG, "Error obtaining shared preference media info json");
+        }
+    }
+
     /**
      * Fills out edit text form with data contained in the adobe auth json object
      * @param json
@@ -54,6 +72,20 @@ public class SetUpUtils {
             for (EditText editText : listOfEditText) {
                 editText.setText(json.getString(listOfValues.get(index)));
                 index++;
+            }
+        } catch (JSONException e){
+            Log.d(TAG, "Error generating text to edit text form");
+        }
+    }
+
+    public static void generateDataInEditText(JSONObject json, HashMap<String, EditText> formData) {
+
+        try {
+            for (Map.Entry field : formData.entrySet()) {
+                String jsonKey = field.getKey().toString();
+                EditText editText = (EditText) field.getValue();
+
+                editText.setText(json.getString(jsonKey));
             }
         } catch (JSONException e){
             Log.d(TAG, "Error generating text to edit text form");
