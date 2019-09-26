@@ -2,7 +2,9 @@ package com.example.android.adobepassclientlessrefapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +23,8 @@ import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterString
 import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
 import com.example.android.adobepassclientlessrefapp.ui.AboutClientlessActivity;
 import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
+import com.example.android.adobepassclientlessrefapp.utils.NetworkReceiver;
+import com.example.android.adobepassclientlessrefapp.utils.NetworkUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -77,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
     private String rId;
     private AdobeConfig adobeConfig;
     private AdobeClientlessService adobeClientlessService;
+    private NetworkReceiver networkReceiver;
+
+    public enum sharedPrefKeys {
+        REQUESTOR_ID, ADOBE_AUTH
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
+        networkReceiver = new NetworkReceiver();
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Hide keyboard on launch
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -100,6 +112,20 @@ public class MainActivity extends AppCompatActivity {
         btnSaveRId.setOnClickListener(saveRIdListener);
 
         showSavedData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (networkReceiver != null) {
+            unregisterReceiver(networkReceiver);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     /**
@@ -127,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener saveRIdListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // TODO: Change colour of Save RId button to red if unsaved
             String rid = etRId.getText().toString();
             // Check if rId is valid. If it is, save to shared preferences
             if(isValidRId(rid)) {
@@ -192,14 +219,16 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener getMvpdListListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             //TODO: Show a spinner for loading progress
             //progressSpinner.setVisibility(View.VISIBLE);
-            // TODO: capture crash that happens when no wifi
+
+            sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_AUTH.toString())) {
                 Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!isWifiConnected()) {
+                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
             } else {
                 printMvpdList();
             }
@@ -316,10 +345,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_AUTH
+    /**
+     * Returns true if there is internet connection.
+     * @return
+     */
+    private boolean isWifiConnected() {
+        return NetworkUtils.isWifiConnected(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

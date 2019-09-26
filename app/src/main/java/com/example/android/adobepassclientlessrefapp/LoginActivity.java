@@ -5,19 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceResponse;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.adobepassclientlessrefapp.fragments.ProviderDialogFragment;
-import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.ui.AuthenticationWebView;
 import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
+import com.example.android.adobepassclientlessrefapp.utils.NetworkUtils;
 import com.nbcsports.leapsdk.authentication.adobepass.AdobeClientlessService;
 import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI;
 import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
@@ -112,9 +110,14 @@ public class LoginActivity extends FragmentActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String rId = getSharedPreferences().getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), "");
-                // Show mvpd dialog
-                printMvpdList(rId);
+                // Check for internet connection
+                if (!NetworkUtils.isWifiConnected(LoginActivity.this)) {
+                    Toast.makeText(LoginActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                } else {
+                    String rId = getSharedPreferences().getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), "");
+                    // Show mvpd dialog
+                    printMvpdList(rId);
+                }
             }
         };
     }

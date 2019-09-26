@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.adobepassclientlessrefapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:hardwareAccelerated="false"
         android:largeHeap="true"
@@ -61,8 +64,12 @@
             android:label="@string/adobe_auth_setup"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <receiver android:name = ".utils.NetworkReceiver">
+            <intent-filter>
+                <action android:name = "android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name = "android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

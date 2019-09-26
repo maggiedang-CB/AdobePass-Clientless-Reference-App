@@ -19,6 +19,7 @@ import android.widget.TextView;
 //import androidx.fragment.app.DialogFragment;
 
 import com.example.android.adobepassclientlessrefapp.LoginActivity;
+import com.example.android.adobepassclientlessrefapp.MainActivity;
 import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI.Mvpd;
 import com.squareup.picasso.Picasso;
 
@@ -116,16 +117,21 @@ public class ProviderDialogFragment extends DialogFragment {
 		preferred.addAll(premiumMvpd);
 		preferred.addAll(standardMvpd);
 		mListView.setAdapter(new ProviderAdapter(preferred));
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-				//TODO: Disable mvpd list clicks if we are just showing it from getMvpdList
 
-				// Pass the mvpd selected to login activity
-				((LoginActivity) getActivity()).setMvpdIdSelected((Mvpd) parent.getItemAtPosition(position));
-				dismiss();
-			}
-		});
+		if (!(getActivity() instanceof MainActivity)) {
+		    // We do not want the list to be clickable if displayed by getMvpdList from Main Activity
+            mListView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                    // Pass the mvpd selected to login activity
+                    if (getActivity() instanceof  LoginActivity) {
+                        ((LoginActivity) getActivity()).setMvpdIdSelected((Mvpd) parent.getItemAtPosition(position));
+                    }
+                    dismiss();
+                }
+            });
+        }
+
 
 	}
 
