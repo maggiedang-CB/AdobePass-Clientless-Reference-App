@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.adobeauth.GenerateSampleData;
+import com.example.android.adobepassclientlessrefapp.utils.SetUpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -190,7 +191,6 @@ public class AdobeAuthActivity extends AbstractActivity {
                 // show toast that data has been saved
                 Toast.makeText(AdobeAuthActivity.this, "Adobe Auth Settings Saved", Toast.LENGTH_SHORT).show();
             }
-
         }
     };
 
@@ -198,12 +198,9 @@ public class AdobeAuthActivity extends AbstractActivity {
         @Override
         public void onClick(View v) {
             // clear all the edit text views
-            for (EditText editText : listOfEditText) {
-                editText.setText("");
-            }
+            SetUpUtils.clearForm(listOfEditText);
         }
     };
-
 
     /**
      * Convert the adobe auth form fields into a JSON object.
@@ -230,8 +227,6 @@ public class AdobeAuthActivity extends AbstractActivity {
             return json;
         } catch (JSONException e) {}
 
-
-
         return json;
     }
 
@@ -241,21 +236,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {
-
-        try {
-            int index = 0;
-            for (EditText editText : listOfEditText) {
-                editText.setText(json.getString(listOfValues.get(index)));
-
-                // debug
-                Log.d(TAG, "listOfvalue : " + listOfValues.get(index));
-                Log.d(TAG, "edit text form text: " + listOfEditText.get(index).getText());
-
-                index++;
-            }
-        } catch (JSONException e){
-            Log.d(TAG, "Error generating text to adobe auth form");
-        }
+        SetUpUtils.generateDataInEditText(json, listOfEditText, listOfValues);
     }
 
     /**
@@ -263,13 +244,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      * @return
      */
     private boolean isAllFieldsFilled() {
-        for (EditText et : listOfEditText) {
-            if (et.getText() == null || et.getText().toString().equals("")) {
-                // A field is empty
-                return false;
-            }
-        }
-        return true;
+        return SetUpUtils.isAllFieldsFilled(listOfEditText);
     }
 
     /**
@@ -280,15 +255,7 @@ public class AdobeAuthActivity extends AbstractActivity {
         sharedPreferences = getSharedPreferences();
         String adobeAuthKey = MainActivity.sharedPrefKeys.ADOBE_AUTH.toString();
         String currentForm = convertFormToJson().toString();
-        if (!sharedPreferences.contains(adobeAuthKey) && isAllFieldsFilled()) {
-            // No instance of adobe auth data has been saved before
-            return true;
-        } else if (sharedPreferences.contains(adobeAuthKey)
-                && !sharedPreferences.getString(adobeAuthKey, "").equals(currentForm) && isAllFieldsFilled()){
-            // Current fields have been modified
-            return true;
-        }
-        return false;
+        return SetUpUtils.isUnsavedData(listOfEditText, sharedPreferences, adobeAuthKey, currentForm);
     }
 
     /**
@@ -351,7 +318,6 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     private SharedPreferences getSharedPreferences() {
         return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-
     }
 
 }

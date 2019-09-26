@@ -13,7 +13,11 @@
     <string name="show_logcat">Show Logcat</string>
     <string name="rId">Requestor Id</string>
     <string name="adobe_auth_setup">SetUp Adobe Auth</string>
+    <string name="generate_sample_data">Generate Sample Data</string>
+    <string name="browse_live_data">Browse Live Data</string>
+    <string name="clear_form_data">Clear Current Data</string>
     <string name="mvpd_id_not_selected">Not Selected</string>
+    <string name="media_info_setup">SetUp Media Info</string>
 
     <string name="adobe_auth_header">1) Adobe Auth</string>
     <string name="rId_header">2) Requestor Id</string>
@@ -23,7 +27,12 @@
     <string name="authorize_header">6) Authorize</string>
     <string name="logout_header">7) Logout</string>
 
+    <string name="login_description"> Description of login here </string>
+    <string name="auth_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Auth Setup?"</string>
+    <string name="no_internet_toast">Error: No Internet Connection</string>
+    <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
 
+    <!--adobe auth set up form-->
     <string name="authForm1_baseUrl">baseUrl: </string>
     <string name="authForm2_reggieCodePath">reggieCodePath: </string>
     <string name="authForm3_checkAuthenticationPath">checkAuthenticationPath: </string>
@@ -82,8 +91,19 @@
     <!--@Expose @Getter-->
     <!--TempPassSelectionConfig tempPassSelection;-->
 
-    <string name="login_description"> Description of login here </string>
-    <string name="auth_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Auth Setup?"</string>
-    <string name="no_internet_toast">Error: No Internet Connection</string>
+    <!--Adobe media info form-->
+    <string name="mediaForm1_pId">pid: </string>
+    <string name="mediaForm2_streamUrl">streamUrl: </string>
+    <string name="mediaForm3_requestorId">requestorId: </string>
+    <string name="mediaForm4_channel">channel: </string>
+    <string name="mediaForm5_assetId">assetId: </string>
+    <string name="mediaForm6_cdn">cdn: </string>
+
+    <string name="mediaInfo1_pId">pid</string>
+    <string name="mediaInfo2_streamUrl">streamUrl</string>
+    <string name="mediaInfo3_requestorId">requestorId</string>
+    <string name="mediaInfo4_channel">channel</string>
+    <string name="mediaInfo5_assetId">assetId</string>
+    <string name="mediaInfo6_cdn">cdn</string>
 
 </resources>

@@ -29,17 +29,17 @@
             <Button
                 android:id="@+id/btn_adobe_auth_generate"
                 style="@style/ButtonStyle"
-                android:text="Generate Sample Data"/>
+                android:text="@string/generate_sample_data"/>
 
             <Button
                 android:id="@+id/btn_adobe_auth_browse"
                 style="@style/ButtonStyle"
-                android:text="Browse Live Data"/>
+                android:text="@string/browse_live_data"/>
 
             <Button
                 android:id="@+id/btn_adobe_auth_clear"
                 style="@style/ButtonStyle"
-                android:text="Clear Form Data"/>
+                android:text="@string/clear_form_data"/>
 
         </LinearLayout>
 
@@ -69,8 +69,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="right">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             style="@style/FormEntries">

@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.progressSpinner)
     ProgressBar progressSpinner;
 
+    @BindView(R.id.btn_media_info)
+    Button btnMediaInfo;
+
     @BindView(R.id.btn_authorize)
     Button btnAuthorize;
 
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkReceiver networkReceiver;
 
     public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_AUTH
+        REQUESTOR_ID, ADOBE_AUTH, MEDIA_INFO
     }
 
     @Override
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         btnGetMvpdList.setOnClickListener(getMvpdListListener);
         btnAuthorize.setOnClickListener(authorizeListener);
         btnSaveRId.setOnClickListener(saveRIdListener);
+        btnMediaInfo.setOnClickListener(mediaInfoListener);
 
         showSavedData();
     }
@@ -233,6 +237,14 @@ public class MainActivity extends AppCompatActivity {
                 printMvpdList();
             }
 
+        }
+    };
+
+    private View.OnClickListener mediaInfoListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, MediaInfoActivity.class);
+            startActivity(intent);
         }
     };
 
