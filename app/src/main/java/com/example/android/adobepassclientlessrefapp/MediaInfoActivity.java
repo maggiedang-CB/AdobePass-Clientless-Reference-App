@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.adobepassclientlessrefapp.mediaInfo.GenerateSampleMediaInfo;
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.utils.SetUpUtils;
 
@@ -71,12 +72,24 @@ public class MediaInfoActivity extends AbstractActivity {
         backButton.setOnClickListener(backButtonListener);
         saveButton.setOnClickListener(saveListener);
         clearButton.setOnClickListener(clearListener);
+        generateButton.setOnClickListener(generateListener);
+
+        showLastSavedFormData();
+    }
+
+    /**
+     * If there was saved data for media info, fill out the form fields
+     */
+    private void showLastSavedFormData() {
+        sharedPreferences = getSharedPreferences();
+        SetUpUtils.showLastSavedFormData(sharedPreferences, MEDIA_INFO, listOfEditText, listOfValues);
     }
 
     private View.OnClickListener generateListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            JSONObject sampleMediaInfoJson = GenerateSampleMediaInfo.makeSampleJsonObject();
+            generateDataInEditText(sampleMediaInfoJson);
         }
     };
 
@@ -197,7 +210,7 @@ public class MediaInfoActivity extends AbstractActivity {
 
     private ArrayList<String> getFormNamesArray() {
         ArrayList<String> formNames = new ArrayList<>();
-
+        // Note: Do not change order of values added. They correspond to the order appeared on the form
         formNames.add(getString(R.string.mediaInfo1_pId));
         formNames.add(getString(R.string.mediaInfo2_streamUrl));
         formNames.add(getString(R.string.mediaInfo3_requestorId));
@@ -206,6 +219,14 @@ public class MediaInfoActivity extends AbstractActivity {
         formNames.add(getString(R.string.mediaInfo6_cdn));
 
         return formNames;
+    }
+
+    /**
+     * Fills out edit text form with data contained in the adobe auth json object
+     * @param json
+     */
+    private void generateDataInEditText(JSONObject json) {
+        SetUpUtils.generateDataInEditText(json, listOfEditText, listOfValues);
     }
 
     private SharedPreferences getSharedPreferences() {

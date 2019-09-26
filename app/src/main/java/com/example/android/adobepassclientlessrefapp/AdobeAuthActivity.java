@@ -113,19 +113,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      */
     private void showLastSavedFormData() {
         sharedPreferences = getSharedPreferences();
-        try {
-            if (sharedPreferences.contains(ADOBEAUTH)) {
-                JSONObject json = new JSONObject(sharedPreferences.getString(ADOBEAUTH, ""));
-
-                // debug
-                Log.d(TAG, "Saved Data Json: " + json.toString());
-
-                // show in edit text forms
-                generateDataInEditText(json);
-            }
-        } catch (JSONException e) {
-            Log.d(TAG, "Error obtaining shared preference adobe auth json");
-        }
+        SetUpUtils.showLastSavedFormData(sharedPreferences, ADOBEAUTH, listOfEditText, listOfValues);
     }
 
     /**

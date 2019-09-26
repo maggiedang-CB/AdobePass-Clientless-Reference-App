@@ -18,6 +18,30 @@ public class SetUpUtils {
     private static String TAG = "SetUpUtils";
 
     /**
+     * If there was saved data for the current form activity, fill out the form fields.
+     * @param sharedPreferences
+     * @param prefKey The name of the shared preference key containing the form data
+     * @param listOfEditText Array of all the edit text fields
+     * @param listOfValues
+     */
+    public static void showLastSavedFormData(SharedPreferences sharedPreferences, String prefKey,
+                                       ArrayList<EditText> listOfEditText, ArrayList<String> listOfValues) {
+        try {
+            if (sharedPreferences.contains(prefKey)) {
+                JSONObject json = new JSONObject(sharedPreferences.getString(prefKey, ""));
+
+                // debug
+                Log.d(TAG, "Saved Data Json: " + json.toString());
+
+                // show in edit text forms
+                generateDataInEditText(json, listOfEditText, listOfValues);
+            }
+        } catch (JSONException e) {
+            Log.d(TAG, "Error obtaining shared preference media info json");
+        }
+    }
+
+    /**
      * Fills out edit text form with data contained in the adobe auth json object
      * @param json
      * @param listOfEditText
