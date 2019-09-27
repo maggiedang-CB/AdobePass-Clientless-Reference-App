@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/adobe_auth_view_group"
+                android:id="@+id/adobe_config_view_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -29,7 +29,7 @@
                 <TextView
                     style="@style/Separator"
                     android:layout_width="match_parent"
-                    android:text="@string/adobe_auth_header" />
+                    android:text="@string/adobe_config_header" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -40,10 +40,10 @@
                     android:layout_marginTop="5dip">
 
                     <Button
-                        android:id="@+id/btn_adobe_auth"
+                        android:id="@+id/btn_adobe_config"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Setup Adobe Auth" />
+                        android:text="Setup Adobe Config" />
 
                 </LinearLayout>
 

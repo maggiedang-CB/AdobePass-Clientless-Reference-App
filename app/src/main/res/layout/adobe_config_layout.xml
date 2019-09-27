@@ -7,9 +7,9 @@
 
     <TextView
         style="@style/Separator"
-        android:id="@+id/adobe_auth_form_header"
+        android:id="@+id/adobe_config_form_header"
         android:layout_width="match_parent"
-        android:text="@string/adobe_auth_setup"
+        android:text="@string/adobe_config_setup"
         android:textAllCaps="false"/>
 
     <HorizontalScrollView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/paddingLR"
         android:paddingRight="@dimen/paddingLR"
-        android:layout_below="@id/adobe_auth_form_header"
+        android:layout_below="@id/adobe_config_form_header"
         android:scrollbarAlwaysDrawHorizontalTrack="true">
 
         <LinearLayout
@@ -27,17 +27,17 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_adobe_auth_generate"
+                android:id="@+id/btn_adobe_config_generate"
                 style="@style/ButtonStyle"
                 android:text="@string/generate_sample_data"/>
 
             <Button
-                android:id="@+id/btn_adobe_auth_browse"
+                android:id="@+id/btn_adobe_config_browse"
                 style="@style/ButtonStyle"
                 android:text="@string/browse_live_data"/>
 
             <Button
-                android:id="@+id/btn_adobe_auth_clear"
+                android:id="@+id/btn_adobe_config_clear"
                 style="@style/ButtonStyle"
                 android:text="@string/clear_form_data"/>
 
@@ -75,7 +75,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm1_baseUrl"/>
+                                android:text="@string/configForm1_baseUrl"/>
 
                             <EditText
                                 android:id="@+id/baseurl"
@@ -86,7 +86,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm2_reggieCodePath"/>
+                                android:text="@string/configForm2_reggieCodePath"/>
 
                             <EditText
                                 android:id="@+id/reggieCodePath"
@@ -97,7 +97,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm3_checkAuthenticationPath"/>
+                                android:text="@string/configForm3_checkAuthenticationPath"/>
 
                             <EditText
                                 android:id="@+id/checkAuthenticationPath"
@@ -108,7 +108,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm4_authnTokenTimeoutSeconds"/>
+                                android:text="@string/configForm4_authnTokenTimeoutSeconds"/>
 
                             <EditText
                                 android:id="@+id/authnTokenTimeoutSeconds"
@@ -120,7 +120,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm5_tempPassProvider"/>
+                                android:text="@string/configForm5_tempPassProvider"/>
 
                             <EditText
                                 android:id="@+id/tempPassProvider"
@@ -131,7 +131,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm6_getUserMetadataPath"/>
+                                android:text="@string/configForm6_getUserMetadataPath"/>
 
                             <EditText
                                 android:id="@+id/getUserMetadataPath"
@@ -142,7 +142,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm7_authnTokenPath"/>
+                                android:text="@string/configForm7_authnTokenPath"/>
 
                             <EditText
                                 android:id="@+id/authnTokenPath"
@@ -153,7 +153,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm8_tempPassUrl"/>
+                                android:text="@string/configForm8_tempPassUrl"/>
 
                             <EditText
                                 android:id="@+id/temppassurl"
@@ -164,7 +164,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm9_authzTokenPath"/>
+                                android:text="@string/configForm9_authzTokenPath"/>
 
                             <EditText
                                 android:id="@+id/authzTokenPath"
@@ -175,7 +175,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm10_authorizePath"/>
+                                android:text="@string/configForm10_authorizePath"/>
 
                             <EditText
                                 android:id="@+id/authorizePath"
@@ -186,7 +186,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm11_logoutPath"/>
+                                android:text="@string/configForm11_logoutPath"/>
 
                             <EditText
                                 android:id="@+id/logoutPath"
@@ -197,7 +197,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm12_mvpdListPath"/>
+                                android:text="@string/configForm12_mvpdListPath"/>
 
                             <EditText
                                 android:id="@+id/mvpdListPath"
@@ -208,7 +208,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm13_redirectUrl"/>
+                                android:text="@string/configForm13_redirectUrl"/>
 
                             <EditText
                                 android:id="@+id/redirecturl"
@@ -219,7 +219,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm14_tokenizationUrl"/>
+                                android:text="@string/configForm14_tokenizationUrl"/>
 
                             <EditText
                                 android:id="@+id/tokenizationurl"
@@ -230,7 +230,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm15_logosUrl"/>
+                                android:text="@string/configForm15_logosUrl"/>
 
                             <EditText
                                 android:id="@+id/logosurl"
@@ -241,7 +241,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm16_externalBrowserDomains"/>
+                                android:text="@string/configForm16_externalBrowserDomains"/>
 
                             <EditText
                                 android:id="@+id/externalBrowserDomains"
@@ -253,7 +253,7 @@
                             style="@style/FormEntries">
                             <TextView
                                 style="@style/FormValues"
-                                android:text="@string/authForm17_nbcTokenUrl"/>
+                                android:text="@string/configForm17_nbcTokenUrl"/>
 
                             <EditText
                                 android:id="@+id/nbcTokenurl"
@@ -266,7 +266,7 @@
                     style="@style/FormEntries">
                     <TextView
                         style="@style/FormValues"
-                        android:text="@string/authForm18_tempPassSelection"/>
+                        android:text="@string/configForm18_tempPassSelection"/>
 
                     <EditText
                         android:id="@+id/tempPassSelection"
@@ -282,12 +282,12 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
                     <Button
-                        android:id="@+id/btn_adobe_auth_ok"
+                        android:id="@+id/btn_adobe_config_ok"
                         style="@style/ButtonStyle"
                         android:text="SAVE"/>
 
                     <Button
-                        android:id="@+id/btn_adobe_auth_back"
+                        android:id="@+id/btn_adobe_config_back"
                         style="@style/ButtonStyle"
                         android:text="BACK"/>
                 </LinearLayout>

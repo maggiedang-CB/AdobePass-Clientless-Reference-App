@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Common methods used for saving, editing, checking and setting up edit text forms
+ * Common methods used for saving, editing, checking and setting up edit text forms.
  * Used for setting up Adobe Auth and Media Info forms.
  */
 public class SetUpUtils {

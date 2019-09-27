@@ -17,7 +17,7 @@ public class GenerateSampleData {
 
     private static String TAG = "GenerateSampleData";
 
-    public static String sampleJsonString = "{\n" +
+    public static String sampleAdobeAuthJsonString = "{\n" +
             "\t\t\"baseUrl\": \"https://api.auth.adobe.com\",\n" +
             "\t\t\"checkAuthenticationPath\": \"/api/v1/checkauthn?deviceId={DEVICE_ID}\",\n" +
             "\t\t\"reggieCodePath\": \"/reggie/v1/{REQUESTOR_ID}/regcode\",\n" +
@@ -73,10 +73,13 @@ public class GenerateSampleData {
             "\t}";
 
 
-    public static JSONObject makeJsonSample() {
+    /**
+     * Returns adobe config JSONObject using the sample string data presented in sampleAdobeAuthJsonString.
+     * @return
+     */
+    public static JSONObject makeJsonSampleAdobeConfig() {
         try {
-            JSONObject json = new JSONObject(sampleJsonString);
-
+            JSONObject json = new JSONObject(sampleAdobeAuthJsonString);
             Log.d(TAG, json.toString());
             return json;
         } catch (JSONException e) {

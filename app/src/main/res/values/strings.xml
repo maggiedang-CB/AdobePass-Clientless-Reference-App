@@ -12,14 +12,14 @@
     <string name="about_clientless">About Clientless</string>
     <string name="show_logcat">Show Logcat</string>
     <string name="rId">Requestor Id</string>
-    <string name="adobe_auth_setup">SetUp Adobe Auth</string>
+    <string name="adobe_config_setup">SetUp Adobe Configuration</string>
     <string name="generate_sample_data">Generate Sample Data</string>
     <string name="browse_live_data">Browse Live Data</string>
     <string name="clear_form_data">Clear Current Data</string>
     <string name="mvpd_id_not_selected">Not Selected</string>
     <string name="media_info_setup">SetUp Media Info</string>
 
-    <string name="adobe_auth_header">1) Adobe Auth</string>
+    <string name="adobe_config_header">1) Adobe Configuration</string>
     <string name="rId_header">2) Requestor Id</string>
     <string name="mvpd_list_header">3) MVPD List</string>
     <string name="login_header">4) Login</string>
@@ -28,48 +28,48 @@
     <string name="logout_header">7) Logout</string>
 
     <string name="login_description"> Description of login here </string>
-    <string name="auth_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Auth Setup?"</string>
+    <string name="config_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Configuration Setup?"</string>
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
 
-    <!--adobe auth set up form-->
-    <string name="authForm1_baseUrl">baseUrl: </string>
-    <string name="authForm2_reggieCodePath">reggieCodePath: </string>
-    <string name="authForm3_checkAuthenticationPath">checkAuthenticationPath: </string>
-    <string name="authForm4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds: </string>
-    <string name="authForm5_tempPassProvider">tempPassProvider: </string>
-    <string name="authForm6_getUserMetadataPath">getUserMetadataPath: </string>
-    <string name="authForm7_authnTokenPath">authnTokenPath: </string>
-    <string name="authForm8_tempPassUrl">tempPassUrl: </string>
-    <string name="authForm9_authzTokenPath">authzTokenPath: </string>
-    <string name="authForm10_authorizePath">authorizePath: </string>
-    <string name="authForm11_logoutPath">logoutPath: </string>
-    <string name="authForm12_mvpdListPath">mvpdListPath: </string>
-    <string name="authForm13_redirectUrl">redirectUrl: </string>
-    <string name="authForm14_tokenizationUrl">tokenizationUrl: </string>
-    <string name="authForm15_logosUrl">logosUrl: </string>
-    <string name="authForm16_externalBrowserDomains">externalBrowserDomains: </string>
-    <string name="authForm17_nbcTokenUrl">nbcTokenUrl: </string>
-    <string name="authForm18_tempPassSelection">tempPassSelection: </string>
+    <!--adobe config set up form-->
+    <string name="configForm1_baseUrl">baseUrl: </string>
+    <string name="configForm2_reggieCodePath">reggieCodePath: </string>
+    <string name="configForm3_checkAuthenticationPath">checkAuthenticationPath: </string>
+    <string name="configForm4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds: </string>
+    <string name="configForm5_tempPassProvider">tempPassProvider: </string>
+    <string name="configForm6_getUserMetadataPath">getUserMetadataPath: </string>
+    <string name="configForm7_authnTokenPath">authnTokenPath: </string>
+    <string name="configForm8_tempPassUrl">tempPassUrl: </string>
+    <string name="configForm9_authzTokenPath">authzTokenPath: </string>
+    <string name="configForm10_authorizePath">authorizePath: </string>
+    <string name="configForm11_logoutPath">logoutPath: </string>
+    <string name="configForm12_mvpdListPath">mvpdListPath: </string>
+    <string name="configForm13_redirectUrl">redirectUrl: </string>
+    <string name="configForm14_tokenizationUrl">tokenizationUrl: </string>
+    <string name="configForm15_logosUrl">logosUrl: </string>
+    <string name="configForm16_externalBrowserDomains">externalBrowserDomains: </string>
+    <string name="configForm17_nbcTokenUrl">nbcTokenUrl: </string>
+    <string name="configForm18_tempPassSelection">tempPassSelection: </string>
 
-    <string name="auth1_baseUrl">baseUrl</string>
-    <string name="auth2_reggieCodePath">reggieCodePath</string>
-    <string name="auth3_checkAuthenticationPath">checkAuthenticationPath</string>
-    <string name="auth4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds</string>
-    <string name="auth5_tempPassProvider">tempPassProvider</string>
-    <string name="auth6_getUserMetadataPath">getUserMetadataPath</string>
-    <string name="auth7_authnTokenPath">authnTokenPath</string>
-    <string name="auth8_tempPassUrl">tempPassUrl</string>
-    <string name="auth9_authzTokenPath">authzTokenPath</string>
-    <string name="auth10_authorizePath">authorizePath</string>
-    <string name="auth11_logoutPath">logoutPath</string>
-    <string name="auth12_mvpdListPath">mvpdListPath</string>
-    <string name="auth13_redirectUrl">redirectUrl</string>
-    <string name="auth14_tokenizationUrl">tokenizationUrl</string>
-    <string name="auth15_logosUrl">logosUrl</string>
-    <string name="auth16_externalBrowserDomains">externalBrowserDomains</string>
-    <string name="auth17_nbcTokenUrl">nbcTokenUrl</string>
-    <string name="auth18_tempPassSelection">tempPassSelection</string>
+    <string name="config1_baseUrl">baseUrl</string>
+    <string name="config2_reggieCodePath">reggieCodePath</string>
+    <string name="config3_checkAuthenticationPath">checkAuthenticationPath</string>
+    <string name="config4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds</string>
+    <string name="config5_tempPassProvider">tempPassProvider</string>
+    <string name="config6_getUserMetadataPath">getUserMetadataPath</string>
+    <string name="config7_authnTokenPath">authnTokenPath</string>
+    <string name="config8_tempPassUrl">tempPassUrl</string>
+    <string name="config9_authzTokenPath">authzTokenPath</string>
+    <string name="config10_authorizePath">authorizePath</string>
+    <string name="config11_logoutPath">logoutPath</string>
+    <string name="config12_mvpdListPath">mvpdListPath</string>
+    <string name="config13_redirectUrl">redirectUrl</string>
+    <string name="config14_tokenizationUrl">tokenizationUrl</string>
+    <string name="config15_logosUrl">logosUrl</string>
+    <string name="config16_externalBrowserDomains">externalBrowserDomains</string>
+    <string name="config17_nbcTokenUrl">nbcTokenUrl</string>
+    <string name="config18_tempPassSelection">tempPassSelection</string>
 
     <!--adobe auth parcel data-->
     <!--@Expose @Getter String baseUrl;-->

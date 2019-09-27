@@ -60,8 +60,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".AdobeAuthActivity"
-            android:label="@string/adobe_auth_setup"
+            android:name=".AdobeConfigActivity"
+            android:label="@string/adobe_config_setup"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

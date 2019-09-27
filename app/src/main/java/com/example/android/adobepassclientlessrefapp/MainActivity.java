@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static String SHARED_PREFERENCES = "myPrefs";
     public static String TAG = "MainActivity";
 
-    @BindView(R.id.btn_adobe_auth)
+    @BindView(R.id.btn_adobe_config)
     Button btnAdobeAuth;
 
     @BindView(R.id.requestorId)
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkReceiver networkReceiver;
 
     public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_AUTH, MEDIA_INFO
+        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO
     }
 
     @Override
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener adobeAuthListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, AdobeAuthActivity.class);
+            Intent intent = new Intent(MainActivity.this, AdobeConfigActivity.class);
             startActivity(intent);
         }
     };
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
-            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_AUTH.toString())) {
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
                 Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
                 Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
-            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_AUTH.toString())) {
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
                 Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
             } else if (!isWifiConnected()) {
                 Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static AdobeConfig getAdobeConfigFromJson(SharedPreferences sharedPreferences) {
-        String jsonString = sharedPreferences.getString(sharedPrefKeys.ADOBE_AUTH.toString(), "");
+        String jsonString = sharedPreferences.getString(sharedPrefKeys.ADOBE_CONFIG.toString(), "");
 
         Log.d(TAG, "jsonString = " + jsonString);
 

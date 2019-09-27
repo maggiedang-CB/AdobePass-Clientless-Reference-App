@@ -23,24 +23,24 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdobeAuthActivity extends AbstractActivity {
+public class AdobeConfigActivity extends AbstractActivity {
 
-    private String TAG = "AdobeAuthActivity";
+    private String TAG = "AdobeConfigActivity";
 
-    // shared preference key to get adobeauth json
-    public static String ADOBEAUTH = MainActivity.sharedPrefKeys.ADOBE_AUTH.toString();
+    // shared preference key to get adobe config json
+    public static String ADOBECONFIG = MainActivity.sharedPrefKeys.ADOBE_CONFIG.toString();
 
-    @BindView(R.id.btn_adobe_auth_back)
+    @BindView(R.id.btn_adobe_config_back)
     Button backButton;
-    @BindView(R.id.btn_adobe_auth_ok)
+    @BindView(R.id.btn_adobe_config_ok)
     Button saveButton;
-    @BindView(R.id.btn_adobe_auth_generate)
+    @BindView(R.id.btn_adobe_config_generate)
     Button generateButton;
     // TODO: Get browse button to work
     // ^^ OR make it into a "Paste Json Data" button where user can put their own json data, then convert into the form
-    @BindView(R.id.btn_adobe_auth_browse)
+    @BindView(R.id.btn_adobe_config_browse)
     Button browseButton;
-    @BindView(R.id.btn_adobe_auth_clear)
+    @BindView(R.id.btn_adobe_config_clear)
     Button clearButton;
 
     @BindView(R.id.baseurl)
@@ -89,7 +89,7 @@ public class AdobeAuthActivity extends AbstractActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.adobe_auth_layout);
+        setContentView(R.layout.adobe_config_layout);
         ButterKnife.bind(this);
 
         // Hide keyboard on launch
@@ -111,11 +111,11 @@ public class AdobeAuthActivity extends AbstractActivity {
     }
 
     /**
-     * If there was saved data for adobe auth, fill out the form fields
+     * If there was saved data for adobe config, fill out the form fields
      */
     private void showLastSavedFormData() {
         sharedPreferences = getSharedPreferences();
-        SetUpUtils.showLastSavedFormData(sharedPreferences, ADOBEAUTH, formHashMap);
+        SetUpUtils.showLastSavedFormData(sharedPreferences, ADOBECONFIG, formHashMap);
     }
 
     /**
@@ -128,17 +128,17 @@ public class AdobeAuthActivity extends AbstractActivity {
             public void onClick(View v) {
                 // prompt user if they really want to go back if theres data un saved in form
                 if (isUnsavedData()) {
-                    alertDialog2Buttons("Unsaved Data", getString(R.string.auth_setup_unsaved_data),
+                    alertDialog2Buttons("Unsaved Data", getString(R.string.config_setup_unsaved_data),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(AdobeConfigActivity.this, MainActivity.class);
                                     setResult(RESULT_CANCELED, intent);
                                     finish();
                                 }
                             });
                 } else {
-                    Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                    Intent intent = new Intent(AdobeConfigActivity.this, MainActivity.class);
                     setResult(RESULT_CANCELED, intent);
                     finish();
                 }
@@ -150,8 +150,8 @@ public class AdobeAuthActivity extends AbstractActivity {
         @Override
         public void onClick(View v) {
             Log.d(TAG,"Clicked generate button");
-            // Uses stored sample data needed for adobe auth
-            JSONObject sampleJson = GenerateSampleData.makeJsonSample();
+            // Uses stored sample data needed for adobe config
+            JSONObject sampleJson = GenerateSampleData.makeJsonSampleAdobeConfig();
             // Add sample data to edit text views
             generateDataInEditText(sampleJson);
 
@@ -165,21 +165,21 @@ public class AdobeAuthActivity extends AbstractActivity {
 
             if (!isAllFieldsFilled()) {
                 // Not all fields have an input
-                Toast.makeText(AdobeAuthActivity.this, "Error Saving: Field(s) Empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdobeConfigActivity.this, "Error Saving: Field(s) Empty", Toast.LENGTH_SHORT).show();
             } else {
                 // save value of each field
                 String saveForm = convertFormToJson().toString();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(ADOBEAUTH, saveForm);
+                editor.putString(ADOBECONFIG, saveForm);
                 editor.apply();
 
                 // go back to main activity
-                Intent intent = new Intent(AdobeAuthActivity.this, MainActivity.class);
+                Intent intent = new Intent(AdobeConfigActivity.this, MainActivity.class);
                 setResult(RESULT_CANCELED, intent);
                 finish();
 
                 // show toast that data has been saved
-                Toast.makeText(AdobeAuthActivity.this, "Adobe Auth Settings Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdobeConfigActivity.this, "Adobe Config Settings Saved", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -202,7 +202,7 @@ public class AdobeAuthActivity extends AbstractActivity {
 
 
     /**
-     * Fills out edit text form with data contained in the adobe auth json object
+     * Fills out edit text form with data contained in the adobe config json object
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {
@@ -223,13 +223,13 @@ public class AdobeAuthActivity extends AbstractActivity {
      */
     private boolean isUnsavedData() {
         sharedPreferences = getSharedPreferences();
-        String adobeAuthKey = MainActivity.sharedPrefKeys.ADOBE_AUTH.toString();
+        String adobeConfigKey = MainActivity.sharedPrefKeys.ADOBE_CONFIG.toString();
         String currentForm = convertFormToJson().toString();
-        return SetUpUtils.isUnsavedData(listOfEditText, sharedPreferences, adobeAuthKey, currentForm);
+        return SetUpUtils.isUnsavedData(listOfEditText, sharedPreferences, adobeConfigKey, currentForm);
     }
 
     /**
-     * Returns an array list of all the edit text views in the adobe auth setup form
+     * Returns an array list of all the edit text views in the adobe config setup form
      * @return
      */
     private ArrayList<EditText> getFormArray() {
@@ -263,24 +263,24 @@ public class AdobeAuthActivity extends AbstractActivity {
     private HashMap<String, EditText> getFormHashMap() {
         HashMap<String, EditText> formHash = new HashMap<>();
 
-        formHash.put(getString(R.string.auth1_baseUrl), baseUrl);
-        formHash.put(getString(R.string.auth2_reggieCodePath), reggieCodePath);
-        formHash.put(getString(R.string.auth3_checkAuthenticationPath), checkAuthenticationPath);
-        formHash.put(getString(R.string.auth4_authnTokenTimeoutSeconds), authnTokenTimeoutSeconds);
-        formHash.put(getString(R.string.auth5_tempPassProvider), tempPassProvider);
-        formHash.put(getString(R.string.auth6_getUserMetadataPath), getUserMetadataPath);
-        formHash.put(getString(R.string.auth7_authnTokenPath), authnTokenPath);
-        formHash.put(getString(R.string.auth8_tempPassUrl), tempPassUrl);
-        formHash.put(getString(R.string.auth9_authzTokenPath), authzTokenPath);
-        formHash.put(getString(R.string.auth10_authorizePath), authorizePath);
-        formHash.put(getString(R.string.auth11_logoutPath), logoutPath);
-        formHash.put(getString(R.string.auth12_mvpdListPath), mvpdListPath);
-        formHash.put(getString(R.string.auth13_redirectUrl), redirectUrl);
-        formHash.put(getString(R.string.auth14_tokenizationUrl), tokenizationUrl);
-        formHash.put(getString(R.string.auth15_logosUrl), logosUrl);
-        formHash.put(getString(R.string.auth16_externalBrowserDomains), externalBrowserDomains);
-        formHash.put(getString(R.string.auth17_nbcTokenUrl), nbcTokenUrl);
-        formHash.put(getString(R.string.auth18_tempPassSelection), tempPassSelection);
+        formHash.put(getString(R.string.config1_baseUrl), baseUrl);
+        formHash.put(getString(R.string.config2_reggieCodePath), reggieCodePath);
+        formHash.put(getString(R.string.config3_checkAuthenticationPath), checkAuthenticationPath);
+        formHash.put(getString(R.string.config4_authnTokenTimeoutSeconds), authnTokenTimeoutSeconds);
+        formHash.put(getString(R.string.config5_tempPassProvider), tempPassProvider);
+        formHash.put(getString(R.string.config6_getUserMetadataPath), getUserMetadataPath);
+        formHash.put(getString(R.string.config7_authnTokenPath), authnTokenPath);
+        formHash.put(getString(R.string.config8_tempPassUrl), tempPassUrl);
+        formHash.put(getString(R.string.config9_authzTokenPath), authzTokenPath);
+        formHash.put(getString(R.string.config10_authorizePath), authorizePath);
+        formHash.put(getString(R.string.config11_logoutPath), logoutPath);
+        formHash.put(getString(R.string.config12_mvpdListPath), mvpdListPath);
+        formHash.put(getString(R.string.config13_redirectUrl), redirectUrl);
+        formHash.put(getString(R.string.config14_tokenizationUrl), tokenizationUrl);
+        formHash.put(getString(R.string.config15_logosUrl), logosUrl);
+        formHash.put(getString(R.string.config16_externalBrowserDomains), externalBrowserDomains);
+        formHash.put(getString(R.string.config17_nbcTokenUrl), nbcTokenUrl);
+        formHash.put(getString(R.string.config18_tempPassSelection), tempPassSelection);
 
         return formHash;
     }
