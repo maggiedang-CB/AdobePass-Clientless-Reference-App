@@ -28,6 +28,10 @@
     <string name="logout_header">7) Logout</string>
 
     <string name="login_description"> Description of login here </string>
+    <string name="login_status_not_logged">Not Signed In</string>
+    <string name="login_status_signed_in">Signed In</string>
+    <string name="login_success_message">Successfully logged in!</string>
+
     <string name="config_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Configuration Setup?"</string>
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>

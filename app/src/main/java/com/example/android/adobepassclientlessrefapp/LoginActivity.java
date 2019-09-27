@@ -40,10 +40,16 @@ public class LoginActivity extends FragmentActivity {
     TextView tvLoginDescription;
     @BindView(R.id.login_separator)
     TextView tvSeparator;
+    @BindView(R.id.mvpd_provider_name)
+    TextView tvProviderText;
+    @BindView(R.id.login_provider)
+    TextView tvProvider;
     @BindView(R.id.mvpd_value_name)
     TextView tvMvpdValueName;
-
-
+    @BindView(R.id.mvpd_login_status)
+    TextView tvLoginStatusText;
+    @BindView(R.id.login_status)
+    TextView tvLoginStatus;
     @BindView(R.id.btn_login_select_mvpd)
     Button btnSelectMvpd;
     @BindView(R.id.login_mvpd)
@@ -59,6 +65,17 @@ public class LoginActivity extends FragmentActivity {
     AdobeConfig adobeConfig;
     AdobeClientlessService adobeClientless;
 
+    /**
+     * Shared Preference keys containing login information.
+     * LOGIN_STATUS -> States if user is signed in or not
+     * MVPD_NAME -> Contains the display name of the mvod
+     * MVPD_ID -> Contains MVPD/Provider ID
+     */
+    public enum LoginStatus {
+        LOGIN_STATUS, MVPD_NAME, MVPD_ID
+    }
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
@@ -71,6 +88,23 @@ public class LoginActivity extends FragmentActivity {
 
         this.adobeConfig = getAdobeConfigFromJson();
         this.adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
+
+        // Load saved login data
+        loadSavedLoginData();
+    }
+
+    /**
+     * Collects saved login data from Shared Preferences.
+     */
+    private void loadSavedLoginData() {
+        sharedPreferences = getSharedPreferences();
+        String statusKey = LoginStatus.LOGIN_STATUS.toString();
+        String mvpdNameKey = LoginStatus.MVPD_NAME.toString();
+        String mvpdIdKey = LoginStatus.MVPD_ID.toString();
+
+        tvLoginStatus.setText(sharedPreferences.getString(statusKey, getString(R.string.login_status_not_logged)));
+        tvProvider.setText(sharedPreferences.getString(mvpdNameKey, getString(R.string.mvpd_id_not_selected)));
+        tvMvpdId.setText(sharedPreferences.getString(mvpdIdKey, getString(R.string.mvpd_id_not_selected)));
     }
 
     /**
@@ -123,11 +157,13 @@ public class LoginActivity extends FragmentActivity {
     }
 
     /**
-     * From the provider dialog fragment, set the value of the mvpd id on the UI for visual purposes.
+     * From the provider dialog fragment, set the value of the mvpd id and name on the UI for
+     * visual purposes.
      * @param mvpd The selected MVPD / Provider
      */
     public void setMvpdIdSelected(MvpdListAPI.Mvpd mvpd) {
         tvMvpdId.setText(mvpd.getId());
+        tvProvider.setText(mvpd.getDisplayName());
     }
 
     /**
@@ -142,7 +178,7 @@ public class LoginActivity extends FragmentActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         adobeAuth -> launchWebView(adobeAuth.getRedirectUrl()),
-                        throwable -> {});
+                        throwable -> Log.d(TAG, "Login Error: " + throwable));
     }
 
     private void launchWebView(final String adobeAuthRedirectUrl) {
@@ -161,11 +197,15 @@ public class LoginActivity extends FragmentActivity {
             public void onComplete() {
                 Log.d(TAG, "Login Success");
                 // TODO: Do stuff here on success
-//                if (asset != null) {
-//                    adobePassService.authorize(asset, null);
-//                } else {
-//                    finish();
-//                }
+
+                // Save login info
+                tvLoginStatus.setText(getString(R.string.login_status_signed_in));
+                saveLoginStatus();
+
+                // Add some views back to page to state success
+                tvLoginDescription.setVisibility(View.VISIBLE);
+                tvLoginDescription.setText(R.string.login_success_message);
+                backButton.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -178,6 +218,10 @@ public class LoginActivity extends FragmentActivity {
                 tvMvpdId.setVisibility(View.GONE);
                 okButton.setVisibility(View.GONE);
                 backButton.setVisibility(View.GONE);
+                tvProvider.setVisibility(View.GONE);
+                tvLoginStatus.setVisibility(View.GONE);
+                tvProviderText.setVisibility(View.GONE);
+                tvLoginStatusText.setVisibility(View.GONE);
             }
 
             @Override
@@ -213,6 +257,20 @@ public class LoginActivity extends FragmentActivity {
     private void showProviderDialogFrag(ArrayList mvpds) {
         ProviderDialogFragment fragment = ProviderDialogFragment.getInstance(mvpds);
         fragment.show(getSupportFragmentManager(), null);
+    }
+
+    private void saveLoginStatus() {
+        String signedInStatus = getString(R.string.login_status_signed_in);
+        String providerName = tvProvider.getText().toString();
+        String mvpdId = tvMvpdId.getText().toString();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(LoginStatus.LOGIN_STATUS.toString(), signedInStatus);
+        editor.putString(LoginStatus.MVPD_NAME.toString(), providerName);
+        editor.putString(LoginStatus.MVPD_ID.toString(), mvpdId);
+
+        editor.apply();
     }
 
     private AdobeConfig getAdobeConfigFromJson() {

@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         if (networkReceiver != null) {
             unregisterReceiver(networkReceiver);
         }
+        tvAuthorize.setText(R.string.authorize_click_here);
     }
 
     @Override
@@ -258,10 +259,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             // TODO: Check if adobe config, rid, and media info is set. (Maybe login too)
 
-//            Intent intent = new Intent(MainActivity.this, AuthorizeActivity.class);
-//            startActivity(intent);
-
-            authorize();
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
+                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!sharedPreferences.contains(sharedPrefKeys.MEDIA_INFO.toString())) {
+                Toast.makeText(MainActivity.this, "Media Info has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!isWifiConnected()) {
+                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+            } else {
+                authorize();
+            }
 
         }
     };
@@ -390,26 +396,6 @@ public class MainActivity extends AppCompatActivity {
         fragment.show(getSupportFragmentManager(), null);
 
         // TODO: Figure out how to back press on hardware to dismiss frag dialog (instead of exiting main activity)
-//        if (fragment.getView() != null) {
-//            fragment.getView().setFocusableInTouchMode(true);
-//            fragment.getView().requestFocus();
-//            fragment.getView().setOnKeyListener(new View.OnKeyListener() {
-//                @Override
-//                public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                    if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-//                        Log.d(TAG, ">>>back pressed!!!");
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
-//        }
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .addToBackStack(null)
-//                .add(fragment, null)
-//                .commit();
-        //fragment.show(fragmentManager, null);
 
     }
 
