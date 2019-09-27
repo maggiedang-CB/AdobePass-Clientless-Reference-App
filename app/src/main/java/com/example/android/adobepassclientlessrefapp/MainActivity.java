@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.adobepassclientlessrefapp.adobeauth.TypeAdapterStringToList;
@@ -33,6 +34,7 @@ import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI;
 import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
 import com.nbcsports.leapsdk.authentication.adobepass.config.TempPassSelectionConfig;
 import com.nbcsports.leapsdk.authentication.common.AdobeAuth;
+import com.nbcsports.leapsdk.authentication.common.AdobeMediaInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_authorize)
     Button btnAuthorize;
+    @BindView(R.id.authorize_main_page_presenter)
+    TextView tvAuthorize;
 
     SharedPreferences sharedPreferences;
     private String rId;
@@ -252,11 +256,38 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener authorizeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, AuthorizeActivity.class);
-            startActivity(intent);
+            // TODO: Check if adobe config, rid, and media info is set. (Maybe login too)
+
+//            Intent intent = new Intent(MainActivity.this, AuthorizeActivity.class);
+//            startActivity(intent);
+
+            authorize();
+
         }
     };
 
+    @SuppressLint("CheckResult")
+    private void authorize() {
+
+        adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
+        AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
+        AdobeMediaInfo adobeMediaInfo = getMediaInfoFromJson(getSharedPreferences());
+
+        AdobeAuth adobeAuth = new AdobeAuth();
+
+        adobeClientless.authorize(adobeAuth, adobeMediaInfo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(auth -> {
+                    Log.d(TAG, "AUTHORIZE SUCCESS");
+                    tvAuthorize.setText(getString(R.string.authorize_success));
+                }, throwable -> {
+                    Log.e(TAG, "AUTHORIZE FAILURE");
+                    // Check for 2 types of authz errors
+
+                    tvAuthorize.setText(getString(R.string.authorize_failure));
+                });
+    }
 
     /**
      * Checks if the rId is not null and empty. If it is, show toast message.
@@ -279,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
     // Adobe Config
 
     /**
-     * After the adobe auth is set up and the json is saved in shared prefs, we can use it to create
+     * After the adobe config is set up and the json is saved in shared prefs, we can use it to create
      * an adobe config object by converting it from a json string to adobeconfig object.
      * @param sharedPreferences
      * @return
@@ -287,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
     public static AdobeConfig getAdobeConfigFromJson(SharedPreferences sharedPreferences) {
         String jsonString = sharedPreferences.getString(sharedPrefKeys.ADOBE_CONFIG.toString(), "");
 
-        Log.d(TAG, "jsonString = " + jsonString);
+        Log.d(TAG, "Adobe Config jsonString = " + jsonString);
 
         if (jsonString == null || jsonString.equals("")) {
             Log.e(TAG, "Error when getting adobe config from json");
@@ -303,6 +334,30 @@ public class MainActivity extends AppCompatActivity {
         AdobeConfig adobeConfig = gson.fromJson(jsonString, new TypeToken<AdobeConfig>(){}.getType());
 
         return adobeConfig;
+    }
+
+    /**
+     * Return the AdobeMediaInfo Object by converting its stored json string data from shared
+     * preference into AdobeMediaInfo Object.
+     * @param sharedPreferences
+     * @return
+     */
+    public static AdobeMediaInfo getMediaInfoFromJson(SharedPreferences sharedPreferences) {
+        String jsonString = sharedPreferences.getString(sharedPrefKeys.MEDIA_INFO.toString(), "");
+
+        Log.d(TAG, "Media Info jsonString = " + jsonString);
+
+        if (jsonString == null || jsonString.equals("")) {
+            Log.e(TAG, "Error when getting adobe media info from json");
+            return null;
+        }
+
+        // adobe config object
+        Gson gson = new GsonBuilder().create();
+
+        AdobeMediaInfo mediaInfo = gson.fromJson(jsonString, new TypeToken<AdobeMediaInfo>(){}.getType());
+
+        return mediaInfo;
     }
 
     @SuppressLint("CheckResult")
@@ -387,4 +442,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+    }
+
 }

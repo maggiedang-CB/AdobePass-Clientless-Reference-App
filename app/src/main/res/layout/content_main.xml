@@ -221,11 +221,17 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/paddingLR"
                     android:paddingRight="@dimen/paddingLR"
-                    android:layout_marginTop="5dip">
+                    android:layout_marginTop="5dip"
+                    android:orientation="horizontal">
                     <Button
                         android:id="@+id/btn_authorize"
                         style="@style/ButtonStyle"
                         android:text="@string/authorize"/>
+                    <TextView
+                        android:id="@+id/authorize_main_page_presenter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/authorize_click_here"/>
                 </LinearLayout>
 
             </LinearLayout>

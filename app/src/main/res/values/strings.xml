@@ -107,4 +107,9 @@
     <string name="mediaInfo5_assetId">assetId</string>
     <string name="mediaInfo6_cdn">cdn</string>
 
+    <!--authorize descriptions-->
+    <string name="authorize_click_here">Click Here to Authorize Media Asset</string>
+    <string name="authorize_success">Authorization Success!</string>
+    <string name="authorize_failure">Authorization Failure</string>
+
 </resources>
