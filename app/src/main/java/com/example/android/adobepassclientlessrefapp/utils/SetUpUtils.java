@@ -22,27 +22,9 @@ public class SetUpUtils {
     /**
      * If there was saved data for the current form activity, fill out the form fields.
      * @param sharedPreferences
-     * @param prefKey The name of the shared preference key containing the form data
-     * @param listOfEditText Array of all the edit text fields
-     * @param listOfValues
+     * @param prefKey Shared Preference key containing saved data of the form
+     * @param formData Hashmap containing the json key mapped to the form's edit text view of the key's value
      */
-    public static void showLastSavedFormData(SharedPreferences sharedPreferences, String prefKey,
-                                       ArrayList<EditText> listOfEditText, ArrayList<String> listOfValues) {
-        try {
-            if (sharedPreferences.contains(prefKey)) {
-                JSONObject json = new JSONObject(sharedPreferences.getString(prefKey, ""));
-
-                // debug
-                Log.d(TAG, "Saved Data Json: " + json.toString());
-
-                // show in edit text forms
-                generateDataInEditText(json, listOfEditText, listOfValues);
-            }
-        } catch (JSONException e) {
-            Log.d(TAG, "Error obtaining shared preference media info json");
-        }
-    }
-
     public static void showLastSavedFormData(SharedPreferences sharedPreferences, String prefKey, HashMap<String, EditText> formData) {
         try {
             if (sharedPreferences.contains(prefKey)) {
@@ -60,24 +42,35 @@ public class SetUpUtils {
     }
 
     /**
-     * Fills out edit text form with data contained in the adobe auth json object
-     * @param json
-     * @param listOfEditText
-     * @param listOfValues
+     * Convert the media info form fields into a JSON object.
+     * @return
      */
-    public static void generateDataInEditText(JSONObject json, ArrayList<EditText> listOfEditText, ArrayList<String> listOfValues) {
+    public static JSONObject convertFormToJson(HashMap<String, EditText> formHashMap) {
+        // Convert to JSONObject
+        JSONObject json = new JSONObject();
 
         try {
-            int index = 0;
-            for (EditText editText : listOfEditText) {
-                editText.setText(json.getString(listOfValues.get(index)));
-                index++;
+            for (Map.Entry field : formHashMap.entrySet()) {
+                String jsonKey = field.getKey().toString();
+                EditText jsonValue = (EditText) field.getValue();
+
+                json.put(jsonKey, jsonValue.getText().toString());
             }
-        } catch (JSONException e){
-            Log.d(TAG, "Error generating text to edit text form");
-        }
+            // debug
+            Log.d(TAG, "convertFormToJson: " + json.toString());
+
+            return json;
+        } catch (JSONException e) {}
+
+        return json;
     }
 
+
+    /**
+     * Fills out edit text form with data contained in the json object
+     * @param json Contains the form's data as a json object
+     * @param formData Hashmap of json keys mapped to its corresponding edit text view on the form
+     */
     public static void generateDataInEditText(JSONObject json, HashMap<String, EditText> formData) {
 
         try {

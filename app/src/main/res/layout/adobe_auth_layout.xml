@@ -259,8 +259,20 @@
                                 android:id="@+id/nbcTokenurl"
                                 style="@style/FormEditText"/>
                         </LinearLayout>
+
                     </LinearLayout>
                 </HorizontalScrollView>
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/authForm18_tempPassSelection"/>
+
+                    <EditText
+                        android:id="@+id/tempPassSelection"
+                        android:hint="TempPassSelectionConfig Object"
+                        style="@style/FormExpandText"/>
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
             //TODO: Show a spinner for loading progress
             //progressSpinner.setVisibility(View.VISIBLE);
+            // TODO: Capture crash when info in adobe auth is not valid
 
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 

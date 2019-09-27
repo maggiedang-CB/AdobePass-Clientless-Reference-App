@@ -15,10 +15,10 @@ import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.adobeauth.GenerateSampleData;
 import com.example.android.adobepassclientlessrefapp.utils.SetUpUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,11 +77,13 @@ public class AdobeAuthActivity extends AbstractActivity {
     EditText externalBrowserDomains;
     @BindView(R.id.nbcTokenurl)
     EditText nbcTokenUrl;
+    @BindView(R.id.tempPassSelection)
+    EditText tempPassSelection;
 
-    //TODO: figure out tempPassSelection value when working with temp pass
+    //TODO: figure out temppass values usages when working with temp pass
 
-    private ArrayList<String> listOfValues;
     private ArrayList<EditText> listOfEditText;
+    private HashMap<String, EditText> formHashMap;
 
     private SharedPreferences sharedPreferences;
 
@@ -93,10 +95,10 @@ public class AdobeAuthActivity extends AbstractActivity {
         // Hide keyboard on launch
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        // List of key values
-        this.listOfValues = getFormNamesArray();
         // list of edit text fields
         this.listOfEditText = getFormArray();
+        // Hashmap of form where the key is the same as the key value in the json object
+        this.formHashMap = getFormHashMap();
 
         // setup listeners
         backButton.setOnClickListener(backButtonListener());
@@ -113,7 +115,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      */
     private void showLastSavedFormData() {
         sharedPreferences = getSharedPreferences();
-        SetUpUtils.showLastSavedFormData(sharedPreferences, ADOBEAUTH, listOfEditText, listOfValues);
+        SetUpUtils.showLastSavedFormData(sharedPreferences, ADOBEAUTH, formHashMap);
     }
 
     /**
@@ -195,27 +197,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      * @return
      */
     private JSONObject convertFormToJson() {
-        // Convert to JSONObject
-        JSONObject json = new JSONObject();
-
-        try {
-            int index = 0;
-            for (EditText editText : listOfEditText) {
-                json.put(listOfValues.get(index), editText.getText().toString());
-                index++;
-            }
-            // debug
-            Log.d(TAG, "convertFormToJson: " + json.toString());
-
-            // TODO: remember to pass in the temp pass selection values as well
-            // Sample values here for now
-            String tempPassSelection = GenerateSampleData.makeJsonSample().getString("tempPassSelection");
-            json.put("tempPassSelection", tempPassSelection);
-
-            return json;
-        } catch (JSONException e) {}
-
-        return json;
+        return SetUpUtils.convertFormToJson(formHashMap);
     }
 
 
@@ -224,7 +206,7 @@ public class AdobeAuthActivity extends AbstractActivity {
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {
-        SetUpUtils.generateDataInEditText(json, listOfEditText, listOfValues);
+        SetUpUtils.generateDataInEditText(json, formHashMap);
     }
 
     /**
@@ -252,7 +234,6 @@ public class AdobeAuthActivity extends AbstractActivity {
      */
     private ArrayList<EditText> getFormArray() {
         ArrayList<EditText> arrayForm = new ArrayList<>();
-        // Note: Do not change order of views added. They correspond to the order appeared on the form
         arrayForm.add(baseUrl);
         arrayForm.add(reggieCodePath);
         arrayForm.add(checkAuthenticationPath);
@@ -270,38 +251,38 @@ public class AdobeAuthActivity extends AbstractActivity {
         arrayForm.add(logosUrl);
         arrayForm.add(externalBrowserDomains);
         arrayForm.add(nbcTokenUrl);
+        arrayForm.add(tempPassSelection);
 
         return arrayForm;
     }
 
     /**
-     * Returns a list of strings containing the name of each field from the adobe auth form.
-     * i.e) "tempPassUrl"
+     * Hashmap containing the json key mapped to the form's edit text view displaying the key's value
      * @return
      */
-    private ArrayList<String> getFormNamesArray() {
-        ArrayList<String> formNames = new ArrayList<>();
+    private HashMap<String, EditText> getFormHashMap() {
+        HashMap<String, EditText> formHash = new HashMap<>();
 
-        formNames.add(this.getString(R.string.auth1_baseUrl));
-        formNames.add(this.getString(R.string.auth2_reggieCodePath));
-        formNames.add(this.getString(R.string.auth3_checkAuthenticationPath));
-        formNames.add(this.getString(R.string.auth4_authnTokenTimeoutSeconds));
-        formNames.add(this.getString(R.string.auth5_tempPassProvider));
-        formNames.add(this.getString(R.string.auth6_getUserMetadataPath));
-        formNames.add(this.getString(R.string.auth7_authnTokenPath));
-        formNames.add(this.getString(R.string.auth8_tempPassUrl));
-        formNames.add(this.getString(R.string.auth9_authzTokenPath));
-        formNames.add(this.getString(R.string.auth10_authorizePath));
-        formNames.add(this.getString(R.string.auth11_logoutPath));
-        formNames.add(this.getString(R.string.auth12_mvpdListPath));
-        formNames.add(this.getString(R.string.auth13_redirectUrl));
-        formNames.add(this.getString(R.string.auth14_tokenizationUrl));
-        formNames.add(this.getString(R.string.auth15_logosUrl));
-        formNames.add(this.getString(R.string.auth16_externalBrowserDomains));
-        formNames.add(this.getString(R.string.auth17_nbcTokenUrl));
-        formNames.add(this.getString(R.string.auth18_tempPassSelection));
+        formHash.put(getString(R.string.auth1_baseUrl), baseUrl);
+        formHash.put(getString(R.string.auth2_reggieCodePath), reggieCodePath);
+        formHash.put(getString(R.string.auth3_checkAuthenticationPath), checkAuthenticationPath);
+        formHash.put(getString(R.string.auth4_authnTokenTimeoutSeconds), authnTokenTimeoutSeconds);
+        formHash.put(getString(R.string.auth5_tempPassProvider), tempPassProvider);
+        formHash.put(getString(R.string.auth6_getUserMetadataPath), getUserMetadataPath);
+        formHash.put(getString(R.string.auth7_authnTokenPath), authnTokenPath);
+        formHash.put(getString(R.string.auth8_tempPassUrl), tempPassUrl);
+        formHash.put(getString(R.string.auth9_authzTokenPath), authzTokenPath);
+        formHash.put(getString(R.string.auth10_authorizePath), authorizePath);
+        formHash.put(getString(R.string.auth11_logoutPath), logoutPath);
+        formHash.put(getString(R.string.auth12_mvpdListPath), mvpdListPath);
+        formHash.put(getString(R.string.auth13_redirectUrl), redirectUrl);
+        formHash.put(getString(R.string.auth14_tokenizationUrl), tokenizationUrl);
+        formHash.put(getString(R.string.auth15_logosUrl), logosUrl);
+        formHash.put(getString(R.string.auth16_externalBrowserDomains), externalBrowserDomains);
+        formHash.put(getString(R.string.auth17_nbcTokenUrl), nbcTokenUrl);
+        formHash.put(getString(R.string.auth18_tempPassSelection), tempPassSelection);
 
-        return formNames;
+        return formHash;
     }
 
     private SharedPreferences getSharedPreferences() {

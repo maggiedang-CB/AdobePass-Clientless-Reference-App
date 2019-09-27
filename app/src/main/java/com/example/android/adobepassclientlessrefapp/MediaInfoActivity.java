@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,12 +14,10 @@ import com.example.android.adobepassclientlessrefapp.mediaInfo.GenerateSampleMed
 import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import com.example.android.adobepassclientlessrefapp.utils.SetUpUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -160,23 +157,7 @@ public class MediaInfoActivity extends AbstractActivity {
      * @return
      */
     private JSONObject convertFormToJson() {
-        // Convert to JSONObject
-        JSONObject json = new JSONObject();
-
-        try {
-            for (Map.Entry field : formHashMap.entrySet()) {
-                String jsonKey = field.getKey().toString();
-                EditText jsonValue = (EditText) field.getValue();
-
-                json.put(jsonKey, jsonValue.getText().toString());
-            }
-            // debug
-            Log.d(TAG, "convertFormToJson: " + json.toString());
-
-            return json;
-        } catch (JSONException e) {}
-
-        return json;
+        return SetUpUtils.convertFormToJson(formHashMap);
     }
 
     /**
@@ -200,7 +181,6 @@ public class MediaInfoActivity extends AbstractActivity {
 
     private ArrayList<EditText> getFormArray() {
         ArrayList<EditText> arrayForm = new ArrayList<>();
-        // Note: Do not change order of views added. They correspond to the order appeared on the form
         arrayForm.add(etPId);
         arrayForm.add(etStreamUrl);
         arrayForm.add(etRId);
@@ -225,7 +205,7 @@ public class MediaInfoActivity extends AbstractActivity {
     }
 
     /**
-     * Fills out edit text form with data contained in the adobe auth json object
+     * Fills out edit text form with data contained in the media info json object
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {

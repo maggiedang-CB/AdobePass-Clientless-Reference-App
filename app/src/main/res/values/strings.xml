@@ -50,6 +50,7 @@
     <string name="authForm15_logosUrl">logosUrl: </string>
     <string name="authForm16_externalBrowserDomains">externalBrowserDomains: </string>
     <string name="authForm17_nbcTokenUrl">nbcTokenUrl: </string>
+    <string name="authForm18_tempPassSelection">tempPassSelection: </string>
 
     <string name="auth1_baseUrl">baseUrl</string>
     <string name="auth2_reggieCodePath">reggieCodePath</string>
