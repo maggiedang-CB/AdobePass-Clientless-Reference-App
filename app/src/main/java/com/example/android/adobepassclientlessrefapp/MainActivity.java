@@ -261,12 +261,24 @@ public class MainActivity extends AppCompatActivity {
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
                 Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
+                Toast.makeText(MainActivity.this, "Requestor ID has not been saved", Toast.LENGTH_SHORT).show();
             } else if (!sharedPreferences.contains(sharedPrefKeys.MEDIA_INFO.toString())) {
                 Toast.makeText(MainActivity.this, "Media Info has not been set up", Toast.LENGTH_SHORT).show();
             } else if (!isWifiConnected()) {
                 Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+            } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
+                Toast.makeText(MainActivity.this, "You are not Logged In", Toast.LENGTH_SHORT).show();
             } else {
-                authorize();
+                String status = sharedPreferences.getString(LoginActivity.LoginStatus.LOGIN_STATUS.toString(),
+                        getString(R.string.login_status_not_logged));
+
+                if (status.equals(getString(R.string.login_status_signed_in))) {
+                    authorize();
+                } else {
+                    Toast.makeText(MainActivity.this, "You are not Logged In", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
         }
@@ -274,6 +286,8 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void authorize() {
+
+        // TODO: fix false success that happens when user is not logged in
 
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
         AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());

@@ -134,7 +134,7 @@
                 <Button
                     android:id="@+id/btn_login_ok"
                     style="@style/ButtonStyle"
-                    android:text="OK"/>
+                    android:text="LOGIN"/>
 
                 <Button
                     android:id="@+id/btn_login_back"
