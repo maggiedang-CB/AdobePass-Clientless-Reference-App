@@ -150,6 +150,7 @@
                     style="@style/Separator"
                     android:layout_width="match_parent"
                     android:text="@string/login_header"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,6 +162,19 @@
                         android:id="@+id/btn_isSignedIn"
                         style="@style/ButtonStyle"
                         android:text="@string/is_signed_in"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/isSignedIn_desc"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/paddingLR"
+                    android:paddingRight="@dimen/paddingLR"
+                    android:layout_marginTop="5dip">
                     <Button
                         android:id="@+id/btn_login"
                         style="@style/ButtonStyle"

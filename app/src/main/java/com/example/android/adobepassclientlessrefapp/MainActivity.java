@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
      * Show saved data from shared preferences such as: requestorId.
      */
     private void showSavedData() {
-        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences();
 
         if (sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
             rId = sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
@@ -215,10 +215,16 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener loginTempPassListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, LoginTempPassActivity.class);
-            intent.putExtra("requestorId", "");
-            intent.putExtra("tempPassId", "");
-            startActivity(intent);
+
+            if (!isWifiConnected()) {
+                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+            } else if (isLoggedIn()) {
+                // Login temp pass only if the user is not logged in
+                alertDialog(getString(R.string.temppass_loggedIn_error), getString(R.string.temppass_loggedIn_error_msg));
+            } else {
+                Intent intent = new Intent(MainActivity.this, LoginTempPassActivity.class);
+                startActivity(intent);
+            }
         }
     };
 
@@ -229,12 +235,15 @@ public class MainActivity extends AppCompatActivity {
             // Use the user entered rId value from edit text to logout
             String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
 
-            if (isLoggedIn()) {
-                if (isWifiConnected()) {
-                    logout(rId);
-                } else {
-                    Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
-                }
+            if (!isWifiConnected()) {
+                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+            } else if (isLoggedIn()) {
+                logout(rId);
+            } else if (isTempPass()) {
+                // Temp pass is ON. Logout Temp Pass.
+                logout(rId);
+                changeTempPassLoginStatusToOff();
+                Toast.makeText(MainActivity.this, getString(R.string.temppass_log_off_msg), Toast.LENGTH_LONG).show();
             } else {
                 // User is already logged out!
                 Log.d(TAG, "LOGOUT: USER IS ALREADY LOGGED OUT!");
@@ -517,6 +526,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Shared preferences is edited with the status that temp pass has been turned off
+     */
+    private void changeTempPassLoginStatusToOff() {
+        String key = LoginTempPassActivity.LoginStatus.TEMPPASS_ID.toString();
+        String offStatus = getString(R.string.temppass_id_not_loggedIn);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, offStatus);
+        editor.apply();
+    }
+
+    /**
      * Returns true if the user is logged in.
      * @return
      */
@@ -540,6 +561,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean isWifiConnected() {
         return NetworkUtils.isWifiConnected(this);
+    }
+
+    /**
+     * Returns true if the user is on Temporary pass.
+     * @return
+     */
+    private boolean isTempPass() {
+        String offStatus = getString(R.string.temppass_id_not_loggedIn);
+        return LoginActivity.isTempPass(getSharedPreferences(), offStatus);
     }
 
     @Override

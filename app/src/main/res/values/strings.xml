@@ -36,8 +36,9 @@
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
 
+    <string name="isSignedIn_desc"> > Click Here to Check Login Status</string>
     <string name="isSignedIn_false">Not Signed In</string>
-    <string name="isSignedIn_false_msg">User is not signed in. Please Login to a selected MVPD.</string>
+    <string name="isSignedIn_false_msg">User is not signed in. Please Login to a selected MVPD or Login Temporary Pass.</string>
     <string name="isSignedIn_true">Signed In</string>
     <string name="isSignedIn_true_msg">User is Logged In.</string>
 
@@ -46,6 +47,19 @@
     <string name="logout_false">Logout Failure</string>
     <string name="logout_false_msg">User is already logged out.</string>
     <string name="logout_fail_msg">There was an error when logging out: </string>
+
+    <string name="temppass_loggedIn_error">Temporary Pass Error</string>
+    <string name="temppass_loggedIn_error_msg">User is already logged into a MVPD. Please logout before logging into Temp Pass.</string>
+    <string name="temppass_id_empty">Please Enter a Valid tempPassId</string>
+    <string name="temppass_id">No TempPass</string>
+    <string name="temppass_id_not_loggedIn">No TempPass</string>
+    <string name="temppass_ON">ON</string>
+    <string name="temppass_OFF">OFF</string>
+    <string name="temppass_success_title">Temp Pass Login Success</string>
+    <string name="temppass_success_msg">Successfully logged in with a temporary pass.</string>
+    <string name="temppass_fail_title">Temp Pass Login Error</string>
+    <string name="temppass_fail_msg">Problem logging into Temporary Pass. Please check your Requestor Id and tempPassId.</string>
+    <string name="temppass_log_off_msg">Temporary Pass Turned OFF</string>
 
     <!--adobe config set up form-->
     <string name="configForm1_baseUrl">baseUrl: </string>

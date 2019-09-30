@@ -15,9 +15,14 @@ package com.example.android.adobepassclientlessrefapp.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.android.adobepassclientlessrefapp.LoginTempPassActivity;
+import com.example.android.adobepassclientlessrefapp.MainActivity;
 
 public class AbstractActivity extends Activity {
     private static final String LOG_TAG = "AbstractActivity";
@@ -27,6 +32,11 @@ public class AbstractActivity extends Activity {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Simple alert dialog where the OK button will return the user back to the current activity
+     * @param title
+     * @param message
+     */
     protected void alertDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -36,6 +46,32 @@ public class AbstractActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Back to current activity
+            }
+        });
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
+        alert.getWindow().setLayout(900, 700);
+    }
+
+    /**
+     * Alert dialog where the OK button will return the user back to the MainActivity
+     * @param title
+     * @param message
+     */
+    protected void alertDialogBackButtonMainActivty(String title, String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Go back to MainActivity
+                Intent intent = new Intent(context, MainActivity.class);
+                setResult(RESULT_CANCELED, intent);
+                finish();
             }
         });
 

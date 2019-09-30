@@ -204,6 +204,9 @@ public class LoginActivity extends FragmentActivity {
                 tvLoginStatus.setText(getString(R.string.login_status_signed_in));
                 saveLoginStatus();
 
+                // If the user was on temp pass, logout of temp pass
+                logoutTempPass();
+
                 // Add some views back to page to state success
                 tvLoginDescription.setVisibility(View.VISIBLE);
                 tvLoginDescription.setText(R.string.login_success_message);
@@ -274,6 +277,46 @@ public class LoginActivity extends FragmentActivity {
         editor.putString(LoginStatus.MVPD_ID.toString(), mvpdId);
 
         editor.apply();
+    }
+
+    @SuppressLint("CheckResult")
+    private void logoutTempPass() {
+        sharedPreferences = getSharedPreferences();
+        // Change status of temp pass
+        String key = LoginTempPassActivity.LoginStatus.TEMPPASS_ID.toString();
+        String offStatus = getString(R.string.temppass_id_not_loggedIn);
+
+        if (isTempPass(sharedPreferences, offStatus)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(key, offStatus);
+            editor.apply();
+            // Perform logout
+            String rId = sharedPreferences.getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), "");
+            adobeClientless.logout(rId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            adobeAuth -> {
+                                Toast.makeText(LoginActivity.this,
+                                        getString(R.string.temppass_log_off_msg), Toast.LENGTH_LONG).show();
+                            },
+                            throwable -> {
+                                // Error when logging out temp pass.
+                                Log.d(TAG, "TEMPPASS LOGOUT: ERROR");
+                            });
+        }
+
+    }
+
+    /**
+     * Returns true if the user is logged in temp pass.
+     * @param sharedPreferences
+     * @param offStatus Default off status value for temp pass. (R.string.temppass_id_not_loggedIn)
+     * @return
+     */
+    public static boolean isTempPass(SharedPreferences sharedPreferences, String offStatus) {
+        String key = LoginTempPassActivity.LoginStatus.TEMPPASS_ID.toString();
+        return sharedPreferences.contains(key) && !sharedPreferences.getString(key, offStatus).equals(offStatus);
     }
 
     private AdobeConfig getAdobeConfigFromJson() {
