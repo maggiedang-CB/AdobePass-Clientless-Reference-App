@@ -126,5 +126,11 @@
     <string name="authorize_click_here">Click Here to Authorize Media Asset</string>
     <string name="authorize_success">Authorization Success!</string>
     <string name="authorize_failure">Authorization Failure</string>
+    <string name="authorize_error">Authorization Error</string>
+    <string name="authorize_error_message">"We\'re sorry, this programming is currently not available through your provider.  Please continue to enjoy other great content available through NBC Sports.</string>
+    <string name="player_restricted_title">Error</string>
+    <string name="player_restricted_error">Oops, something happened. Please close your app and try again.</string>
+
+
 
 </resources>

@@ -37,6 +37,7 @@ import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
 import com.nbcsports.leapsdk.authentication.adobepass.config.TempPassSelectionConfig;
 import com.nbcsports.leapsdk.authentication.common.AdobeAuth;
 import com.nbcsports.leapsdk.authentication.common.AdobeMediaInfo;
+import com.nbcsports.leapsdk.authentication.common.AuthZException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,27 +230,11 @@ public class MainActivity extends AppCompatActivity {
             String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
 
             if (isLoggedIn()) {
-                adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
-                AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this, adobeConfig, DeviceUtils.getDeviceInfo());
-
-                adobeClientless.logout(rId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                adobeAuth -> {
-                                    // User is logged out.
-                                    Log.d(TAG, "LOGOUT: Logged out");
-                                    alertDialog(getString(R.string.logout_true), getString(R.string.logout_true_msg));
-                                    // Change login status
-                                    changeLoginStatusToLogout();
-                                },
-                                throwable -> {
-                                    // Error when logging out.
-                                    Log.d(TAG, "LOGOUT: ERROR");
-                                    String logoutMessage = getString(R.string.logout_fail_msg) + throwable.toString();
-                                    alertDialog(getString(R.string.logout_false), logoutMessage);
-                                });
-
+                if (isWifiConnected()) {
+                    logout(rId);
+                } else {
+                    Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                }
             } else {
                 // User is already logged out!
                 Log.d(TAG, "LOGOUT: USER IS ALREADY LOGGED OUT!");
@@ -319,9 +304,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void authorize() {
-
-        // TODO: fix false success that happens when user is not logged in
-
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
         AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
         AdobeMediaInfo adobeMediaInfo = getMediaInfoFromJson(getSharedPreferences());
@@ -336,8 +318,13 @@ public class MainActivity extends AppCompatActivity {
                     tvAuthorize.setText(getString(R.string.authorize_success));
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
-                    // Check for 2 types of authz errors
-
+                    if (throwable instanceof AuthZException) {
+                        // AuthZ Error
+                        alertDialog(getString(R.string.authorize_error), getString(R.string.authorize_error_message));
+                    } else {
+                        // Unknown Error
+                        alertDialog(getString(R.string.player_restricted_title), getString(R.string.player_restricted_error));
+                    }
                     tvAuthorize.setText(getString(R.string.authorize_failure));
                 });
     }
@@ -365,6 +352,30 @@ public class MainActivity extends AppCompatActivity {
                         throwable -> {
                             // Error: User is not signed in.
                             alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
+                        });
+    }
+
+    @SuppressLint("CheckResult")
+    public void logout(String rId) {
+        adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
+        AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this, adobeConfig, DeviceUtils.getDeviceInfo());
+
+        adobeClientless.logout(rId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        adobeAuth -> {
+                            // User is logged out.
+                            Log.d(TAG, "LOGOUT: Logged out");
+                            alertDialog(getString(R.string.logout_true), getString(R.string.logout_true_msg));
+                            // Change login status
+                            changeLoginStatusToLogout();
+                        },
+                        throwable -> {
+                            // Error when logging out.
+                            Log.d(TAG, "LOGOUT: ERROR");
+                            String logoutMessage = getString(R.string.logout_fail_msg) + throwable.toString();
+                            alertDialog(getString(R.string.logout_false), logoutMessage);
                         });
     }
 
