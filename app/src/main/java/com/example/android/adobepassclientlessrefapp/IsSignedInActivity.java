@@ -10,6 +10,7 @@ import com.example.android.adobepassclientlessrefapp.ui.AbstractActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//TODO: Delete class if not using
 public class IsSignedInActivity extends AbstractActivity {
 
     @BindView(R.id.btn_isSignedIn_ok)

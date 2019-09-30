@@ -1,6 +1,8 @@
 package com.example.android.adobepassclientlessrefapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_getmvpdlist)
     Button btnGetMvpdList;
+
+    // TODO: Get progress spinner to work whenever a clientless network call is made
     @BindView(R.id.progressSpinner)
     ProgressBar progressSpinner;
 
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             // TODO: Change colour of Save RId button to red if unsaved
             String rid = etRId.getText().toString();
             // Check if rId is valid. If it is, save to shared preferences
-            if(isValidRId(rid)) {
+            if (isValidRId(rid)) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(sharedPrefKeys.REQUESTOR_ID.toString(), rid);
                 editor.apply();
@@ -179,8 +183,15 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener isSignedInListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, IsSignedInActivity.class);
-            startActivity(intent);
+            String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
+            // Check if rId and adobe config has been setup.
+            if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
+                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+            } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
+                Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
+            } else {
+                isSignedIn(rId);
+            }
         }
     };
 
@@ -195,9 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                // init default empty values
-                intent.putExtra("mvpd", "");
-                intent.putExtra("requestorId", "");
                 startActivity(intent);
             }
         }
@@ -213,15 +221,40 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressLint("CheckResult")
     private View.OnClickListener logoutListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             // Use the user entered rId value from edit text to logout
+            String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
 
+            if (isLoggedIn()) {
+                adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
+                AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this, adobeConfig, DeviceUtils.getDeviceInfo());
 
-//            Intent intent = new Intent(MainActivity.this, LogoutActivity.class);
-//            intent.putExtra("requestorId", rId);
-//            startActivity(intent);
+                adobeClientless.logout(rId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                adobeAuth -> {
+                                    // User is logged out.
+                                    Log.d(TAG, "LOGOUT: Logged out");
+                                    alertDialog(getString(R.string.logout_true), getString(R.string.logout_true_msg));
+                                    // Change login status
+                                    changeLoginStatusToLogout();
+                                },
+                                throwable -> {
+                                    // Error when logging out.
+                                    Log.d(TAG, "LOGOUT: ERROR");
+                                    String logoutMessage = getString(R.string.logout_fail_msg) + throwable.toString();
+                                    alertDialog(getString(R.string.logout_false), logoutMessage);
+                                });
+
+            } else {
+                // User is already logged out!
+                Log.d(TAG, "LOGOUT: USER IS ALREADY LOGGED OUT!");
+                alertDialog(getString(R.string.logout_false), getString(R.string.logout_false_msg));
+            }
         }
     };
 
@@ -307,6 +340,53 @@ public class MainActivity extends AppCompatActivity {
 
                     tvAuthorize.setText(getString(R.string.authorize_failure));
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    private void isSignedIn(String rId) {
+        adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
+        AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
+        adobeClientless.isSignedIn(rId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        adobeAuth -> {
+                            // TODO: Fix issue where signed in is true even after re installing (it shows prev login data)
+                            // User is signed in so we can get its user or mvpd info.
+                            if (adobeAuth.isCheckAuthNSuccess()) {
+                                alertDialog(getString(R.string.isSignedIn_true), getString(R.string.isSignedIn_true_msg));
+                                Log.d(TAG, "ISSIGNEDIN SUCCESS: MVPD Display = " + adobeAuth.getMvpdDisplayName());
+                            } else {
+                                // User is not signed in.
+                                alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
+                            }
+
+                        },
+                        throwable -> {
+                            // Error: User is not signed in.
+                            alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
+                        });
+    }
+
+    /**
+     * Sets up and displays an alert dialog in the main activity
+     * @param title
+     * @param message
+     */
+    protected void alertDialog(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Back to main activity
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+        alert.getWindow().setLayout(900, 700);
     }
 
     /**
@@ -411,6 +491,36 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Figure out how to back press on hardware to dismiss frag dialog (instead of exiting main activity)
 
+    }
+
+    /**
+     * Edit shared preferences so that the value that saves the login status is changed back to not logged in
+     */
+    private void changeLoginStatusToLogout() {
+        sharedPreferences = getSharedPreferences();
+        String statusKey = LoginActivity.LoginStatus.LOGIN_STATUS.toString();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(statusKey, getString(R.string.login_status_not_logged));
+        editor.apply();
+    }
+
+    /**
+     * Returns true if the user is logged in.
+     * @return
+     */
+    private boolean isLoggedIn() {
+        sharedPreferences = getSharedPreferences();
+        String statusKey = LoginActivity.LoginStatus.LOGIN_STATUS.toString();
+        String loginStatus = getString(R.string.login_status_signed_in);
+        String currentStatus = sharedPreferences.getString(statusKey, loginStatus);
+
+        if (sharedPreferences.contains(statusKey)) {
+            if (currentStatus.equals(loginStatus)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -70,6 +70,16 @@
                     android:textStyle="bold"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/login_separator2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
             <Button
                 android:id="@+id/btn_login_select_mvpd"
                 android:layout_width="match_parent"

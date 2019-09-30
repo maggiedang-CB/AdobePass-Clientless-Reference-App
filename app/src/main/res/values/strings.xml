@@ -36,6 +36,17 @@
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
 
+    <string name="isSignedIn_false">Not Signed In</string>
+    <string name="isSignedIn_false_msg">User is not signed in. Please Login to a selected MVPD.</string>
+    <string name="isSignedIn_true">Signed In</string>
+    <string name="isSignedIn_true_msg">User is Logged In.</string>
+
+    <string name="logout_true">Successfully Logged Out</string>
+    <string name="logout_true_msg">User has been successfully logged out.</string>
+    <string name="logout_false">Logout Failure</string>
+    <string name="logout_false_msg">User is already logged out.</string>
+    <string name="logout_fail_msg">There was an error when logging out: </string>
+
     <!--adobe config set up form-->
     <string name="configForm1_baseUrl">baseUrl: </string>
     <string name="configForm2_reggieCodePath">reggieCodePath: </string>

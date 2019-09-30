@@ -40,6 +40,8 @@ public class LoginActivity extends FragmentActivity {
     TextView tvLoginDescription;
     @BindView(R.id.login_separator)
     TextView tvSeparator;
+    @BindView(R.id.login_separator2)
+    TextView tvSeparator2;
     @BindView(R.id.mvpd_provider_name)
     TextView tvProviderText;
     @BindView(R.id.login_provider)
@@ -213,6 +215,7 @@ public class LoginActivity extends FragmentActivity {
                 // Hide Buttons and other UI
                 tvLoginDescription.setVisibility(View.GONE);
                 tvSeparator.setVisibility(View.GONE);
+                tvSeparator2.setVisibility(View.GONE);
                 btnSelectMvpd.setVisibility(View.GONE);
                 tvMvpdValueName.setVisibility(View.GONE);
                 tvMvpdId.setVisibility(View.GONE);
