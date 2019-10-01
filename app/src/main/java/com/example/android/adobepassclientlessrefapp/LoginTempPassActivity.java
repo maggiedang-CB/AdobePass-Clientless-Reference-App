@@ -114,10 +114,15 @@ public class LoginTempPassActivity extends AbstractActivity {
                             String tempPassMvpd = adobeAuth.getAuthNToken().getMvpd();
                             String tempPassExpire = adobeAuth.getAuthNToken().getExpires();
 
+                            // logs
                             Log.d(TAG, "TEMPPASSLOGIN: SUCCESS");
                             Log.d(TAG, "TEMPPASSLOGIN: MVPD = " + tempPassMvpd);
                             Log.d(TAG, "TEMPPASSLOGIN: EXPIRE = " + tempPassExpire);
-
+                            // TODO: convert expire date to actual date
+                            addToLogcat(TAG, "TempPass Expire Date = " + tempPassExpire);
+                            addToLogcat(TAG, "TempPass Mvpd = " + tempPassMvpd);
+                            addToLogcat(TAG, "TempPassId = " + tempPassId);
+                            addToLogcat(TAG, "TEMPPASS LOGIN SUCCESS");
 
                             loginSuccess(tempPassMvpd);
 
@@ -130,6 +135,8 @@ public class LoginTempPassActivity extends AbstractActivity {
 
                             String failMessage = getString(R.string.temppass_fail_msg) + "\n\n" + throwable.toString();
                             alertDialog(getString(R.string.temppass_fail_title), failMessage);
+
+                            addToLogcat(TAG, "TEMPPASS ERROR: " + throwable.toString());
 
                         });
 

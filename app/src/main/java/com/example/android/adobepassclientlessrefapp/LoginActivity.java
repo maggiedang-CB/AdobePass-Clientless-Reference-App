@@ -180,14 +180,18 @@ public class LoginActivity extends FragmentActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         adobeAuth -> launchWebView(adobeAuth.getRedirectUrl()),
-                        throwable -> Log.d(TAG, "Login Error: " + throwable));
+                        throwable -> {
+                            String logMessage = "Webview Error: " + throwable.toString();
+                            Log.d(TAG, logMessage);
+                            addToLogcat(logMessage);
+                            Toast.makeText(this, "Webview Error. See logcat.", Toast.LENGTH_SHORT).show();
+                        });
     }
 
     private void launchWebView(final String adobeAuthRedirectUrl) {
 
         if (!adobeAuthRedirectUrl.contains("TempPass")) {
             webView.setVisibility(View.VISIBLE);
-            //navigateMvpdUrl = adobeAuthRedirectUrl;
         }
 
         webView.setCallback(new AuthenticationWebView.Callback() {
@@ -198,7 +202,9 @@ public class LoginActivity extends FragmentActivity {
             @Override
             public void onComplete() {
                 Log.d(TAG, "Login Success");
-                // TODO: Do stuff here on success
+                addToLogcat("Current MvpdId =  " + tvMvpdId.getText().toString());
+                addToLogcat("Current Provider = "+ tvProvider.getText().toString());
+                addToLogcat("LOGIN SUCCESS");
 
                 // Save login info
                 tvLoginStatus.setText(getString(R.string.login_status_signed_in));
@@ -215,6 +221,7 @@ public class LoginActivity extends FragmentActivity {
 
             @Override
             public void onPageStarted(String url) {
+                addToLogcat("Login Url: " + url);
                 // Hide Buttons and other UI
                 tvLoginDescription.setVisibility(View.GONE);
                 tvSeparator.setVisibility(View.GONE);
@@ -317,6 +324,12 @@ public class LoginActivity extends FragmentActivity {
     public static boolean isTempPass(SharedPreferences sharedPreferences, String offStatus) {
         String key = LoginTempPassActivity.LoginStatus.TEMPPASS_ID.toString();
         return sharedPreferences.contains(key) && !sharedPreferences.getString(key, offStatus).equals(offStatus);
+    }
+
+    private void addToLogcat(String logMessage) {
+        sharedPreferences = getSharedPreferences();
+        String logcatKey = MainActivity.sharedPrefKeys.LOGCAT.toString();
+        MainActivity.addToLogcat(sharedPreferences, logcatKey, TAG, logMessage);
     }
 
     private AdobeConfig getAdobeConfigFromJson() {

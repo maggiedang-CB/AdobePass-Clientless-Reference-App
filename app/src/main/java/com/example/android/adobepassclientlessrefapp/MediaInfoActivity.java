@@ -3,6 +3,7 @@ package com.example.android.adobepassclientlessrefapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +26,10 @@ import butterknife.ButterKnife;
 public class MediaInfoActivity extends AbstractActivity {
 
     public static String TAG = "MediaInfo Activity";
+
+    // Url to browse more similar data to fill out form
+    private String liveDataUrl = "http://api.leap.nbcsports.com/feed/NBCSports/all/replay/v1/ios";
+
     // shared preference key to send media info json
     private static String MEDIA_INFO = MainActivity.sharedPrefKeys.MEDIA_INFO.toString();
 
@@ -72,6 +77,7 @@ public class MediaInfoActivity extends AbstractActivity {
         saveButton.setOnClickListener(saveListener);
         clearButton.setOnClickListener(clearListener);
         generateButton.setOnClickListener(generateListener);
+        browseButton.setOnClickListener(browseListener);
 
         showLastSavedFormData();
     }
@@ -89,6 +95,18 @@ public class MediaInfoActivity extends AbstractActivity {
         public void onClick(View v) {
             JSONObject sampleMediaInfoJson = GenerateSampleMediaInfo.makeSampleJsonObject();
             generateDataInEditText(sampleMediaInfoJson);
+        }
+    };
+
+    private View.OnClickListener browseListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Clicking on browse live data button will open up a url containing live media info
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse(liveDataUrl));
+            startActivity(intent);
         }
     };
 
@@ -114,6 +132,7 @@ public class MediaInfoActivity extends AbstractActivity {
 
                 // show toast that data has been saved
                 Toast.makeText(MediaInfoActivity.this, "Media Info Settings Saved", Toast.LENGTH_SHORT).show();
+                addToLogcat(TAG, "Media Info Settings Saved");
             }
         }
     };

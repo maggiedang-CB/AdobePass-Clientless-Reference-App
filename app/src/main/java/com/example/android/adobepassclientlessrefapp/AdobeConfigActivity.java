@@ -36,10 +36,8 @@ public class AdobeConfigActivity extends AbstractActivity {
     Button saveButton;
     @BindView(R.id.btn_adobe_config_generate)
     Button generateButton;
-    // TODO: Get browse button to work
-    // ^^ OR make it into a "Paste Json Data" button where user can put their own json data, then convert into the form
-    @BindView(R.id.btn_adobe_config_browse)
-    Button browseButton;
+//    @BindView(R.id.btn_adobe_config_browse)
+//    Button browseButton;
     @BindView(R.id.btn_adobe_config_clear)
     Button clearButton;
 
@@ -149,7 +147,7 @@ public class AdobeConfigActivity extends AbstractActivity {
     private Button.OnClickListener generateListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d(TAG,"Clicked generate button");
+            addToLogcat(TAG,"Generated Sample Data");
             // Uses stored sample data needed for adobe config
             JSONObject sampleJson = GenerateSampleData.makeJsonSampleAdobeConfig();
             // Add sample data to edit text views
@@ -165,7 +163,7 @@ public class AdobeConfigActivity extends AbstractActivity {
 
             if (!isAllFieldsFilled()) {
                 // Not all fields have an input
-                Toast.makeText(AdobeConfigActivity.this, "Error Saving: Field(s) Empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdobeConfigActivity.this, getString(R.string.config_saved_empty), Toast.LENGTH_SHORT).show();
             } else {
                 // save value of each field
                 String saveForm = convertFormToJson().toString();
@@ -179,7 +177,8 @@ public class AdobeConfigActivity extends AbstractActivity {
                 finish();
 
                 // show toast that data has been saved
-                Toast.makeText(AdobeConfigActivity.this, "Adobe Config Settings Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdobeConfigActivity.this, getString(R.string.config_saved), Toast.LENGTH_SHORT).show();
+                addToLogcat(TAG, getString(R.string.config_saved));
             }
         }
     };
@@ -206,6 +205,7 @@ public class AdobeConfigActivity extends AbstractActivity {
      * @param json
      */
     private void generateDataInEditText(JSONObject json) {
+        Log.d(TAG, "Json Data Generated In Edit Text: " + json.toString());
         SetUpUtils.generateDataInEditText(json, formHashMap);
     }
 

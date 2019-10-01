@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -105,6 +106,25 @@ public class AbstractActivity extends Activity {
 
         alert.show();
         alert.getWindow().setLayout(900, 700);
+    }
+
+    /**
+     * Simplified method to add new logs saved in shared preferences. The logs will be outputted
+     * in the logcat view in MainActivity.
+     * @param TAG Usually the name of the activity log was called in
+     * @param logMessage
+     */
+    protected void addToLogcat(String TAG, String logMessage) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+        String logKey = MainActivity.sharedPrefKeys.LOGCAT.toString();
+
+        MainActivity.addToLogcat(sharedPreferences, logKey, TAG, logMessage);
+    }
+    protected void addToLogcat(String logMessage) {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+        String logKey = MainActivity.sharedPrefKeys.LOGCAT.toString();
+
+        MainActivity.addToLogcat(sharedPreferences, logKey, "", logMessage);
     }
 
 }

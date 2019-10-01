@@ -37,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/descriptions_size"
                 android:text="@string/login_description"
-                android:paddingTop="@dimen/descriptions_size"/>
+                android:paddingTop="@dimen/descriptions_size"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/login_separator"

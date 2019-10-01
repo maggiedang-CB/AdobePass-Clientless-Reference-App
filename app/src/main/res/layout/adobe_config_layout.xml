@@ -31,10 +31,10 @@
                 style="@style/ButtonStyle"
                 android:text="@string/generate_sample_data"/>
 
-            <Button
-                android:id="@+id/btn_adobe_config_browse"
-                style="@style/ButtonStyle"
-                android:text="@string/browse_live_data"/>
+            <!--<Button-->
+                <!--android:id="@+id/btn_adobe_config_browse"-->
+                <!--style="@style/ButtonStyle"-->
+                <!--android:text="@string/browse_live_data"/>-->
 
             <Button
                 android:id="@+id/btn_adobe_config_clear"

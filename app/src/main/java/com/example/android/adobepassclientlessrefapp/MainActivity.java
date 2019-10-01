@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.authorize_main_page_presenter)
     TextView tvAuthorize;
 
+    @BindView(R.id.logcat)
+    LinearLayout llLogcat;
+    @BindView(R.id.logcat_output)
+    TextView tvLogcat;
+
     SharedPreferences sharedPreferences;
     private String rId;
     private AdobeConfig adobeConfig;
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkReceiver networkReceiver;
 
     public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO
+        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO, LOGCAT
     }
 
     @Override
@@ -140,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        updateLogcat();
     }
 
     /**
@@ -176,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
 
                 // Toast
-                showToast("Requestor Id Saved");
+                showToast(getString(R.string.setup_rId_true));
             }
         }
     };
@@ -221,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (isLoggedIn()) {
                 // Login temp pass only if the user is not logged in
                 alertDialog(getString(R.string.temppass_loggedIn_error), getString(R.string.temppass_loggedIn_error_msg));
+                addToLogcat("Temporary Pass Error: User is already logged into an MVPD");
             } else {
                 Intent intent = new Intent(MainActivity.this, LoginTempPassActivity.class);
                 startActivity(intent);
@@ -295,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
                 showToast(getString(R.string.no_internet_toast));
             } else if (isTempPass()) {
                 // Temp pass is active
-                // TODO: Temp pass authorize here + show countdown of temp pass somewhere ?
                 authorize();
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
                 showToast(getString(R.string.setup_not_logged_in));
@@ -329,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(auth -> {
                     Log.d(TAG, "AUTHORIZE SUCCESS");
                     tvAuthorize.setText(getString(R.string.authorize_success));
+                    addToLogcat("AUTHORIZE SUCCESS");
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
                     if (throwable instanceof AuthZException) {
@@ -340,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
                         alertDialog(getString(R.string.player_restricted_title), message);
                     }
                     tvAuthorize.setText(getString(R.string.authorize_failure));
+                    addToLogcat("AUTHORIZE FAILURE: " + throwable.toString());
                 });
     }
 
@@ -352,20 +361,24 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         adobeAuth -> {
-                            // TODO: Fix issue where signed in is true even after re installing (it shows prev login data)
                             // User is signed in so we can get its user or mvpd info.
                             if (adobeAuth.isCheckAuthNSuccess()) {
                                 alertDialog(getString(R.string.isSignedIn_true), getString(R.string.isSignedIn_true_msg));
                                 Log.d(TAG, "ISSIGNEDIN SUCCESS: MVPD Display = " + adobeAuth.getMvpdDisplayName());
+
+                                addToLogcat("isSignedIn = True. User is Signed in.");
+                                addToLogcat("Current MVPD: " + adobeAuth.getMvpdDisplayName());
                             } else {
                                 // User is not signed in.
                                 alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
+                                addToLogcat("isSignedIn = False. User is not Signed in.");
                             }
 
                         },
                         throwable -> {
                             // Error: User is not signed in.
                             alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
+                            addToLogcat("isSignedIn = False. " + throwable.toString());
                         });
     }
 
@@ -384,12 +397,16 @@ public class MainActivity extends AppCompatActivity {
                             alertDialog(getString(R.string.logout_true), getString(R.string.logout_true_msg));
                             // Change login status
                             changeLoginStatusToLogout();
+
+                            addToLogcat("LOGOUT SUCCESS");
                         },
                         throwable -> {
                             // Error when logging out.
                             Log.d(TAG, "LOGOUT: ERROR");
                             String logoutMessage = getString(R.string.logout_fail_msg) + throwable.toString();
                             alertDialog(getString(R.string.logout_false), logoutMessage);
+
+                            addToLogcat("LOGOUT ERROR: " + throwable.toString());
                         });
     }
 
@@ -425,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Instead of typing a value, make user radio dial select out of a list of current rIds (If possible)
 
         if (rId == null || rId.isEmpty()) {
-            showToast("Invalid Requestor Id");
+            showToast(getString(R.string.setup_rId_invalid));
             return false;
         }
         return true;
@@ -594,12 +611,84 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_adobe_clientless) {
             startActivity(new Intent(MainActivity.this, AboutClientlessActivity.class));
             return true;
+        } else if (id == R.id.action_show_logcat) {
+            showAndHideLogcat(item);
+        } else if (id == R.id.action_clear_logcat) {
+            clearLogCat();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void showAndHideLogcat(MenuItem item) {
+        if (llLogcat.getVisibility() == View.GONE) {
+            // Update logcat with new logs
+            updateLogcat();
+            // Show logcat
+            llLogcat.setVisibility(View.VISIBLE);
+            item.setTitle(getString(R.string.hide_logcat));
+        } else {
+            // Hide logcat
+            llLogcat.setVisibility(View.GONE);
+            item.setTitle(getString(R.string.show_logcat));
+        }
+    }
+
+    /**
+     * Updates the logcat view. The output of logs is in order of new logs placed above older logs.
+     *
+     * I.e) "new Log Message" + "\n" + old log messages
+     *
+     */
+    private void updateLogcat() {
+        sharedPreferences = getSharedPreferences();
+        String logcatKey = sharedPrefKeys.LOGCAT.toString();
+        String updatedLogcat = sharedPreferences.getString(logcatKey, "");
+        tvLogcat.setText(updatedLogcat);
+    }
+
+    /**
+     * Adds onto the logcat string in shared preferences.
+     * @param sharedPreferences
+     * @param logKey
+     * @param logMessage new log message to output
+     */
+    public static void addToLogcat(SharedPreferences sharedPreferences, String logKey, String TAG, String logMessage) {
+        String oldLogMessages = sharedPreferences.getString(logKey, "");
+        String addedTagToNewLog = TAG + ": " + logMessage;
+        // Add a new line each time a new log message is added for readability
+        String newLogMessage = addedTagToNewLog + "\n" + oldLogMessages;
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(logKey, newLogMessage);
+        editor.apply();
+    }
+
+    private void addToLogcat(String logMessage) {
+        sharedPreferences = getSharedPreferences();
+        String logcatKey = sharedPrefKeys.LOGCAT.toString();
+        addToLogcat(sharedPreferences, logcatKey, TAG, logMessage);
+        // update logcat immediately after adding changes to it
+        updateLogcat();
+    }
+
+    /**
+     * Resets logcat view data and update it in its shared preferences.
+     */
+    private void clearLogCat() {
+        // Clear on UI
+        tvLogcat.setText("");
+        // Update in shared preferences
+        sharedPreferences = getSharedPreferences();
+        String logcatKey = sharedPrefKeys.LOGCAT.toString();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(logcatKey, "");
+        editor.apply();
+    }
+
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        addToLogcat(message);
     }
 
     private SharedPreferences getSharedPreferences() {

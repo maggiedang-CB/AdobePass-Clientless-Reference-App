@@ -11,6 +11,8 @@
     <string name="back">BACK</string>
     <string name="about_clientless">About Clientless</string>
     <string name="show_logcat">Show Logcat</string>
+    <string name="hide_logcat">Hide Logcat</string>
+    <string name="clear_logcat">Clear Logcat</string>
     <string name="rId">Requestor Id</string>
     <string name="adobe_config_setup">SetUp Adobe Configuration</string>
     <string name="generate_sample_data">Generate Sample Data</string>
@@ -33,10 +35,15 @@
     <string name="login_success_message">Successfully logged in!</string>
 
     <string name="config_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Configuration Setup?"</string>
+    <string name="config_saved">Adobe Config Settings Saved</string>
+    <string name="config_saved_empty">Error Saving: Field(s) Empty</string>
+
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
     <string name="setup_adobeauth_false">Adobe Configuration has not been set up</string>
     <string name="setup_rId_false">Requestor Id Has not been saved</string>
+    <string name="setup_rId_true">Requestor Id Saved</string>
+    <string name="setup_rId_invalid">Invalid Requestor Id</string>
     <string name="setup_media_false">Media Info has not been set up</string>
     <string name="setup_not_logged_in">You are not Logged In</string>
 
