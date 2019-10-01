@@ -35,11 +35,15 @@
     <string name="config_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Configuration Setup?"</string>
     <string name="no_internet_toast">Error: No Internet Connection</string>
     <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
+    <string name="setup_adobeauth_false">Adobe Configuration has not been set up</string>
+    <string name="setup_rId_false">Requestor Id Has not been saved</string>
+    <string name="setup_media_false">Media Info has not been set up</string>
+    <string name="setup_not_logged_in">You are not Logged In</string>
 
     <string name="isSignedIn_desc"> > Click Here to Check Login Status</string>
     <string name="isSignedIn_false">Not Signed In</string>
     <string name="isSignedIn_false_msg">User is not signed in. Please Login to a selected MVPD or Login Temporary Pass.</string>
-    <string name="isSignedIn_true">Signed In</string>
+    <string name="isSignedIn_true">Already Signed In</string>
     <string name="isSignedIn_true_msg">User is Logged In.</string>
 
     <string name="logout_true">Successfully Logged Out</string>

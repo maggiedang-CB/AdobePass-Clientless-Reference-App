@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
 
                 // Toast
-                Toast.makeText(MainActivity.this, "Requestor Id Saved", Toast.LENGTH_SHORT).show();
+                showToast("Requestor Id Saved");
             }
         }
     };
@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
             String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
             // Check if rId and adobe config has been setup.
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
-                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_adobeauth_false));
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
-                Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_rId_false));
             } else {
                 isSignedIn(rId);
             }
@@ -202,9 +202,9 @@ public class MainActivity extends AppCompatActivity {
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
-                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_adobeauth_false));
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
-                Toast.makeText(MainActivity.this, "Requestor Id Has not been saved", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_rId_false));
             } else {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             if (!isWifiConnected()) {
-                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.no_internet_toast));
             } else if (isLoggedIn()) {
                 // Login temp pass only if the user is not logged in
                 alertDialog(getString(R.string.temppass_loggedIn_error), getString(R.string.temppass_loggedIn_error_msg));
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             String rId = getSharedPreferences().getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
 
             if (!isWifiConnected()) {
-                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.no_internet_toast));
             } else if (isLoggedIn()) {
                 logout(rId);
             } else if (isTempPass()) {
@@ -263,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
-                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_adobeauth_false));
             } else if (!isWifiConnected()) {
-                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.no_internet_toast));
             } else {
                 printMvpdList();
             }
@@ -284,26 +284,30 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener authorizeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: Check if adobe config, rid, and media info is set. (Maybe login too)
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
-                Toast.makeText(MainActivity.this, "Adobe Auth has not been set up", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_adobeauth_false));
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
-                Toast.makeText(MainActivity.this, "Requestor ID has not been saved", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_rId_false));
             } else if (!sharedPreferences.contains(sharedPrefKeys.MEDIA_INFO.toString())) {
-                Toast.makeText(MainActivity.this, "Media Info has not been set up", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_media_false));
             } else if (!isWifiConnected()) {
-                Toast.makeText(MainActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.no_internet_toast));
+            } else if (isTempPass()) {
+                // Temp pass is active
+                // TODO: Temp pass authorize here + show countdown of temp pass somewhere ?
+                authorize();
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
-                Toast.makeText(MainActivity.this, "You are not Logged In", Toast.LENGTH_SHORT).show();
+                showToast(getString(R.string.setup_not_logged_in));
             } else {
                 String status = sharedPreferences.getString(LoginActivity.LoginStatus.LOGIN_STATUS.toString(),
                         getString(R.string.login_status_not_logged));
 
                 if (status.equals(getString(R.string.login_status_signed_in))) {
+                    // Only authorize if the user is signed in
                     authorize();
                 } else {
-                    Toast.makeText(MainActivity.this, "You are not Logged In", Toast.LENGTH_SHORT).show();
+                    showToast(getString(R.string.setup_not_logged_in));
                 }
 
             }
@@ -420,8 +424,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Instead of typing a value, make user radio dial select out of a list of current rIds (If possible)
 
         if (rId == null || rId.isEmpty()) {
-            Toast toast = Toast.makeText(this, "Invalid Requestor Id", Toast.LENGTH_SHORT);
-            toast.show();
+            showToast("Invalid Requestor Id");
             return false;
         }
         return true;
@@ -592,6 +595,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private SharedPreferences getSharedPreferences() {

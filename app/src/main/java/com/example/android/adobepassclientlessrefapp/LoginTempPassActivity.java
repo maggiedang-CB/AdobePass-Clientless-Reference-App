@@ -112,8 +112,12 @@ public class LoginTempPassActivity extends AbstractActivity {
                         adobeAuth -> {
                             // Temp pass login success
                             String tempPassMvpd = adobeAuth.getAuthNToken().getMvpd();
+                            String tempPassExpire = adobeAuth.getAuthNToken().getExpires();
+
                             Log.d(TAG, "TEMPPASSLOGIN: SUCCESS");
                             Log.d(TAG, "TEMPPASSLOGIN: MVPD = " + tempPassMvpd);
+                            Log.d(TAG, "TEMPPASSLOGIN: EXPIRE = " + tempPassExpire);
+
 
                             loginSuccess(tempPassMvpd);
 
