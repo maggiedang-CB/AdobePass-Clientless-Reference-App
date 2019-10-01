@@ -336,7 +336,8 @@ public class MainActivity extends AppCompatActivity {
                         alertDialog(getString(R.string.authorize_error), getString(R.string.authorize_error_message));
                     } else {
                         // Unknown Error
-                        alertDialog(getString(R.string.player_restricted_title), getString(R.string.player_restricted_error));
+                        String message = getString(R.string.player_restricted_error) + "\n\n" + throwable.toString();
+                        alertDialog(getString(R.string.player_restricted_title), message);
                     }
                     tvAuthorize.setText(getString(R.string.authorize_failure));
                 });

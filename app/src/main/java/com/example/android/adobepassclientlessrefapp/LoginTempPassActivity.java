@@ -130,6 +130,7 @@ public class LoginTempPassActivity extends AbstractActivity {
 
                             String failMessage = getString(R.string.temppass_fail_msg) + "\n\n" + throwable.toString();
                             alertDialog(getString(R.string.temppass_fail_title), failMessage);
+
                         });
 
     }
