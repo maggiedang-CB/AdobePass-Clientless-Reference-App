@@ -8,4 +8,6 @@
 
     <dimen name="premium_logo_width">113dp</dimen>
     <dimen name="premium_logo_height">60dp</dimen>
+
+    <dimen name="logcat_height">200dp</dimen>
 </resources>

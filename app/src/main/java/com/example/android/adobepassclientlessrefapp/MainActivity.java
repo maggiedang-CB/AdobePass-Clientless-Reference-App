@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * AdobePass Clientless Reference App displays the usages of methods in AdobeClientlessService
+ * from the LEAP-SDK.
+ *
+ * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
+ */
 public class MainActivity extends AppCompatActivity {
 
     // shared preference key
@@ -90,10 +97,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.authorize_main_page_presenter)
     TextView tvAuthorize;
 
+    @BindView(R.id.main_activity_scroll_view)
+    ScrollView scrollView;
     @BindView(R.id.logcat)
     LinearLayout llLogcat;
     @BindView(R.id.logcat_output)
     TextView tvLogcat;
+    @BindView(R.id.empty_view_for_logcat)
+    LinearLayout logcatSpace;
 
     SharedPreferences sharedPreferences;
     private String rId;
@@ -150,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Show saved data from shared preferences such as: requestorId.
+     * Show on the UI saved data from shared preferences. Currently only REQUESTOR_ID is shown.
      */
     private void showSavedData() {
         sharedPreferences = getSharedPreferences();
@@ -322,6 +333,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Authorize is a success if the user is logged in (By MVPD or by Temp Pass) and has compatible
+     * Requestor Ids between the user's saved Requestor Id and Media Info's Requestor Id.
+     */
     @SuppressLint("CheckResult")
     private void authorize() {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
@@ -352,6 +367,12 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Uses the isSignedIn method from AdobeClientlessService to determine if the user is already
+     * logged in. In addition to the observable calling success if logged in, success is also
+     * called if Temp Pass is ON.
+     * @param rId
+     */
     @SuppressLint("CheckResult")
     private void isSignedIn(String rId) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
@@ -382,6 +403,10 @@ public class MainActivity extends AppCompatActivity {
                         });
     }
 
+    /**
+     * User can only logout if they are signed in OR if temp pass is ON.
+     * @param rId
+     */
     @SuppressLint("CheckResult")
     public void logout(String rId) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
@@ -501,6 +526,11 @@ public class MainActivity extends AppCompatActivity {
         return mediaInfo;
     }
 
+    /**
+     * Displays a list of all the available MVPDs (Providers) the user can log into. Clicking on
+     * a MVPD on this list will not do anything. This here is just to display the list.
+     * The interactive MVPD list is found in LoginActivity.
+     */
     @SuppressLint("CheckResult")
     private void printMvpdList() {
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
@@ -519,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mvpdList -> {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
+                    // Show MVPD list
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
                     //progressSpinner.setVisibility(View.GONE);
                 });
@@ -609,16 +640,24 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_adobe_clientless) {
+            // Currently disabled
             startActivity(new Intent(MainActivity.this, AboutClientlessActivity.class));
             return true;
         } else if (id == R.id.action_show_logcat) {
             showAndHideLogcat(item);
+            return true;
         } else if (id == R.id.action_clear_logcat) {
             clearLogCat();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * The visual Logcat displayed on the App can be Shown/Hidden by the user using the action bar
+     * found on the top right corner of the MainActivity.
+     * @param item
+     */
     private void showAndHideLogcat(MenuItem item) {
         if (llLogcat.getVisibility() == View.GONE) {
             // Update logcat with new logs
@@ -626,10 +665,21 @@ public class MainActivity extends AppCompatActivity {
             // Show logcat
             llLogcat.setVisibility(View.VISIBLE);
             item.setTitle(getString(R.string.hide_logcat));
+            // Move the main activity buttons higher up for the user to see
+            logcatSpace.setVisibility(View.VISIBLE);
+            // Scroll all the way down
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
         } else {
             // Hide logcat
             llLogcat.setVisibility(View.GONE);
             item.setTitle(getString(R.string.show_logcat));
+            // Remove the empty space created for the logcat
+            logcatSpace.setVisibility(View.GONE);
         }
     }
 

@@ -96,7 +96,7 @@ public class GenerateSampleData {
 
         List<String> list = new ArrayList<>(Arrays.asList(listAsStringCommaSeparated.split("\\s*,\\s*")));
 
-        Log.d(TAG, "strinToList = " + list);
+        Log.d(TAG, " Final stringToList = " + list);
 
         return list;
     }

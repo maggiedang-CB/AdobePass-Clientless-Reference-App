@@ -25,6 +25,9 @@ import android.widget.Toast;
 import com.example.android.adobepassclientlessrefapp.LoginTempPassActivity;
 import com.example.android.adobepassclientlessrefapp.MainActivity;
 
+/**
+ * Taken and modified from Adobe AccessEnabler Demo App
+ */
 public class AbstractActivity extends Activity {
     private static final String LOG_TAG = "AbstractActivity";
 

@@ -23,6 +23,10 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * AdobeConfigActivty contains a form to fill out an adobeConfig Json object that is used
+ * with Requestor Id to determine the MVPD list.
+ */
 public class AdobeConfigActivity extends AbstractActivity {
 
     private String TAG = "AdobeConfigActivity";
@@ -77,8 +81,6 @@ public class AdobeConfigActivity extends AbstractActivity {
     EditText nbcTokenUrl;
     @BindView(R.id.tempPassSelection)
     EditText tempPassSelection;
-
-    //TODO: figure out temppass values usages when working with temp pass
 
     private ArrayList<EditText> listOfEditText;
     private HashMap<String, EditText> formHashMap;

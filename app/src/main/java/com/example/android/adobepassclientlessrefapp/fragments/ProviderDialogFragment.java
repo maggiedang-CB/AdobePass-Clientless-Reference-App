@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-//import androidx.fragment.app.DialogFragment;
-
 import com.example.android.adobepassclientlessrefapp.LoginActivity;
 import com.example.android.adobepassclientlessrefapp.MainActivity;
 import com.nbcsports.leapsdk.authentication.adobepass.api.MvpdListAPI.Mvpd;
@@ -28,8 +26,6 @@ import java.util.List;
 
 
 import com.example.android.adobepassclientlessrefapp.R;
-
-import butterknife.BindView;
 
 /**
  * Taken from the NBC sports app
@@ -109,7 +105,7 @@ public class ProviderDialogFragment extends DialogFragment {
 //				standardMvpd.add(mvpd);
 //			}
 			//leapp 4874
-			// TODO: do sorting of premium and standard mvpd later
+			// TODO: do sorting of premium and standard mvpd if needed
 			standardMvpd.add(mvpd);
 
 		}

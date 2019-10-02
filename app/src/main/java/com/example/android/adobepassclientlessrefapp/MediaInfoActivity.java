@@ -23,6 +23,11 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Activity consists of a form to fill out a Media Info Json. The data is taken from any video
+ * asset available in NBCSports App.
+ * Live Data is found at http://api.leap.nbcsports.com/feed/NBCSports/all/replay/v1/ios
+ */
 public class MediaInfoActivity extends AbstractActivity {
 
     public static String TAG = "MediaInfo Activity";
@@ -198,6 +203,9 @@ public class MediaInfoActivity extends AbstractActivity {
         return SetUpUtils.isUnsavedData(listOfEditText, sharedPreferences, mediaInfoKey, currentForm);
     }
 
+    /**
+     * @return An array of edit text views taken from every field on the form
+     */
     private ArrayList<EditText> getFormArray() {
         ArrayList<EditText> arrayForm = new ArrayList<>();
         arrayForm.add(etPId);
@@ -210,6 +218,11 @@ public class MediaInfoActivity extends AbstractActivity {
         return arrayForm;
     }
 
+    /**
+     * Return Hashmap where the key is the string value of the key presented in the JSON object
+     * of mediaInfo, and the hashmap value is the edit text view for that key's field.
+     * @return
+     */
     private HashMap<String, EditText> getFormHashMap() {
         HashMap<String, EditText> formHash = new HashMap<>();
 

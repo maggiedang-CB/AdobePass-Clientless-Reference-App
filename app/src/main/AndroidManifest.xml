@@ -25,11 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".IsSignedInActivity"
-            android:label="@string/is_signed_in"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".LoginActivity"
             android:label="@string/login"
             android:theme="@style/AppTheme.NoActionBar">
@@ -37,16 +32,6 @@
         <activity
             android:name=".LoginTempPassActivity"
             android:label="@string/login_temp_pass"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".LogoutActivity"
-            android:label="@string/logout_header"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name=".MvpdListActivity"
-            android:label="@string/get_mvpd_list"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

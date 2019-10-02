@@ -32,6 +32,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * LoginActivity shows login status and allows user to select a MVPD (Provider) to login to.
+ * MVPD information contained in https://api.auth.adobe.com/api/v1/config/nbcsports
+ */
 public class LoginActivity extends FragmentActivity {
 
     final String TAG = "LoginActivity";

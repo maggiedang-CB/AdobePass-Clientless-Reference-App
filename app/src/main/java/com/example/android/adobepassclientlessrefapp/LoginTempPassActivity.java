@@ -16,11 +16,41 @@ import com.example.android.adobepassclientlessrefapp.utils.DeviceUtils;
 import com.nbcsports.leapsdk.authentication.adobepass.AdobeClientlessService;
 import com.nbcsports.leapsdk.authentication.adobepass.config.AdobeConfig;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Temporary Pass Activity can tell the user the stataus of the temp pass (Off or On), the current
+ * temp pass id, and a section to enter a temp pass id to login.
+ * The Temp Pass Ids are determined from this section of the json:
+ * {@code
+ *			"passes": [{
+ * 				"requestorID": "NBCOlympics",
+ * 				"shortTempPassId": "TempPass-ShortTTL",
+ * 				"longTempPassId": "TempPass-LongTTL"
+ *                        }, {
+ * 				"requestorID": "nbcentertainment",
+ * 				"shortTempPassId": "TempPass-ShortTTL",
+ * 				"longTempPassId": "TempPass-LongTTL"
+ *            }, {
+ * 				"requestorID": "telemundo",
+ * 				"shortTempPassId": "TempPass-ShortTTL",
+ * 				"longTempPassId": "TempPass-LongTTL"
+ *            }, {
+ * 				"requestorID": "nbcsports",
+ * 				"shortTempPassId": "TempPass-Sports-10min",
+ * 				"longTempPassId": ""
+ *            }, {
+ * 				"requestorID": "golf",
+ * 				"shortTempPassId": "TempPass-Golf-10min",
+ * 				"longTempPassId": ""
+ *            }]
+ * }
+ */
 public class LoginTempPassActivity extends AbstractActivity {
 
     public static String TAG = "LoginTempPassActivity";
@@ -60,6 +90,10 @@ public class LoginTempPassActivity extends AbstractActivity {
         loadSavedInfo();
     }
 
+    /**
+     * Coming back to the temp pass login screen should show the temp pass status and current
+     * temp pass id if possible.
+     */
     private void loadSavedInfo() {
         sharedPreferences = getSharedPreferences();
         String mvpdKey = LoginStatus.TEMPPASS_ID.toString();
@@ -112,14 +146,16 @@ public class LoginTempPassActivity extends AbstractActivity {
                         adobeAuth -> {
                             // Temp pass login success
                             String tempPassMvpd = adobeAuth.getAuthNToken().getMvpd();
+                            // Expire date returned is in epoch time format
                             String tempPassExpire = adobeAuth.getAuthNToken().getExpires();
+                            // Convert epoch to readable date format
+                            Date expireDate = new Date(Long.parseLong(tempPassExpire));
 
                             // logs
                             Log.d(TAG, "TEMPPASSLOGIN: SUCCESS");
                             Log.d(TAG, "TEMPPASSLOGIN: MVPD = " + tempPassMvpd);
-                            Log.d(TAG, "TEMPPASSLOGIN: EXPIRE = " + tempPassExpire);
-                            // TODO: convert expire date to actual date
-                            addToLogcat(TAG, "TempPass Expire Date = " + tempPassExpire);
+                            Log.d(TAG, "TEMPPASSLOGIN: EXPIRE = " + expireDate);
+                            addToLogcat(TAG, "TempPass Expire Date = " + expireDate);
                             addToLogcat(TAG, "TempPass Mvpd = " + tempPassMvpd);
                             addToLogcat(TAG, "TempPassId = " + tempPassId);
                             addToLogcat(TAG, "TEMPPASS LOGIN SUCCESS");
@@ -128,8 +164,6 @@ public class LoginTempPassActivity extends AbstractActivity {
 
                         },
                         throwable -> {
-                            // TODO: Check temppass expired?
-
                             // No more temp pass
                             Log.d(TAG, "TEMPPASSLOGIN: ERROR " + throwable.toString());
 
@@ -142,6 +176,10 @@ public class LoginTempPassActivity extends AbstractActivity {
 
     }
 
+    /**
+     * Save temp pass id in saved preferences. A dialog will pop up to indicate success.
+     * @param tempPassMvpd
+     */
     private void loginSuccess(String tempPassMvpd) {
         // Save temp pass mvpd
         sharedPreferences = getSharedPreferences();
