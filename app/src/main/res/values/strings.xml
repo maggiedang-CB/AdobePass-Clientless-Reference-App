@@ -1,4 +1,161 @@
 <resources>
     <string name="app_name">AdobePassClientlessRefApp</string>
     <string name="action_settings">Settings</string>
+    <string name="is_signed_in">isSignedIn</string>
+    <string name="logout">logout</string>
+    <string name="login">login</string>
+    <string name="login_temp_pass">loginTempPass</string>
+    <string name="get_mvpd_list">getMvpdList</string>
+    <string name="authorize">Authorize</string>
+    <string name="ok">OK</string>
+    <string name="back">BACK</string>
+    <string name="about_clientless">About Clientless</string>
+    <string name="show_logcat">Show Logcat</string>
+    <string name="hide_logcat">Hide Logcat</string>
+    <string name="clear_logcat">Clear Logcat</string>
+    <string name="rId">Requestor Id</string>
+    <string name="adobe_config_setup">SetUp Adobe Configuration</string>
+    <string name="generate_sample_data">Generate Sample Data</string>
+    <string name="browse_live_data">Browse Live Data</string>
+    <string name="clear_form_data">Clear Current Data</string>
+    <string name="mvpd_id_not_selected">Not Selected</string>
+    <string name="media_info_setup">SetUp Media Info</string>
+
+    <string name="adobe_config_header">1) Adobe Configuration</string>
+    <string name="rId_header">2) Requestor Id</string>
+    <string name="mvpd_list_header">3) MVPD List</string>
+    <string name="login_header">4) Login</string>
+    <string name="media_info_header">5) Media Info</string>
+    <string name="authorize_header">6) Authorize</string>
+    <string name="logout_header">7) Logout</string>
+
+    <string name="login_description"> Description of login here </string>
+    <string name="login_status_not_logged">Not Signed In</string>
+    <string name="login_status_signed_in">Signed In</string>
+    <string name="login_success_message">Successfully logged in!</string>
+
+    <string name="config_setup_unsaved_data">"There is unsaved data. Are you sure you want to Exit Adobe Configuration Setup?"</string>
+    <string name="config_saved">Adobe Config Settings Saved</string>
+    <string name="config_saved_empty">Error Saving: Field(s) Empty</string>
+
+    <string name="no_internet_toast">Error: No Internet Connection</string>
+    <string name="mediaInfo_unsaved_data">"There is unsaved data. Are you sure you want to Exit Media Info Setup?"</string>
+    <string name="setup_adobeauth_false">Adobe Configuration has not been set up</string>
+    <string name="setup_rId_false">Requestor Id Has not been saved</string>
+    <string name="setup_rId_true">Requestor Id Saved</string>
+    <string name="setup_rId_invalid">Invalid Requestor Id</string>
+    <string name="setup_media_false">Media Info has not been set up</string>
+    <string name="setup_not_logged_in">You are not Logged In</string>
+
+    <string name="isSignedIn_desc"> > Click Here to Check Login Status</string>
+    <string name="isSignedIn_false">Not Signed In</string>
+    <string name="isSignedIn_false_msg">User is not signed in. Please Login to a selected MVPD or Login Temporary Pass.</string>
+    <string name="isSignedIn_true">Already Signed In</string>
+    <string name="isSignedIn_true_msg">User is Logged In.</string>
+
+    <string name="logout_true">Successfully Logged Out</string>
+    <string name="logout_true_msg">User has been successfully logged out.</string>
+    <string name="logout_false">Logout Failure</string>
+    <string name="logout_false_msg">User is already logged out.</string>
+    <string name="logout_fail_msg">There was an error when logging out: </string>
+
+    <string name="temppass_loggedIn_error">Temporary Pass Error</string>
+    <string name="temppass_loggedIn_error_msg">User is already logged into a MVPD. Please logout before logging into Temp Pass.</string>
+    <string name="temppass_id_empty">Please Enter a Valid tempPassId</string>
+    <string name="temppass_id">No TempPass</string>
+    <string name="temppass_id_not_loggedIn">No TempPass</string>
+    <string name="temppass_ON">ON</string>
+    <string name="temppass_OFF">OFF</string>
+    <string name="temppass_success_title">Temp Pass Login Success</string>
+    <string name="temppass_success_msg">Successfully logged in with a temporary pass.</string>
+    <string name="temppass_fail_title">Temp Pass Login Error</string>
+    <string name="temppass_fail_msg">Problem logging into Temporary Pass. Please check your Requestor Id and tempPassId.</string>
+    <string name="temppass_log_off_msg">Temporary Pass Turned OFF</string>
+
+    <!--adobe config set up form-->
+    <string name="configForm1_baseUrl">baseUrl: </string>
+    <string name="configForm2_reggieCodePath">reggieCodePath: </string>
+    <string name="configForm3_checkAuthenticationPath">checkAuthenticationPath: </string>
+    <string name="configForm4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds: </string>
+    <string name="configForm5_tempPassProvider">tempPassProvider: </string>
+    <string name="configForm6_getUserMetadataPath">getUserMetadataPath: </string>
+    <string name="configForm7_authnTokenPath">authnTokenPath: </string>
+    <string name="configForm8_tempPassUrl">tempPassUrl: </string>
+    <string name="configForm9_authzTokenPath">authzTokenPath: </string>
+    <string name="configForm10_authorizePath">authorizePath: </string>
+    <string name="configForm11_logoutPath">logoutPath: </string>
+    <string name="configForm12_mvpdListPath">mvpdListPath: </string>
+    <string name="configForm13_redirectUrl">redirectUrl: </string>
+    <string name="configForm14_tokenizationUrl">tokenizationUrl: </string>
+    <string name="configForm15_logosUrl">logosUrl: </string>
+    <string name="configForm16_externalBrowserDomains">externalBrowserDomains: </string>
+    <string name="configForm17_nbcTokenUrl">nbcTokenUrl: </string>
+    <string name="configForm18_tempPassSelection">tempPassSelection: </string>
+
+    <string name="config1_baseUrl">baseUrl</string>
+    <string name="config2_reggieCodePath">reggieCodePath</string>
+    <string name="config3_checkAuthenticationPath">checkAuthenticationPath</string>
+    <string name="config4_authnTokenTimeoutSeconds">authnTokenTimeoutSeconds</string>
+    <string name="config5_tempPassProvider">tempPassProvider</string>
+    <string name="config6_getUserMetadataPath">getUserMetadataPath</string>
+    <string name="config7_authnTokenPath">authnTokenPath</string>
+    <string name="config8_tempPassUrl">tempPassUrl</string>
+    <string name="config9_authzTokenPath">authzTokenPath</string>
+    <string name="config10_authorizePath">authorizePath</string>
+    <string name="config11_logoutPath">logoutPath</string>
+    <string name="config12_mvpdListPath">mvpdListPath</string>
+    <string name="config13_redirectUrl">redirectUrl</string>
+    <string name="config14_tokenizationUrl">tokenizationUrl</string>
+    <string name="config15_logosUrl">logosUrl</string>
+    <string name="config16_externalBrowserDomains">externalBrowserDomains</string>
+    <string name="config17_nbcTokenUrl">nbcTokenUrl</string>
+    <string name="config18_tempPassSelection">tempPassSelection</string>
+
+    <!--adobe auth parcel data-->
+    <!--@Expose @Getter String baseUrl;-->
+    <!--@Expose @Getter String reggieCodePath;-->
+    <!--@Expose @Getter String checkAuthenticationPath;-->
+    <!--@Expose @Getter int authnTokenTimeoutSeconds;-->
+    <!--@Expose @Getter String tempPassProvider;-->
+    <!--@Expose @Getter String getUserMetadataPath;-->
+    <!--@Expose @Getter String authnTokenPath;-->
+    <!--@Expose @Getter String tempPassUrl;-->
+    <!--@Expose @Getter String authzTokenPath;-->
+    <!--@Expose @Getter String authorizePath;-->
+    <!--@Expose @Getter String logoutPath;-->
+    <!--@Expose @Getter String mvpdListPath;-->
+    <!--@Expose @Getter String redirectUrl;-->
+    <!--@Expose @Getter String tokenizationUrl;-->
+    <!--@Expose @Getter String logosUrl;-->
+    <!--@Expose @Getter List<String> externalBrowserDomains;-->
+    <!--@Expose @Getter String nbcTokenUrl;-->
+    <!--@Expose @Getter-->
+    <!--TempPassSelectionConfig tempPassSelection;-->
+
+    <!--Adobe media info form-->
+    <string name="mediaForm1_pId">pid: </string>
+    <string name="mediaForm2_streamUrl">streamUrl: </string>
+    <string name="mediaForm3_requestorId">requestorId: </string>
+    <string name="mediaForm4_channel">channel: </string>
+    <string name="mediaForm5_assetId">assetId: </string>
+    <string name="mediaForm6_cdn">cdn: </string>
+
+    <string name="mediaInfo1_pId">pid</string>
+    <string name="mediaInfo2_streamUrl">streamUrl</string>
+    <string name="mediaInfo3_requestorId">requestorId</string>
+    <string name="mediaInfo4_channel">channel</string>
+    <string name="mediaInfo5_assetId">assetId</string>
+    <string name="mediaInfo6_cdn">cdn</string>
+
+    <!--authorize descriptions-->
+    <string name="authorize_click_here">Click Here to Authorize Media Asset</string>
+    <string name="authorize_success">Authorization Success!</string>
+    <string name="authorize_failure">Authorization Failure</string>
+    <string name="authorize_error">Authorization Error</string>
+    <string name="authorize_error_message">"We\'re sorry, this programming is currently not available through your provider.  Please continue to enjoy other great content available through NBC Sports.</string>
+    <string name="player_restricted_title">Error</string>
+    <string name="player_restricted_error">Oops, something happened. Please close your app and try again.</string>
+
+
+
 </resources>

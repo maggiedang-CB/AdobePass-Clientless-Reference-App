@@ -4,7 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+        maven { url "http://apps-devops.nbcsports.com:8081/repository/nbcsports/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
@@ -18,7 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url "http://apps-devops.nbcsports.com:8081/repository/nbcsports/" }
     }
 }
 

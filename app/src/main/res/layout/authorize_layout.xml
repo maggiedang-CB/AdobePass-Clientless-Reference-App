@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/authorize_header"
+        android:layout_width="match_parent"
+        android:text="@string/authorize"
+        android:textAllCaps="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/authorize_header">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/header_text_size"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/descriptions_size"
+            android:text="Authorize info here"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="_________________________________________"
+            android:layout_marginTop="@dimen/descriptions_size"
+            android:textColor="@color/colorAccent"
+            android:textAlignment="center"/>
+
+        <Button
+            android:id="@+id/btn_auth_authorize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/descriptions_size"
+            android:text="Click Here to Authorize"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/descriptions_size">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_authorize_back"
+                style="@style/ButtonStyle"
+                android:text="BACK"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/loginTempPass_header"
+        android:layout_width="match_parent"
+        android:text="@string/login_temp_pass"
+        android:textAllCaps="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/loginTempPass_header">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tempPass_separator1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/temppass_statusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/form_text_size"
+                    android:text="Temp Pass Status: "/>
+
+                <TextView
+                    android:id="@+id/temppass_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/temppass_OFF"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/tempPass_Id_Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/form_text_size"
+                    android:text="Current Temp Pass Id: "/>
+
+                <TextView
+                    android:id="@+id/tempPass_Id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/temppass_id_not_loggedIn"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tempPass_separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/header_text_size"
+                android:layout_marginTop="@dimen/descriptions_size"
+                android:text="tempPassId:"/>
+
+            <EditText
+                android:id="@+id/logintemppass_tempPassId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Enter Temp Pass Id Here"
+                android:text=""/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dip">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_logintemppass_ok"
+                    style="@style/ButtonStyle"
+                    android:text="LOGIN TEMP PASS"/>
+
+                <Button
+                    android:id="@+id/btn_logintemppass_back"
+                    style="@style/ButtonStyle"
+                    android:text="BACK"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

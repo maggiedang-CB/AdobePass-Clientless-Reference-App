@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/media_info_form_header"
+        android:layout_width="match_parent"
+        android:text="@string/media_info_setup"
+        android:textAllCaps="false"/>
+
+    <HorizontalScrollView
+        android:id="@+id/top_buttons_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/media_info_form_header"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_media_info_generate"
+                style="@style/ButtonStyle"
+                android:text="@string/generate_sample_data"/>
+
+            <Button
+                android:id="@+id/btn_media_info_browse"
+                style="@style/ButtonStyle"
+                android:text="@string/browse_live_data"/>
+
+            <Button
+                android:id="@+id/btn_media_info_clear"
+                style="@style/ButtonStyle"
+                android:text="@string/clear_form_data"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/top_buttons_group">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm1_pId"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_pid"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm2_streamUrl"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_streamurl"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm3_requestorId"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_requestorId"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm4_channel"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_channel"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm5_assetId"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_assetId"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/FormEntries">
+                    <TextView
+                        style="@style/FormValues"
+                        android:text="@string/mediaForm6_cdn"/>
+                    <EditText
+                        android:id="@+id/mediaInfo_cdn"
+                        style="@style/FormEditText"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btn_media_info_save"
+                style="@style/ButtonStyle"
+                android:text="SAVE"/>
+
+            <Button
+                android:id="@+id/btn_media_info_back"
+                style="@style/ButtonStyle"
+                android:text="BACK"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

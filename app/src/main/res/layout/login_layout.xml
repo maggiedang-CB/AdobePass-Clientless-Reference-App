@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/login_header"
+        android:layout_width="match_parent"
+        android:text="@string/login"
+        android:textAllCaps="false"/>
+
+    <com.example.android.adobepassclientlessrefapp.ui.AuthenticationWebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/login_header">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/login_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/descriptions_size"
+                android:text="@string/login_description"
+                android:paddingTop="@dimen/descriptions_size"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/login_separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/mvpd_login_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/form_text_size"
+                    android:text="Login Status: "/>
+
+                <TextView
+                    android:id="@+id/login_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/login_status_not_logged"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/login_separator2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="_________________________________________"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:paddingTop="@dimen/descriptions_size"/>
+
+            <Button
+                android:id="@+id/btn_login_select_mvpd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/descriptions_size"
+                android:text="Select Mvpd Here"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/mvpd_provider_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/form_text_size"
+                    android:text="MVPD Selected: "/>
+
+                <TextView
+                    android:id="@+id/login_provider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/mvpd_id_not_selected"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+                <TextView
+                    android:id="@+id/mvpd_value_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/form_text_size"
+                    android:text="mvpdId Selected: "/>
+
+                <TextView
+                    android:id="@+id/login_mvpd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/header_text_size"
+                    android:text="@string/mvpd_id_not_selected"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/descriptions_size">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_login_ok"
+                    style="@style/ButtonStyle"
+                    android:text="LOGIN"/>
+
+                <Button
+                    android:id="@+id/btn_login_back"
+                    style="@style/ButtonStyle"
+                    android:text="BACK"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

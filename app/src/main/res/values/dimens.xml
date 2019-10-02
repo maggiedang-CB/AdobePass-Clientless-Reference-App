@@ -1,3 +1,13 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="header_text_height">40dp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+    <dimen name="form_text_size">17dp</dimen>
+    <dimen name="paddingLR">20dp</dimen>
+    <dimen name="descriptions_size">25dp</dimen>
+
+    <dimen name="premium_logo_width">113dp</dimen>
+    <dimen name="premium_logo_height">60dp</dimen>
+
+    <dimen name="logcat_height">200dp</dimen>
 </resources>
