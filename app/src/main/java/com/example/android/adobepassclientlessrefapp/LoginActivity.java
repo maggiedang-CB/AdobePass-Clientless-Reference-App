@@ -268,6 +268,11 @@ public class LoginActivity extends FragmentActivity {
 
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
 
+                }, throwable -> {
+                    // The Error most likely came from invalid adobe config data
+                    Log.d(TAG, "getMvpdList subscribe Error: " + throwable.toString());
+                    addToLogcat(throwable.toString());
+                    Toast.makeText(this, getString(R.string.mvpdlist_login_error_msg), Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -72,6 +72,9 @@
     <string name="temppass_fail_msg">Problem logging into Temporary Pass. Please check your Requestor Id and tempPassId.</string>
     <string name="temppass_log_off_msg">Temporary Pass Turned OFF</string>
 
+    <string name="mvpdlist_error_msg">There was an error processing MVPD List. Please check if every adobe configuration field is valid.</string>
+    <string name="mvpdlist_login_error_msg">There was an error processing MVPD list. Please check the LOGCAT.</string>
+
     <!--adobe config set up form-->
     <string name="configForm1_baseUrl">baseUrl: </string>
     <string name="configForm2_reggieCodePath">reggieCodePath: </string>

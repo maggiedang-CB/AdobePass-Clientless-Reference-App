@@ -56,6 +56,9 @@ import io.reactivex.schedulers.Schedulers;
  * AdobePass Clientless Reference App displays the usages of methods in AdobeClientlessService
  * from the LEAP-SDK.
  *
+ * NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
+ * MainActivity.
+ *
  * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
  */
 public class MainActivity extends AppCompatActivity {
@@ -463,9 +466,6 @@ public class MainActivity extends AppCompatActivity {
      * @return true if rId is not null or empty
      */
     private boolean isValidRId(String rId) {
-
-        //TODO: Instead of typing a value, make user radio dial select out of a list of current rIds (If possible)
-
         if (rId == null || rId.isEmpty()) {
             showToast(getString(R.string.setup_rId_invalid));
             return false;
@@ -547,11 +547,18 @@ public class MainActivity extends AppCompatActivity {
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.d(TAG, "getMvpdList onError: " + throwable))
                 .subscribe(mvpdList -> {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
                     // Show MVPD list
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
                     //progressSpinner.setVisibility(View.GONE);
+                }, throwable -> {
+                    // The Error most likely came from invalid adobe config data
+                    Log.d(TAG, "getMvpdList subscribe Error: " + throwable.toString());
+                    String errorMessage = getString(R.string.mvpdlist_error_msg) + "\n\n" + throwable.toString();
+                    alertDialog("getMvpdList Error", errorMessage);
+                    addToLogcat(throwable.toString());
                 });
 
     }
