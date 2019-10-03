@@ -71,6 +71,12 @@
     <string name="temppass_fail_title">Temp Pass Login Error</string>
     <string name="temppass_fail_msg">Problem logging into Temporary Pass. Please check your Requestor Id and tempPassId.</string>
     <string name="temppass_log_off_msg">Temporary Pass Turned OFF</string>
+    <string name="temppass_reset_success_title">Successful Reset</string>
+    <string name="temppass_reset_success_message">Temporary Pass has been reset successfully. Click Login Temp Pass to activate this tempPassId again.</string>
+    <string name="temppass_reset_fail">Reset Error. Please look at LOGCAT.</string>
+
+    <string name="mvpdlist_error_msg">There was an error processing MVPD List. Please check if every adobe configuration field is valid.</string>
+    <string name="mvpdlist_login_error_msg">There was an error processing MVPD list. Please check the LOGCAT.</string>
 
     <!--adobe config set up form-->
     <string name="configForm1_baseUrl">baseUrl: </string>

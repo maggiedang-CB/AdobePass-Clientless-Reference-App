@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceResponse;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,8 @@ public class LoginActivity extends FragmentActivity {
     Button backButton;
     @BindView(R.id.web_view)
     AuthenticationWebView webView;
+    @BindView(R.id.progressSpinner)
+    ProgressBar progressSpinner;
 
     SharedPreferences sharedPreferences;
     AdobeConfig adobeConfig;
@@ -139,6 +142,7 @@ public class LoginActivity extends FragmentActivity {
                     Toast.makeText(LoginActivity.this, "Please Select MVPD", Toast.LENGTH_SHORT).show();
                 } else {
                     // Open login web page
+                    progressSpinner.setVisibility(View.VISIBLE);
                     openWebView(mvpdId);
                 }
 
@@ -154,6 +158,7 @@ public class LoginActivity extends FragmentActivity {
                 if (!NetworkUtils.isWifiConnected(LoginActivity.this)) {
                     Toast.makeText(LoginActivity.this, getString(R.string.no_internet_toast), Toast.LENGTH_SHORT).show();
                 } else {
+                    progressSpinner.setVisibility(View.VISIBLE);
                     String rId = getSharedPreferences().getString(MainActivity.sharedPrefKeys.REQUESTOR_ID.toString(), "");
                     // Show mvpd dialog
                     printMvpdList(rId);
@@ -183,12 +188,16 @@ public class LoginActivity extends FragmentActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        adobeAuth -> launchWebView(adobeAuth.getRedirectUrl()),
+                        adobeAuth -> {
+                            launchWebView(adobeAuth.getRedirectUrl());
+                            progressSpinner.setVisibility(View.GONE);
+                            },
                         throwable -> {
                             String logMessage = "Webview Error: " + throwable.toString();
                             Log.d(TAG, logMessage);
                             addToLogcat(logMessage);
                             Toast.makeText(this, "Webview Error. See logcat.", Toast.LENGTH_SHORT).show();
+                            progressSpinner.setVisibility(View.GONE);
                         });
     }
 
@@ -267,7 +276,13 @@ public class LoginActivity extends FragmentActivity {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
 
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
-
+                    progressSpinner.setVisibility(View.GONE);
+                }, throwable -> {
+                    // The Error most likely came from invalid adobe config data
+                    Log.d(TAG, "getMvpdList subscribe Error: " + throwable.toString());
+                    addToLogcat(throwable.toString());
+                    Toast.makeText(this, getString(R.string.mvpdlist_login_error_msg), Toast.LENGTH_SHORT).show();
+                    progressSpinner.setVisibility(View.GONE);
                 });
     }
 

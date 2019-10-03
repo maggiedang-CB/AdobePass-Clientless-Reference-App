@@ -2,7 +2,6 @@ package com.example.android.adobepassclientlessrefapp;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -55,7 +54,10 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * AdobePass Clientless Reference App displays the usages of methods in AdobeClientlessService
  * from the LEAP-SDK.
- *
+ * <p>
+ *      NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
+ *      MainActivity.
+ *</p>
  * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
  */
 public class MainActivity extends AppCompatActivity {
@@ -85,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_getmvpdlist)
     Button btnGetMvpdList;
 
-    // TODO: Get progress spinner to work whenever a clientless network call is made
     @BindView(R.id.progressSpinner)
     ProgressBar progressSpinner;
 
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Set button listeners
-        btnAdobeAuth.setOnClickListener(adobeAuthListener);
+        btnAdobeAuth.setOnClickListener(adobeConfigListener);
         btnIsSignedIn.setOnClickListener(isSignedInListener);
         btnLogin.setOnClickListener(loginListener);
         btnLoginTempPass.setOnClickListener(loginTempPassListener);
@@ -174,12 +175,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Button OnClick Listeners
 
-    private View.OnClickListener adobeAuthListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, AdobeConfigActivity.class);
-            startActivity(intent);
-        }
+    private View.OnClickListener adobeConfigListener = v -> {
+        Intent intent = new Intent(MainActivity.this, AdobeConfigActivity.class);
+        startActivity(intent);
     };
 
     private View.OnClickListener saveRIdListener = new View.OnClickListener() {
@@ -209,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
                 showToast(getString(R.string.setup_rId_false));
             } else {
+                progressSpinner.setVisibility(View.VISIBLE);
                 isSignedIn(rId);
             }
         }
@@ -257,9 +256,11 @@ public class MainActivity extends AppCompatActivity {
             if (!isWifiConnected()) {
                 showToast(getString(R.string.no_internet_toast));
             } else if (isLoggedIn()) {
+                progressSpinner.setVisibility(View.VISIBLE);
                 logout(rId);
             } else if (isTempPass()) {
                 // Temp pass is ON. Logout Temp Pass.
+                progressSpinner.setVisibility(View.VISIBLE);
                 logout(rId);
                 changeTempPassLoginStatusToOff();
                 Toast.makeText(MainActivity.this, getString(R.string.temppass_log_off_msg), Toast.LENGTH_LONG).show();
@@ -276,8 +277,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             //TODO: Show a spinner for loading progress
-            //progressSpinner.setVisibility(View.VISIBLE);
-            // TODO: Capture crash when info in adobe auth is not valid
 
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
@@ -286,18 +285,16 @@ public class MainActivity extends AppCompatActivity {
             } else if (!isWifiConnected()) {
                 showToast(getString(R.string.no_internet_toast));
             } else {
+                progressSpinner.setVisibility(View.VISIBLE);
                 printMvpdList();
             }
 
         }
     };
 
-    private View.OnClickListener mediaInfoListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, MediaInfoActivity.class);
-            startActivity(intent);
-        }
+    private View.OnClickListener mediaInfoListener = v -> {
+        Intent intent = new Intent(MainActivity.this, MediaInfoActivity.class);
+        startActivity(intent);
     };
 
     private View.OnClickListener authorizeListener = new View.OnClickListener() {
@@ -314,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 showToast(getString(R.string.no_internet_toast));
             } else if (isTempPass()) {
                 // Temp pass is active
+                progressSpinner.setVisibility(View.VISIBLE);
                 authorize();
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
                 showToast(getString(R.string.setup_not_logged_in));
@@ -323,13 +321,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (status.equals(getString(R.string.login_status_signed_in))) {
                     // Only authorize if the user is signed in
+                    progressSpinner.setVisibility(View.VISIBLE);
                     authorize();
                 } else {
                     showToast(getString(R.string.setup_not_logged_in));
                 }
 
             }
-
         }
     };
 
@@ -352,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "AUTHORIZE SUCCESS");
                     tvAuthorize.setText(getString(R.string.authorize_success));
                     addToLogcat("AUTHORIZE SUCCESS");
+                    progressSpinner.setVisibility(View.GONE);
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
                     if (throwable instanceof AuthZException) {
@@ -364,6 +363,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tvAuthorize.setText(getString(R.string.authorize_failure));
                     addToLogcat("AUTHORIZE FAILURE: " + throwable.toString());
+                    progressSpinner.setVisibility(View.GONE);
                 });
     }
 
@@ -395,11 +395,13 @@ public class MainActivity extends AppCompatActivity {
                                 addToLogcat("isSignedIn = False. User is not Signed in.");
                             }
 
+                            progressSpinner.setVisibility(View.GONE);
                         },
                         throwable -> {
                             // Error: User is not signed in.
                             alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
                             addToLogcat("isSignedIn = False. " + throwable.toString());
+                            progressSpinner.setVisibility(View.GONE);
                         });
     }
 
@@ -424,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
                             changeLoginStatusToLogout();
 
                             addToLogcat("LOGOUT SUCCESS");
+                            progressSpinner.setVisibility(View.GONE);
                         },
                         throwable -> {
                             // Error when logging out.
@@ -432,6 +435,7 @@ public class MainActivity extends AppCompatActivity {
                             alertDialog(getString(R.string.logout_false), logoutMessage);
 
                             addToLogcat("LOGOUT ERROR: " + throwable.toString());
+                            progressSpinner.setVisibility(View.GONE);
                         });
     }
 
@@ -445,11 +449,8 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Back to main activity
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Back to main activity
         });
         AlertDialog alert = builder.create();
         alert.show();
@@ -463,9 +464,6 @@ public class MainActivity extends AppCompatActivity {
      * @return true if rId is not null or empty
      */
     private boolean isValidRId(String rId) {
-
-        //TODO: Instead of typing a value, make user radio dial select out of a list of current rIds (If possible)
-
         if (rId == null || rId.isEmpty()) {
             showToast(getString(R.string.setup_rId_invalid));
             return false;
@@ -547,11 +545,19 @@ public class MainActivity extends AppCompatActivity {
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.d(TAG, "getMvpdList onError: " + throwable))
                 .subscribe(mvpdList -> {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
                     // Show MVPD list
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
-                    //progressSpinner.setVisibility(View.GONE);
+                    progressSpinner.setVisibility(View.GONE);
+                }, throwable -> {
+                    // The Error most likely came from invalid adobe config data
+                    Log.d(TAG, "getMvpdList subscribe Error: " + throwable.toString());
+                    String errorMessage = getString(R.string.mvpdlist_error_msg) + "\n\n" + throwable.toString();
+                    alertDialog("getMvpdList Error", errorMessage);
+                    addToLogcat(throwable.toString());
+                    progressSpinner.setVisibility(View.GONE);
                 });
 
     }
@@ -668,12 +674,7 @@ public class MainActivity extends AppCompatActivity {
             // Move the main activity buttons higher up for the user to see
             logcatSpace.setVisibility(View.VISIBLE);
             // Scroll all the way down
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                }
-            });
+            scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
         } else {
             // Hide logcat
             llLogcat.setVisibility(View.GONE);
