@@ -275,9 +275,6 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener getMvpdListListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            //TODO: Show a spinner for loading progress
-
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
