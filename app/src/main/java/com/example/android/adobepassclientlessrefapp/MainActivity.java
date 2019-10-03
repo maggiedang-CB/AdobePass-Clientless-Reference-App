@@ -55,10 +55,10 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * AdobePass Clientless Reference App displays the usages of methods in AdobeClientlessService
  * from the LEAP-SDK.
- *
- * NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
- * MainActivity.
- *
+ * <p>
+ *      NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
+ *      MainActivity.
+ *</p>
  * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
  */
 public class MainActivity extends AppCompatActivity {
@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_getmvpdlist)
     Button btnGetMvpdList;
 
-    // TODO: Get progress spinner to work whenever a clientless network call is made
     @BindView(R.id.progressSpinner)
     ProgressBar progressSpinner;
 
@@ -212,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (!sharedPreferences.contains(sharedPrefKeys.REQUESTOR_ID.toString())) {
                 showToast(getString(R.string.setup_rId_false));
             } else {
+                progressSpinner.setVisibility(View.VISIBLE);
                 isSignedIn(rId);
             }
         }
@@ -260,9 +260,11 @@ public class MainActivity extends AppCompatActivity {
             if (!isWifiConnected()) {
                 showToast(getString(R.string.no_internet_toast));
             } else if (isLoggedIn()) {
+                progressSpinner.setVisibility(View.VISIBLE);
                 logout(rId);
             } else if (isTempPass()) {
                 // Temp pass is ON. Logout Temp Pass.
+                progressSpinner.setVisibility(View.VISIBLE);
                 logout(rId);
                 changeTempPassLoginStatusToOff();
                 Toast.makeText(MainActivity.this, getString(R.string.temppass_log_off_msg), Toast.LENGTH_LONG).show();
@@ -279,8 +281,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             //TODO: Show a spinner for loading progress
-            //progressSpinner.setVisibility(View.VISIBLE);
-            // TODO: Capture crash when info in adobe auth is not valid
 
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (!isWifiConnected()) {
                 showToast(getString(R.string.no_internet_toast));
             } else {
+                progressSpinner.setVisibility(View.VISIBLE);
                 printMvpdList();
             }
 
@@ -317,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
                 showToast(getString(R.string.no_internet_toast));
             } else if (isTempPass()) {
                 // Temp pass is active
+                progressSpinner.setVisibility(View.VISIBLE);
                 authorize();
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
                 showToast(getString(R.string.setup_not_logged_in));
@@ -326,13 +328,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (status.equals(getString(R.string.login_status_signed_in))) {
                     // Only authorize if the user is signed in
+                    progressSpinner.setVisibility(View.VISIBLE);
                     authorize();
                 } else {
                     showToast(getString(R.string.setup_not_logged_in));
                 }
 
             }
-
         }
     };
 
@@ -355,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "AUTHORIZE SUCCESS");
                     tvAuthorize.setText(getString(R.string.authorize_success));
                     addToLogcat("AUTHORIZE SUCCESS");
+                    progressSpinner.setVisibility(View.GONE);
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
                     if (throwable instanceof AuthZException) {
@@ -367,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tvAuthorize.setText(getString(R.string.authorize_failure));
                     addToLogcat("AUTHORIZE FAILURE: " + throwable.toString());
+                    progressSpinner.setVisibility(View.GONE);
                 });
     }
 
@@ -398,11 +402,13 @@ public class MainActivity extends AppCompatActivity {
                                 addToLogcat("isSignedIn = False. User is not Signed in.");
                             }
 
+                            progressSpinner.setVisibility(View.GONE);
                         },
                         throwable -> {
                             // Error: User is not signed in.
                             alertDialog(getString(R.string.isSignedIn_false), getString(R.string.isSignedIn_false_msg));
                             addToLogcat("isSignedIn = False. " + throwable.toString());
+                            progressSpinner.setVisibility(View.GONE);
                         });
     }
 
@@ -427,6 +433,7 @@ public class MainActivity extends AppCompatActivity {
                             changeLoginStatusToLogout();
 
                             addToLogcat("LOGOUT SUCCESS");
+                            progressSpinner.setVisibility(View.GONE);
                         },
                         throwable -> {
                             // Error when logging out.
@@ -435,6 +442,7 @@ public class MainActivity extends AppCompatActivity {
                             alertDialog(getString(R.string.logout_false), logoutMessage);
 
                             addToLogcat("LOGOUT ERROR: " + throwable.toString());
+                            progressSpinner.setVisibility(View.GONE);
                         });
     }
 
@@ -552,13 +560,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "MVPD LIST = " + new ArrayList<>(mvpdList));
                     // Show MVPD list
                     showProviderDialogFrag(new ArrayList<>(mvpdList));
-                    //progressSpinner.setVisibility(View.GONE);
+                    progressSpinner.setVisibility(View.GONE);
                 }, throwable -> {
                     // The Error most likely came from invalid adobe config data
                     Log.d(TAG, "getMvpdList subscribe Error: " + throwable.toString());
                     String errorMessage = getString(R.string.mvpdlist_error_msg) + "\n\n" + throwable.toString();
                     alertDialog("getMvpdList Error", errorMessage);
                     addToLogcat(throwable.toString());
+                    progressSpinner.setVisibility(View.GONE);
                 });
 
     }
