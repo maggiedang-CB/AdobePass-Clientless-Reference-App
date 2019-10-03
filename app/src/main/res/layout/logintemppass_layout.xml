@@ -105,10 +105,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dip">
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_logintemppass_reset"
+                    style="@style/ButtonStyle"
+                    android:text="RESET"/>
 
                 <Button
                     android:id="@+id/btn_logintemppass_ok"

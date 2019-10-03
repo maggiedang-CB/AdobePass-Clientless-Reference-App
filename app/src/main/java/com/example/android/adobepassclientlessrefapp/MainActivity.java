@@ -2,7 +2,6 @@ package com.example.android.adobepassclientlessrefapp;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Set button listeners
-        btnAdobeAuth.setOnClickListener(adobeAuthListener);
+        btnAdobeAuth.setOnClickListener(adobeConfigListener);
         btnIsSignedIn.setOnClickListener(isSignedInListener);
         btnLogin.setOnClickListener(loginListener);
         btnLoginTempPass.setOnClickListener(loginTempPassListener);
@@ -176,12 +175,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Button OnClick Listeners
 
-    private View.OnClickListener adobeAuthListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, AdobeConfigActivity.class);
-            startActivity(intent);
-        }
+    private View.OnClickListener adobeConfigListener = v -> {
+        Intent intent = new Intent(MainActivity.this, AdobeConfigActivity.class);
+        startActivity(intent);
     };
 
     private View.OnClickListener saveRIdListener = new View.OnClickListener() {
@@ -296,12 +292,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener mediaInfoListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, MediaInfoActivity.class);
-            startActivity(intent);
-        }
+    private View.OnClickListener mediaInfoListener = v -> {
+        Intent intent = new Intent(MainActivity.this, MediaInfoActivity.class);
+        startActivity(intent);
     };
 
     private View.OnClickListener authorizeListener = new View.OnClickListener() {
@@ -456,11 +449,8 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Back to main activity
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Back to main activity
         });
         AlertDialog alert = builder.create();
         alert.show();
@@ -684,12 +674,7 @@ public class MainActivity extends AppCompatActivity {
             // Move the main activity buttons higher up for the user to see
             logcatSpace.setVisibility(View.VISIBLE);
             // Scroll all the way down
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                }
-            });
+            scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
         } else {
             // Hide logcat
             llLogcat.setVisibility(View.GONE);
