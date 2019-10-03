@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener saveRIdListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: Change colour of Save RId button to red if unsaved
             String rid = etRId.getText().toString();
             // Check if rId is valid. If it is, save to shared preferences
             if (isValidRId(rid)) {
@@ -275,9 +274,6 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener getMvpdListListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            //TODO: Show a spinner for loading progress
-
             sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
 
             if (!sharedPreferences.contains(sharedPrefKeys.ADOBE_CONFIG.toString())) {
