@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.android.adobepassclientlessrefapp.LoginActivity;
@@ -28,7 +29,10 @@ import java.util.List;
 import com.example.android.adobepassclientlessrefapp.R;
 
 /**
- * Taken from the NBC sports app
+ * Taken from the NBC sports app.
+ * Modified with the addition of a cancel button, a SearchView, and search method searchByMvpd.
+ *
+ * Note: Setting SHOW_MVPD_LOGOS_ONLY_PREMIUM = false will crash whenever getMvpdList is called
  */
 public class ProviderDialogFragment extends DialogFragment {
 
@@ -39,13 +43,14 @@ public class ProviderDialogFragment extends DialogFragment {
 	// set to true to show only premium providers
 	private static final boolean SHOW_MVPD_LOGOS_ONLY_PREMIUM = true;
 
-    //TveService pass;
     Picasso picasso;
-    //@Inject TrackingHelper trackingHelper;
 
 	private ListView mListView;
 	private List<Mvpd> mvpds;
 	private LayoutInflater inflater;
+
+	private SearchView mSearch;
+	private Button btnMvpdListCancel;
 
 
 	public static ProviderDialogFragment getInstance(final ArrayList<Mvpd> mvpds) {
@@ -77,15 +82,11 @@ public class ProviderDialogFragment extends DialogFragment {
 
 		final View v = inflater.inflate(R.layout.fragment_provider_picker, container, false);
 		mListView = (ListView) v.findViewById(android.R.id.list);
+		mSearch = v.findViewById(R.id.frag_provider_search);
 
 		// Set button listener for the cancel button
-		Button btnMvpdListCancel = v.findViewById(R.id.btn_mvpd_frag_cancel);
-		btnMvpdListCancel.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dismiss();
-			}
-		});
+		btnMvpdListCancel = v.findViewById(R.id.btn_mvpd_frag_cancel);
+		btnMvpdListCancel.setOnClickListener(v1 -> dismiss());
 
 		return v;
 	}
@@ -115,6 +116,7 @@ public class ProviderDialogFragment extends DialogFragment {
 		mListView.setAdapter(new ProviderAdapter(preferred));
 
 		if (!(getActivity() instanceof MainActivity)) {
+
 		    // We do not want the list to be clickable if displayed by getMvpdList from Main Activity
             mListView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
@@ -128,7 +130,40 @@ public class ProviderDialogFragment extends DialogFragment {
             });
         }
 
+		// Search listener
+		mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				searchByMvpd(query);
+				return true;
+			}
 
+			@Override
+			public boolean onQueryTextChange(String query) {
+				searchByMvpd(query);
+				return true;
+			}
+		});
+	}
+
+	/**
+	 * Given a search query, filter out MVPD Display names that do not match and display the
+	 * matching ones on the MVPD List view.
+	 * @param query
+	 */
+	private void searchByMvpd(String query) {
+		final List<Mvpd> preferred = new ArrayList<Mvpd>();
+		for (int i = 0; i < mvpds.size(); i++) {
+			final Mvpd mvpd = mvpds.get(i);
+			// Ignore case
+			String currentMvpd = mvpd.getDisplayName().toLowerCase();
+
+			// Only add mvpds that match query
+			if (currentMvpd.contains(query.toLowerCase())) {
+				preferred.add(mvpd);
+			}
+		}
+		mListView.setAdapter(new ProviderAdapter(preferred));
 	}
 
 	private List<Mvpd> sortPremiumMvpds(final List<Mvpd> preferred, List<String> mvpdPremium ) {
