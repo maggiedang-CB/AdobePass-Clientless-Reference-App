@@ -300,10 +300,6 @@ public class LoginTempPassActivity extends AbstractActivity {
         return sharedPreferences.getString(rIdKey, "");
     }
 
-    private SharedPreferences getSharedPreferences() {
-        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-    }
-
     private String getDeviceId() {
         return Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }

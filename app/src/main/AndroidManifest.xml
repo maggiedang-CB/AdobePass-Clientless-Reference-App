@@ -54,6 +54,12 @@
             android:label="@string/media_info_setup"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".PlayerActivity"
+            android:label="@string/play_media"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape">
+        </activity>
         <receiver android:name = ".utils.NetworkReceiver">
             <intent-filter>
                 <action android:name = "android.net.conn.CONNECTIVITY_CHANGE" />

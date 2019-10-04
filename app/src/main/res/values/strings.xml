@@ -165,6 +165,7 @@
     <string name="player_restricted_error">Oops, something happened. Please close your app and try again.</string>
 
     <string name="tokenized_saved">Tokenized Url Saved</string>
+    <string name="tokenized_not_authorized_title">Player Error</string>
 
 
 

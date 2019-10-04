@@ -244,8 +244,4 @@ public class MediaInfoActivity extends AbstractActivity {
         SetUpUtils.generateDataInEditText(json, formHashMap);
     }
 
-    private SharedPreferences getSharedPreferences() {
-        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-    }
-
 }

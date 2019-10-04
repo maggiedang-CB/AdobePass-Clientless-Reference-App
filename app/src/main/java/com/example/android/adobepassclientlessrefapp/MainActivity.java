@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.authorize_main_page_presenter)
     TextView tvAuthorize;
 
+    @BindView(R.id.btn_play_media)
+    Button btnPlay;
+
     @BindView(R.id.main_activity_scroll_view)
     ScrollView scrollView;
     @BindView(R.id.logcat)
@@ -141,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         btnAuthorize.setOnClickListener(authorizeListener);
         btnSaveRId.setOnClickListener(saveRIdListener);
         btnMediaInfo.setOnClickListener(mediaInfoListener);
+        btnPlay.setOnClickListener(playListener);
 
         showSavedData();
     }
@@ -148,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (networkReceiver != null) {
             unregisterReceiver(networkReceiver);
         }
@@ -308,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (isTempPass()) {
                 // Temp pass is active
                 progressSpinner.setVisibility(View.VISIBLE);
-                authorize();
+                authorize(false);
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
                 showToast(getString(R.string.setup_not_logged_in));
             } else {
@@ -318,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
                 if (status.equals(getString(R.string.login_status_signed_in))) {
                     // Only authorize if the user is signed in
                     progressSpinner.setVisibility(View.VISIBLE);
-                    authorize();
+                    authorize(false);
                 } else {
                     showToast(getString(R.string.setup_not_logged_in));
                 }
@@ -327,12 +333,29 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener playListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Before playing video, internet needs to be connected and the media should be
+            // successfully authorized already
+            if (!isWifiConnected()) {
+                showToast(getString(R.string.no_internet_toast));
+            } else {
+                // Authorize and launch video player
+                progressSpinner.setVisibility(View.VISIBLE);
+                authorize(true);
+                addToLogcat("ExoPlayer Launched");
+            }
+        }
+    };
+
     /**
      * Authorize is a success if the user is logged in (By MVPD or by Temp Pass) and has compatible
      * Requestor Ids between the user's saved Requestor Id and Media Info's Requestor Id.
+     * @param playVideo Pass in True to play tokenizedUrl on ExoPlayer right after auth success
      */
     @SuppressLint("CheckResult")
-    private void authorize() {
+    private void authorize(boolean playVideo) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
         AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
         AdobeMediaInfo adobeMediaInfo = getMediaInfoFromJson(getSharedPreferences());
@@ -351,6 +374,11 @@ public class MainActivity extends AppCompatActivity {
                     saveTokenizedUrl(tokenizedUrl);
                     Log.d(TAG, "Auth Success: tokenizedUrl = " + tokenizedUrl);
 
+                    // Play video
+                    if (playVideo) {
+                        Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                        startActivity(intent);
+                    }
 
                     addToLogcat("AUTHORIZE SUCCESS");
                     progressSpinner.setVisibility(View.GONE);
@@ -385,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         showToast(getString(R.string.tokenized_saved));
-
+        addToLogcat("Tokenized Url = " + tokenizedUrl);
     }
 
     /**
