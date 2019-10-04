@@ -4,11 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/player_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </com.google.android.exoplayer2.ui.PlayerView>
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+        <ProgressBar
+            android:id="@+id/progressSpinner"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent"/>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -59,7 +59,8 @@ import io.reactivex.schedulers.Schedulers;
  *      NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
  *      MainActivity.
  *</p>
- * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
+ * Created by: maggiedang-CB 18-09-19
+ * (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -461,7 +462,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("CheckResult")
     public void logout(String rId) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
-        AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this, adobeConfig, DeviceUtils.getDeviceInfo());
+        AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this,
+                adobeConfig, DeviceUtils.getDeviceInfo());
 
         adobeClientless.logout(rId)
                 .subscribeOn(Schedulers.io())
@@ -587,8 +589,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "adobeauth to string = " + adobeConfig.toString());
 
         adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
-
-        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), ""));
+        String rId = sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
+        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(rId);
 
         mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))
