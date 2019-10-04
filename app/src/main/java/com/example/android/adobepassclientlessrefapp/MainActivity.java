@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkReceiver networkReceiver;
 
     public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO, LOGCAT
+        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO, LOGCAT, TOKENIZED_URL
     }
 
     @Override
@@ -345,8 +345,16 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(auth -> {
                     Log.d(TAG, "AUTHORIZE SUCCESS");
                     tvAuthorize.setText(getString(R.string.authorize_success));
+
+                    // Get and save tokenized url
+                    String tokenizedUrl = auth.getNbcToken().getTokenizedUrl();
+                    saveTokenizedUrl(tokenizedUrl);
+                    Log.d(TAG, "Auth Success: tokenizedUrl = " + tokenizedUrl);
+
+
                     addToLogcat("AUTHORIZE SUCCESS");
                     progressSpinner.setVisibility(View.GONE);
+
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
                     if (throwable instanceof AuthZException) {
@@ -361,6 +369,23 @@ public class MainActivity extends AppCompatActivity {
                     addToLogcat("AUTHORIZE FAILURE: " + throwable.toString());
                     progressSpinner.setVisibility(View.GONE);
                 });
+    }
+
+    /**
+     * Saves the tokenized Url to shared preferences after a successful authorization.
+     * The Url will be used in ExoPlayer to play the video that was set up in media info.
+     * @param tokenizedUrl
+     */
+    private void saveTokenizedUrl(String tokenizedUrl) {
+        sharedPreferences = getSharedPreferences();
+        String tokenKey = sharedPrefKeys.TOKENIZED_URL.toString();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(tokenKey, tokenizedUrl);
+        editor.apply();
+
+        showToast(getString(R.string.tokenized_saved));
+
     }
 
     /**

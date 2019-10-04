@@ -20,6 +20,7 @@
     <string name="clear_form_data">Clear Current Data</string>
     <string name="mvpd_id_not_selected">Not Selected</string>
     <string name="media_info_setup">SetUp Media Info</string>
+    <string name="play_media">Play Media</string>
 
     <string name="adobe_config_header">1) Adobe Configuration</string>
     <string name="rId_header">2) Requestor Id</string>
@@ -27,7 +28,8 @@
     <string name="login_header">4) Login</string>
     <string name="media_info_header">5) Media Info</string>
     <string name="authorize_header">6) Authorize</string>
-    <string name="logout_header">7) Logout</string>
+    <string name="play_media_header">7) Play Media Asset</string>
+    <string name="logout_header">8) Logout</string>
 
     <string name="login_description"> Description of login here </string>
     <string name="login_status_not_logged">Not Signed In</string>
@@ -161,6 +163,8 @@
     <string name="authorize_error_message">"We\'re sorry, this programming is currently not available through your provider.  Please continue to enjoy other great content available through NBC Sports.</string>
     <string name="player_restricted_title">Error</string>
     <string name="player_restricted_error">Oops, something happened. Please close your app and try again.</string>
+
+    <string name="tokenized_saved">Tokenized Url Saved</string>
 
 
 
