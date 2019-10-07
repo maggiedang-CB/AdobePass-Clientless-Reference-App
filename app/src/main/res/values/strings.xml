@@ -119,27 +119,6 @@
     <string name="config17_nbcTokenUrl">nbcTokenUrl</string>
     <string name="config18_tempPassSelection">tempPassSelection</string>
 
-    <!--adobe auth parcel data-->
-    <!--@Expose @Getter String baseUrl;-->
-    <!--@Expose @Getter String reggieCodePath;-->
-    <!--@Expose @Getter String checkAuthenticationPath;-->
-    <!--@Expose @Getter int authnTokenTimeoutSeconds;-->
-    <!--@Expose @Getter String tempPassProvider;-->
-    <!--@Expose @Getter String getUserMetadataPath;-->
-    <!--@Expose @Getter String authnTokenPath;-->
-    <!--@Expose @Getter String tempPassUrl;-->
-    <!--@Expose @Getter String authzTokenPath;-->
-    <!--@Expose @Getter String authorizePath;-->
-    <!--@Expose @Getter String logoutPath;-->
-    <!--@Expose @Getter String mvpdListPath;-->
-    <!--@Expose @Getter String redirectUrl;-->
-    <!--@Expose @Getter String tokenizationUrl;-->
-    <!--@Expose @Getter String logosUrl;-->
-    <!--@Expose @Getter List<String> externalBrowserDomains;-->
-    <!--@Expose @Getter String nbcTokenUrl;-->
-    <!--@Expose @Getter-->
-    <!--TempPassSelectionConfig tempPassSelection;-->
-
     <!--Adobe media info form-->
     <string name="mediaForm1_pId">pid: </string>
     <string name="mediaForm2_streamUrl">streamUrl: </string>
