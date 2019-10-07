@@ -60,6 +60,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name=".EntitlementActivity"
+            android:label="@string/entitlement"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <receiver android:name = ".utils.NetworkReceiver">
             <intent-filter>
                 <action android:name = "android.net.conn.CONNECTIVITY_CHANGE" />

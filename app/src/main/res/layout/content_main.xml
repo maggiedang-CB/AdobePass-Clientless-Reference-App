@@ -257,6 +257,40 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/entitlement_view_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dip">
+                    <TextView
+                        style="@style/Separator"
+                        android:layout_width="match_parent"
+                        android:text="@string/entitlement_header"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/paddingLR"
+                        android:paddingRight="@dimen/paddingLR"
+                        android:layout_marginTop="5dip">
+
+                        <Button
+                            android:id="@+id/btn_entitlement_setup"
+                            android:text="@string/entitlement_setup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <Button
+                            android:id="@+id/btn_entitlement_check"
+                            android:text="@string/entitlement_check"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/play_media_view_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

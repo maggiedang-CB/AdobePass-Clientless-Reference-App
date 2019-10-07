@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_play_media)
     Button btnPlay;
 
+    @BindView(R.id.btn_entitlement_setup)
+    Button btnSetupEntitlement;
+
     @BindView(R.id.main_activity_scroll_view)
     ScrollView scrollView;
     @BindView(R.id.logcat)
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         btnSaveRId.setOnClickListener(saveRIdListener);
         btnMediaInfo.setOnClickListener(mediaInfoListener);
         btnPlay.setOnClickListener(playListener);
+        btnSetupEntitlement.setOnClickListener(setUpEntitlementListener);
 
         showSavedData();
     }
@@ -348,6 +352,16 @@ public class MainActivity extends AppCompatActivity {
                 authorize(true);
                 addToLogcat("ExoPlayer Launched");
             }
+        }
+    };
+
+    private View.OnClickListener setUpEntitlementListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: Check if adobe config, rId, and media info are set
+
+            Intent intent = new Intent(MainActivity.this, EntitlementActivity.class);
+            startActivity(intent);
         }
     };
 

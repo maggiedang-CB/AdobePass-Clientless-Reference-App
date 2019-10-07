@@ -21,6 +21,9 @@
     <string name="mvpd_id_not_selected">Not Selected</string>
     <string name="media_info_setup">SetUp Media Info</string>
     <string name="play_media">Play Media</string>
+    <string name="entitlement">Entitlement</string>
+    <string name="entitlement_setup">Setup Entitlement</string>
+    <string name="entitlement_check">Check Entitlement</string>
 
     <string name="adobe_config_header">1) Adobe Configuration</string>
     <string name="rId_header">2) Requestor Id</string>
@@ -28,8 +31,9 @@
     <string name="login_header">4) Login</string>
     <string name="media_info_header">5) Media Info</string>
     <string name="authorize_header">6) Authorize</string>
-    <string name="play_media_header">7) Play Media Asset</string>
-    <string name="logout_header">8) Logout</string>
+    <string name="entitlement_header">7) Entitlement</string>
+    <string name="play_media_header">8) Play Media Asset</string>
+    <string name="logout_header">9) Logout</string>
 
     <string name="login_description"> Description of login here </string>
     <string name="login_status_not_logged">Not Signed In</string>
@@ -166,6 +170,39 @@
 
     <string name="tokenized_saved">Tokenized Url Saved</string>
     <string name="tokenized_not_authorized_title">Player Error</string>
+
+    <!--Entitlement Form-->
+    <string name="entitlementForm1_zipCode">zipCode: </string>
+    <string name="entitlementForm2_blackoutId">blackoutID: </string>
+    <string name="entitlementForm3_mlbBlackoutServiceUrl">mlbBlackoutServiceUrl: </string>
+    <string name="entitlementForm4_entitlementId">entitlementId: </string>
+    <string name="entitlementForm5_requiresEntitlementRightsCheck">requiresEntitlementRightsCheck: </string>
+    <string name="entitlementForm6_useAnvatoService">useAnvatoService: </string>
+    <string name="entitlementForm7_comcast">comcast: </string>
+    <string name="entitlementForm8_currentChannel">currentChannel: </string>
+    <string name="entitlementForm9_currentChannelMvpdDigital">currentChannelMvpdDigital: </string>
+    <string name="entitlementForm10_currentChannelMvpdDigitalContainsMvpd">currentChannelMvpdDigitalContainsMvpd: </string>
+    <string name="entitlementForm11_blackoutServiceUrl">blackoutServiceUrl: </string>
+    <string name="entitlementForm12_anvatoDomain">anvatoDomain: </string>
+    <string name="entitlementForm13_anvatoChannelDomain">anvatoChannelDomain: </string>
+    <string name="entitlementForm14_anvatoAnvack">anvatoAnvack: </string>
+
+    <string name="entitlement_zipCode">zipCode</string>
+    <string name="entitlement_blackoutId">blackoutID</string>
+    <string name="entitlement_mlbBlackoutServiceUrl">mlbBlackoutServiceUrl</string>
+    <string name="entitlement_entitlementId">entitlementId</string>
+    <string name="entitlement_requiresEntitlementRightsCheck">requiresEntitlementRightsCheck</string>
+    <string name="entitlement_useAnvatoService">useAnvatoService</string>
+    <string name="entitlement_comcast">comcast</string>
+    <string name="entitlement_currentChannel">currentChannel</string>
+    <string name="entitlement_currentChannelMvpdDigital">currentChannelMvpdDigital</string>
+    <string name="entitlement_currentChannelMvpdDigitalContainsMvpd">currentChannelMvpdDigitalContainsMvpd</string>
+    <string name="entitlement_blackoutServiceUrl">blackoutServiceUrl</string>
+    <string name="entitlement_anvatoDomain">anvatoDomain</string>
+    <string name="entitlement_anvatoChannelDomain">anvatoChannelDomain</string>
+    <string name="entitlement_anvatoAnvack">anvatoAnvack</string>
+
+
 
 
 

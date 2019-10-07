@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/Separator"
+        android:id="@+id/entitlement_form_header"
+        android:layout_width="match_parent"
+        android:text="@string/entitlement_setup"
+        android:textAllCaps="false"/>
+
+    <HorizontalScrollView
+        android:id="@+id/top_buttons_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/entitlement_form_header"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_entitlement_generate"
+                style="@style/ButtonStyle"
+                android:text="@string/generate_sample_data"/>
+
+            <Button
+                android:id="@+id/btn_entitlement_clear"
+                style="@style/ButtonStyle"
+                android:text="@string/clear_form_data"/>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/paddingLR"
+        android:paddingRight="@dimen/paddingLR"
+        android:layout_below="@id/top_buttons_group">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm1_zipCode"/>
+                            <EditText
+                                android:id="@+id/entitlement_zipCode"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm2_blackoutId"/>
+                            <EditText
+                                android:id="@+id/entitlement_blackoutId"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm3_mlbBlackoutServiceUrl"/>
+                            <EditText
+                                android:id="@+id/entitlement_mlbBlackoutServiceurl"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm4_entitlementId"/>
+                            <EditText
+                                android:id="@+id/entitlement_entitlementId"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm5_requiresEntitlementRightsCheck"/>
+                            <EditText
+                                android:id="@+id/entitlement_requiresEntitlementRightsCheck"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm6_useAnvatoService"/>
+                            <EditText
+                                android:id="@+id/entitlement_useAnvatoService"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm7_comcast"/>
+                            <EditText
+                                android:id="@+id/entitlement_comcast"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm8_currentChannel"/>
+                            <EditText
+                                android:id="@+id/entitlement_currentChannel"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm9_currentChannelMvpdDigital"/>
+                            <EditText
+                                android:id="@+id/entitlement_currentChannelMvpdDigital"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm10_currentChannelMvpdDigitalContainsMvpd"/>
+                            <EditText
+                                android:id="@+id/entitlement_currentChannelMvpdDigitalContainsMvpd"
+                                style="@style/FormEditText"
+                                android:hint="Boolean"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm11_blackoutServiceUrl"/>
+                            <EditText
+                                android:id="@+id/entitlement_blackoutServiceurl"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm12_anvatoDomain"/>
+                            <EditText
+                                android:id="@+id/entitlement_anvatoDomain"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm13_anvatoChannelDomain"/>
+                            <EditText
+                                android:id="@+id/entitlement_anvatoChannelDomain"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/FormEntries">
+                            <TextView
+                                style="@style/FormValues"
+                                android:text="@string/entitlementForm14_anvatoAnvack"/>
+                            <EditText
+                                android:id="@+id/entitlement_anvatoAnvack"
+                                style="@style/FormEditText"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:id="@+id/btn_entitlement_save"
+                        style="@style/ButtonStyle"
+                        android:text="SAVE"/>
+
+                    <Button
+                        android:id="@+id/btn_entitlement_back"
+                        style="@style/ButtonStyle"
+                        android:text="BACK"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
