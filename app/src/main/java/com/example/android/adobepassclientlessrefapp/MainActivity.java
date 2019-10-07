@@ -344,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Authorize and launch video player
                 progressSpinner.setVisibility(View.VISIBLE);
+                showToast("Authorizing Video...");
                 authorize(true);
                 addToLogcat("ExoPlayer Launched");
             }
