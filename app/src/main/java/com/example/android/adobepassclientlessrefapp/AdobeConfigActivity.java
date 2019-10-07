@@ -287,8 +287,4 @@ public class AdobeConfigActivity extends AbstractActivity {
         return formHash;
     }
 
-    private SharedPreferences getSharedPreferences() {
-        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-    }
-
 }

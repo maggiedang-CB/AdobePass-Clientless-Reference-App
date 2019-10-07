@@ -130,4 +130,8 @@ public class AbstractActivity extends Activity {
         MainActivity.addToLogcat(sharedPreferences, logKey, "", logMessage);
     }
 
+    public SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
+    }
+
 }

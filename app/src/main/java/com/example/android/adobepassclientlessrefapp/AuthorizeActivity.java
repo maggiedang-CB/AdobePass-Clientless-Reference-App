@@ -87,7 +87,4 @@ public class AuthorizeActivity extends AbstractActivity {
         return MainActivity.getMediaInfoFromJson(getSharedPreferences());
     }
 
-    private SharedPreferences getSharedPreferences() {
-        return getSharedPreferences(MainActivity.SHARED_PREFERENCES, MODE_PRIVATE);
-    }
 }

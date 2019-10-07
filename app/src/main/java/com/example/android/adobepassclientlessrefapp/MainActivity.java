@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +59,8 @@ import io.reactivex.schedulers.Schedulers;
  *      NOTE: To see the LOGCAT, click on the action bar located at the top right corner of the
  *      MainActivity.
  *</p>
- * Created by: maggiedang-CB (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
+ * Created by: maggiedang-CB 18-09-19
+ * (https://github.com/maggiedang-CB/AdobePass-Clientless-Reference-App)
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -98,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.authorize_main_page_presenter)
     TextView tvAuthorize;
 
+    @BindView(R.id.btn_play_media)
+    Button btnPlay;
+
     @BindView(R.id.main_activity_scroll_view)
     ScrollView scrollView;
     @BindView(R.id.logcat)
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkReceiver networkReceiver;
 
     public enum sharedPrefKeys {
-        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO, LOGCAT
+        REQUESTOR_ID, ADOBE_CONFIG, MEDIA_INFO, LOGCAT, TOKENIZED_URL
     }
 
     @Override
@@ -141,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         btnAuthorize.setOnClickListener(authorizeListener);
         btnSaveRId.setOnClickListener(saveRIdListener);
         btnMediaInfo.setOnClickListener(mediaInfoListener);
+        btnPlay.setOnClickListener(playListener);
 
         showSavedData();
     }
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (networkReceiver != null) {
             unregisterReceiver(networkReceiver);
         }
@@ -308,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (isTempPass()) {
                 // Temp pass is active
                 progressSpinner.setVisibility(View.VISIBLE);
-                authorize();
+                authorize(false);
             } else if (!sharedPreferences.contains(LoginActivity.LoginStatus.LOGIN_STATUS.toString())) {
                 showToast(getString(R.string.setup_not_logged_in));
             } else {
@@ -318,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
                 if (status.equals(getString(R.string.login_status_signed_in))) {
                     // Only authorize if the user is signed in
                     progressSpinner.setVisibility(View.VISIBLE);
-                    authorize();
+                    authorize(false);
                 } else {
                     showToast(getString(R.string.setup_not_logged_in));
                 }
@@ -327,12 +334,30 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener playListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Before playing video, internet needs to be connected and the media should be
+            // successfully authorized already
+            if (!isWifiConnected()) {
+                showToast(getString(R.string.no_internet_toast));
+            } else {
+                // Authorize and launch video player
+                progressSpinner.setVisibility(View.VISIBLE);
+                showToast("Authorizing Video...");
+                authorize(true);
+                addToLogcat("ExoPlayer Launched");
+            }
+        }
+    };
+
     /**
      * Authorize is a success if the user is logged in (By MVPD or by Temp Pass) and has compatible
      * Requestor Ids between the user's saved Requestor Id and Media Info's Requestor Id.
+     * @param playVideo Pass in True to play tokenizedUrl on ExoPlayer right after auth success
      */
     @SuppressLint("CheckResult")
-    private void authorize() {
+    private void authorize(boolean playVideo) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
         AdobeClientlessService adobeClientless = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
         AdobeMediaInfo adobeMediaInfo = getMediaInfoFromJson(getSharedPreferences());
@@ -345,8 +370,21 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(auth -> {
                     Log.d(TAG, "AUTHORIZE SUCCESS");
                     tvAuthorize.setText(getString(R.string.authorize_success));
+
+                    // Get and save tokenized url
+                    String tokenizedUrl = auth.getNbcToken().getTokenizedUrl();
+                    saveTokenizedUrl(tokenizedUrl);
+                    Log.d(TAG, "Auth Success: tokenizedUrl = " + tokenizedUrl);
+
+                    // Play video
+                    if (playVideo) {
+                        Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                        startActivity(intent);
+                    }
+
                     addToLogcat("AUTHORIZE SUCCESS");
                     progressSpinner.setVisibility(View.GONE);
+
                 }, throwable -> {
                     Log.e(TAG, "AUTHORIZE FAILURE");
                     if (throwable instanceof AuthZException) {
@@ -361,6 +399,23 @@ public class MainActivity extends AppCompatActivity {
                     addToLogcat("AUTHORIZE FAILURE: " + throwable.toString());
                     progressSpinner.setVisibility(View.GONE);
                 });
+    }
+
+    /**
+     * Saves the tokenized Url to shared preferences after a successful authorization.
+     * The Url will be used in ExoPlayer to play the video that was set up in media info.
+     * @param tokenizedUrl
+     */
+    private void saveTokenizedUrl(String tokenizedUrl) {
+        sharedPreferences = getSharedPreferences();
+        String tokenKey = sharedPrefKeys.TOKENIZED_URL.toString();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(tokenKey, tokenizedUrl);
+        editor.apply();
+
+        showToast(getString(R.string.tokenized_saved));
+        addToLogcat("Tokenized Url = " + tokenizedUrl);
     }
 
     /**
@@ -408,7 +463,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("CheckResult")
     public void logout(String rId) {
         adobeConfig = getAdobeConfigFromJson(getSharedPreferences());
-        AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this, adobeConfig, DeviceUtils.getDeviceInfo());
+        AdobeClientlessService adobeClientless = new AdobeClientlessService(MainActivity.this,
+                adobeConfig, DeviceUtils.getDeviceInfo());
 
         adobeClientless.logout(rId)
                 .subscribeOn(Schedulers.io())
@@ -534,8 +590,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "adobeauth to string = " + adobeConfig.toString());
 
         adobeClientlessService = new AdobeClientlessService(this, adobeConfig, DeviceUtils.getDeviceInfo());
-
-        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), ""));
+        String rId = sharedPreferences.getString(sharedPrefKeys.REQUESTOR_ID.toString(), "");
+        Observable<AdobeAuth> mvpdListObservable = adobeClientlessService.getMpvdList(rId);
 
         mvpdListObservable.flatMap((Function<AdobeAuth, ObservableSource<List<MvpdListAPI.Mvpd>>>)
                 adobeAuth -> Observable.just(adobeAuth.getMvpds()))

@@ -257,6 +257,35 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/play_media_view_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dip">
+                    <TextView
+                        style="@style/Separator"
+                        android:layout_width="match_parent"
+                        android:text="@string/play_media_header"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/paddingLR"
+                        android:paddingRight="@dimen/paddingLR"
+                        android:layout_marginTop="5dip">
+
+                        <Button
+                            android:id="@+id/btn_play_media"
+                            android:text="@string/play_media"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/logout_view_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
